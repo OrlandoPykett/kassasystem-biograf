@@ -1,7 +1,7 @@
 package com.mycompany.app;
 
-import com.mycompany.app.Items.MovieScreening;
-import com.mycompany.app.Items.Ticket;
+import com.mycompany.app.items.MovieScreening;
+import com.mycompany.app.items.Ticket;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -67,7 +67,7 @@ public final class Money implements Comparable<Money> {
 
     @Override
     public int compareTo(Money other) {
-        return (int) Math.subtractExact(penny, other.getPenny());
+        return (int) Math.subtractExact(this.penny, other.getPenny());
     }
 
     @Override

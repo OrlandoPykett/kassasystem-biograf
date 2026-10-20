@@ -1,4 +1,4 @@
-package com.mycompany.app.Items;
+package com.mycompany.app.items;
 
 public enum AgeRequirement {
     AGE_0(0),

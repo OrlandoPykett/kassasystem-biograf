@@ -1,8 +1,8 @@
-package com.mycompany.app.Items;
+package com.mycompany.app.items;
 
 import com.mycompany.app.Money;
 
-import static com.mycompany.app.Items.AgeRequirement.*;
+import static com.mycompany.app.items.AgeRequirement.*;
 
 public class Beverage extends Item {
 

@@ -1,4 +1,4 @@
-package com.mycompany.app.Items;
+package com.mycompany.app.items;
 
 public class Movie {
 
@@ -8,11 +8,10 @@ public class Movie {
 
     public int[] screenings;
 
-    public Movie(String title, int durationMin, AgeRequirement ageReq, int[] screenings) {
+    public Movie(String title, int durationMin, AgeRequirement ageReq) {
         this.title = title;
         this.durationMin = durationMin;
         this.ageReq = ageReq;
-        this.screenings = screenings;
 
         if (this.title == null || title.isBlank()) {
             throw new IllegalArgumentException(

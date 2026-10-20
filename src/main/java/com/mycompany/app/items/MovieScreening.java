@@ -1,4 +1,4 @@
-package com.mycompany.app.Items;
+package com.mycompany.app.items;
 
 import java.time.LocalDateTime;
 
