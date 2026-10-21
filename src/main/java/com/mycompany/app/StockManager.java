@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class StockManager {
 
-    Map<String, Integer> stock = new HashMap<>();
+    private final Map<String, Integer> stock = new HashMap<>();
 
     public int getStock(Item item) {
         if (stock.containsKey(item.getId())) {

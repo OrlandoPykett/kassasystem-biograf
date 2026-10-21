@@ -2,7 +2,8 @@ package com.mycompany.app.items;
 
 public enum AgeRequirement {
     AGE_0(0),
-    AGE_16(16),
+    AGE_12(12),
+    AGE_15(15),
     AGE_18(18);
 
     private final int minimumAge;
