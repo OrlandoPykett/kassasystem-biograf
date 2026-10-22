@@ -11,7 +11,7 @@ public class StockManagerTest {
     @Test
     void addStockStoresQuantity() {
         StockManager manager = new StockManager();
-        Item apple = new Food("AB1", "apple", Money.ofPenny(1500));
+        Item apple = new Food("AB1", Money.ofPenny(1500), "apple");
         manager.addStock(apple, 10);
 
         assertEquals(10, manager.getStock(apple));
@@ -20,7 +20,7 @@ public class StockManagerTest {
     @Test
     void addStockIncreasesQuantityWhenItemIsPresent() {
         StockManager manager = new StockManager();
-        Item apple = new Food("AB1", "apple", Money.ofPenny(1500));
+        Item apple = new Food("AB1", Money.ofPenny(1500), "apple");
         manager.addStock(apple, 10);
         manager.addStock(apple, 5);
 
@@ -30,7 +30,7 @@ public class StockManagerTest {
     @Test
     void removeStockRemovesStock() {
         StockManager manager = new StockManager();
-        Item apple = new Food("AB1", "apple", Money.ofPenny(1500));
+        Item apple = new Food("AB1", Money.ofPenny(1500), "apple");
         manager.addStock(apple, 10);
         manager.removeStock(apple, 3);
 
@@ -40,7 +40,7 @@ public class StockManagerTest {
     @Test
     void hasStockReturnsTrueWhenStockIsSufficient() {
         StockManager manager = new StockManager();
-        Item apple = new Food("AB1", "apple", Money.ofPenny(1500));
+        Item apple = new Food("AB1", Money.ofPenny(1500), "apple");
         manager.addStock(apple, 10);
 
         boolean result = manager.hasStock(apple, 5);
@@ -50,7 +50,7 @@ public class StockManagerTest {
     @Test
     void hasStockReturnsFalseWhenStockIsInsufficient() {
         StockManager manager = new StockManager();
-        Item apple = new Food("AB1", "apple", Money.ofPenny(1500));
+        Item apple = new Food("AB1", Money.ofPenny(1500), "apple");
         manager.addStock(apple, 10);
 
         boolean result = manager.hasStock(apple, 15);
@@ -60,14 +60,14 @@ public class StockManagerTest {
     @Test
     void getStockReturnsZeroForItemsNotAdded() {
         StockManager manager = new StockManager();
-        Item apple = new Food("AB1", "apple", Money.ofPenny(1500));
+        Item apple = new Food("AB1", Money.ofPenny(1500), "apple");
         assertEquals(0, manager.getStock(apple));
     }
 
     @Test
     void removeStockDoesNotRemoveMoreThanExists() {
         StockManager manager = new StockManager();
-        Item apple = new Food("AB1", "apple", Money.ofPenny(1500));
+        Item apple = new Food("AB1", Money.ofPenny(1500), "apple");
         manager.addStock(apple, 10);
         manager.removeStock(apple, 15);
 

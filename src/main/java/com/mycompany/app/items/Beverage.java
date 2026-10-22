@@ -6,12 +6,14 @@ import static com.mycompany.app.items.AgeRequirement.*;
 
 public class Beverage extends Item {
 
-    private BeverageSize size;
-    private AgeRequirement ageReq;
+    private final String name;
+    private final BeverageSize size;
+    private final AgeRequirement ageReq;
 
-    public Beverage(String id, String name, Money price, BeverageSize size, boolean isAlcoholic) {
-        super(id, name, price);
+    public Beverage(String id, Money price, String name, BeverageSize size, boolean isAlcoholic) {
+        super(id, price);
         this.size = size;
+        this.name = name;
 
         if (isAlcoholic) {
             this.ageReq = AGE_18;
@@ -19,6 +21,10 @@ public class Beverage extends Item {
         else {
             this.ageReq = AGE_0;
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     public BeverageSize getSize() {

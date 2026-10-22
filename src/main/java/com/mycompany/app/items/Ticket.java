@@ -7,9 +7,9 @@ public class Ticket extends Item {
     private final MovieScreening screening;
     private final int seat;
 
-    public Ticket(String id, String name, Money price, int seat, MovieScreening screening) {
+    public Ticket(String id, Money price, int seat, MovieScreening screening) {
 
-        super(id, name, price);
+        super(id, price);
 
         this.screening = screening;
         this.seat = seat;

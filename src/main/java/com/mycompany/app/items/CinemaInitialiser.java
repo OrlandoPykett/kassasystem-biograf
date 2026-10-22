@@ -13,22 +13,22 @@ public class CinemaInitialiser {
 
 
     // snacks
-    Food popcorn = new Food("F1", "popcorn", Money.ofPenny(7500));
-    Food baconchips = new Food("F2", "baconchips", Money.ofPenny(6500));
-    Food nachos = new Food("F3", "nachos", Money.ofPenny(12500));
+    Food popcorn = new Food("F1", Money.ofPenny(7500), "popcorn");
+    Food baconchips = new Food("F2", Money.ofPenny(6500), "baconchips");
+    Food nachos = new Food("F3", Money.ofPenny(12500), "nachos");
 
     // Drinks
-    Beverage b1s = new Beverage("B1S", "coca-cola", Money.ofPenny(4000), BeverageSize.SMALL, false);
-    Beverage b1m = new Beverage("B1M", "coca-cola", Money.ofPenny(6000), BeverageSize.MEDIUM, false);
-    Beverage b1l = new Beverage("B1L", "coca-cola", Money.ofPenny(8000), BeverageSize.LARGE, false);
+    Beverage b1s = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false);
+    Beverage b1m = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false);
+    Beverage b1l = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false);
 
-    Beverage b2s = new Beverage("B2S", "fanta", Money.ofPenny(4000), BeverageSize.SMALL, false);
-    Beverage b2m = new Beverage("B2M", "fanta", Money.ofPenny(6000), BeverageSize.MEDIUM, false);
-    Beverage b2l = new Beverage("b2l", "fanta", Money.ofPenny(8000), BeverageSize.LARGE, false);
+    Beverage b2s = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false);
+    Beverage b2m = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false);
+    Beverage b2l = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false);
 
-    Beverage b3 = new Beverage("B3", "beer", Money.ofPenny(1200), BeverageSize.MEDIUM, true);
-    Beverage b4 = new Beverage("B4", "cider", Money.ofPenny(1000), BeverageSize.MEDIUM, true);
-    Beverage b5 = new Beverage("B5", "cocktail", Money.ofPenny(16000), BeverageSize.SMALL, true);
+    Beverage b3 = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true);
+    Beverage b4 = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true);
+    Beverage b5 = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true);
 
     // Movies
     // Should be moved to a
