@@ -43,5 +43,13 @@ public class TicketPriceCalculatorTest {
 
     }
 
+    @Test 
+    void adultMemberTicketCosts100Kronor(){
+        TicketPriceCalculator calculator = new TicketPriceCalculator();
+        Money price = calculator.calculatePrice(18, true);
+
+        assertEquals(10000, price.getPenny());
+    }
+
     
 }
