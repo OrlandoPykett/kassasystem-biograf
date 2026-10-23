@@ -44,7 +44,7 @@ public final class Money implements Comparable<Money> {
             throw new IllegalArgumentException("Subtrahend too big!");
         }
     
-        return new Money(Math.subtractExact(this.penny, penny));
+        return new Money(Math.subtractExact(this.penny, subtrahend));
     }
 
     public Money percentageOfPenny(float percentage) {
