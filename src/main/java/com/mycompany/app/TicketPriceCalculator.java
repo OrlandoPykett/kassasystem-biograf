@@ -3,6 +3,10 @@ package com.mycompany.app;
 public class TicketPriceCalculator {
     
     public Money calculatePrice(int age, boolean member){
+         if(age < 0){
+            throw new IllegalArgumentException("Age cannot be negative");
+        }
+        
         if (age < 18){
             return Money.ofPenny(8000);
         }
@@ -10,6 +14,8 @@ public class TicketPriceCalculator {
         if(age >= 65 ){
             return Money.ofPenny(10000); 
         }
+
+       
 
         return Money.ofPenny(12000);
         
