@@ -20,7 +20,7 @@ public class TicketPriceCalculatorTest {
         TicketPriceCalculator calculator = new TicketPriceCalculator();
         Money price = calculator.calculatePrice(17, false);
 
-        assertEquals(8000, price.getPenny());
+        assertEquals(8000L, price.getPenny());
     } 
 
     @Test 
@@ -28,7 +28,7 @@ public class TicketPriceCalculatorTest {
         TicketPriceCalculator calculator = new TicketPriceCalculator();
         Money price = calculator.calculatePrice(65, false);
 
-        assertEquals(10000, price.getPenny());
+        assertEquals(10000L, price.getPenny());
 
     }
 
@@ -48,7 +48,7 @@ public class TicketPriceCalculatorTest {
         TicketPriceCalculator calculator = new TicketPriceCalculator();
         Money price = calculator.calculatePrice(18, true);
 
-        assertEquals(10000, price.getPenny());
+        assertEquals(10000L, price.getPenny());
     }
 
     
