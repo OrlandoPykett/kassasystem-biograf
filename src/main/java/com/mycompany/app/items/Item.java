@@ -1,15 +1,15 @@
-package com.mycompany.app.Items;
+package com.mycompany.app.items;
+
+import com.mycompany.app.Money;
 
 import java.util.Objects;
 
 public abstract class Item {
     private final String id;
-    private final String name;
-    private final long price;
+    private final Money price;
 
-    public Item(String id, String name, long price) {
+    public Item(String id, Money price) {
         this.id = id;
-        this.name = name;
         this.price = price;
     }
 
@@ -17,11 +17,7 @@ public abstract class Item {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public long getPrice() {
+    public Money getPrice() {
         return price;
     }
 
@@ -36,10 +32,5 @@ public abstract class Item {
     @Override
     public int hashCode() {
         return Objects.hashCode(this);
-    }
-
-    @Override
-    public String toString() {
-        return "id=%s,name=%s,price=%L".formatted(getId(), getName(), getPrice());
     }
 }
