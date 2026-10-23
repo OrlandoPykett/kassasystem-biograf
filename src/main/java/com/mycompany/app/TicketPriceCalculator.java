@@ -7,6 +7,11 @@ public class TicketPriceCalculator {
             return Money.ofPenny(8000);
         }
 
+        if(age >= 65 ){
+            return Money.ofPenny(10000); 
+        }
+
         return Money.ofPenny(12000);
+        
     }
 }
