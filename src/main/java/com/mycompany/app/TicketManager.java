@@ -1,6 +1,7 @@
 package com.mycompany.app;
 
 import com.mycompany.app.items.MovieScreening;
+import com.mycompany.app.items.Seat;
 import com.mycompany.app.items.Ticket;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class TicketManager {
         return false;
     }
 
-    public boolean seatIsEmpty(MovieScreening screening, int seat) {
+    public boolean seatIsEmpty(MovieScreening screening, Seat seat) {
         for (Ticket ticket : tickets) {
             if (ticket.getScreening() == screening
                 && ticket.getSeat() == seat) {

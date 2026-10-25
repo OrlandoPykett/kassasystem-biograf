@@ -46,8 +46,10 @@ public class ItemTest {
         Beverage drink = new Beverage("b1", Money.ofPenny(500), "drink", BeverageSize.MEDIUM, false);
 
         Movie movie = new Movie("move", 120, AgeRequirement.AGE_0);
-        MovieScreening screening = new MovieScreening(movie, LocalDateTime.of(2026, 12, 12, 18, 18, 0), "Harald");
-        Ticket ticket = new Ticket("m1", Money.ofPenny(500), 12, screening);
+        Theater theater = new Theater("Harald", 25, 60);
+        Seat seat = new Seat('D', 10);
+        MovieScreening screening = new MovieScreening(movie, LocalDateTime.of(2026, 12, 12, 18, 18, 0), theater);
+        Ticket ticket = new Ticket("m1", Money.ofPenny(500), seat, screening);
 
         assertEquals("f1", food.getId());
         assertEquals(Money.ofPenny(500), food.getPrice());

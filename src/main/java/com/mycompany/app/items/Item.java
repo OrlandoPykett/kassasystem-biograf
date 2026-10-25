@@ -23,14 +23,18 @@ public abstract class Item {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Item other) {
-            return obj == other.getId();
+        if (this == obj) return true;
+
+        if (obj == null || obj.getClass() != getClass()) {
+            return false;
         }
-        return false;
+
+        Item other = (Item) obj;
+        return id.equals(other.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(this);
+        return Objects.hashCode(getId());
     }
 }

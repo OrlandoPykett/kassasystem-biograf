@@ -14,7 +14,8 @@ public class ScreeningManagerTest {
         // Arrange
         ScreeningManager manager = new ScreeningManager();
         Movie movie = new Movie("Avengers", 120, AgeRequirement.AGE_0);
-        MovieScreening screening = new MovieScreening(movie, LocalDateTime.of(2026, 10, 20, 14, 0), "Holger");
+        Theater theater = new Theater("Harald", 25, 60);
+        MovieScreening screening = new MovieScreening(movie, LocalDateTime.of(2026, 10, 20, 14, 0), theater);
 
         // Act
         boolean result = manager.addScreening(screening);
@@ -31,8 +32,10 @@ public class ScreeningManagerTest {
         Movie avengers = new Movie("Avengers", 120, AgeRequirement.AGE_0);
         Movie endgame = new Movie("Endgame", 180, AgeRequirement.AGE_0);
 
-        MovieScreening screening1 = new MovieScreening(avengers, LocalDateTime.of(2026, 10, 20, 14, 0), "Holger");
-        MovieScreening screening2 = new MovieScreening(endgame, LocalDateTime.of(2026, 10, 20, 15, 0), "Holger");
+        Theater theater = new Theater("Harald", 25, 60);
+
+        MovieScreening screening1 = new MovieScreening(avengers, LocalDateTime.of(2026, 10, 20, 14, 0), theater);
+        MovieScreening screening2 = new MovieScreening(endgame, LocalDateTime.of(2026, 10, 20, 15, 0), theater);
 
         manager.addScreening(screening1);
         boolean result = manager.addScreening(screening2);
@@ -45,7 +48,8 @@ public class ScreeningManagerTest {
     void addScreeningRemovesScreening() {
         ScreeningManager manager = new ScreeningManager();
         Movie movie = new Movie("Avengers", 120, AgeRequirement.AGE_0);
-        MovieScreening screening = new MovieScreening(movie, LocalDateTime.of(2026, 10, 20, 14, 0), "Holger");
+        Theater theater = new Theater("Harald", 25, 60);
+        MovieScreening screening = new MovieScreening(movie, LocalDateTime.of(2026, 10, 20, 14, 0), theater);
 
         manager.addScreening(screening);
         boolean result = manager.removeScreening(screening);
@@ -61,8 +65,10 @@ public class ScreeningManagerTest {
         Movie avengers = new Movie("Avengers", 120, AgeRequirement.AGE_0);
         Movie endgame = new Movie("Endgame", 180, AgeRequirement.AGE_0);
 
-        MovieScreening screening1 = new MovieScreening(avengers, LocalDateTime.of(2026, 10, 20, 14, 0), "Holger");
-        MovieScreening screening2 = new MovieScreening(endgame, LocalDateTime.of(2026, 10, 20, 18, 0), "Holger");
+        Theater theater = new Theater("Harald", 25, 60);
+
+        MovieScreening screening1 = new MovieScreening(avengers, LocalDateTime.of(2026, 10, 20, 14, 0), theater);
+        MovieScreening screening2 = new MovieScreening(endgame, LocalDateTime.of(2026, 10, 20, 18, 0), theater);
 
         manager.addScreening(screening1);
         boolean result = manager.addScreening(screening2);
@@ -77,9 +83,10 @@ public class ScreeningManagerTest {
 
         Movie avengers = new Movie("Avengers", 120, AgeRequirement.AGE_0);
         Movie endgame = new Movie("Endgame", 180, AgeRequirement.AGE_0);
+        Theater theater = new Theater("Harald", 25, 60);
 
-        MovieScreening screening1 = new MovieScreening(avengers, LocalDateTime.of(2026, 10, 20, 14, 0), "Holger");
-        MovieScreening screening2 = new MovieScreening(endgame, LocalDateTime.of(2026, 10, 20, 14, 0), "Torsten");
+        MovieScreening screening1 = new MovieScreening(avengers, LocalDateTime.of(2026, 10, 20, 14, 0), theater);
+        MovieScreening screening2 = new MovieScreening(endgame, LocalDateTime.of(2026, 10, 20, 14, 0), theater);
 
         manager.addScreening(screening1);
         boolean result = manager.addScreening(screening2);

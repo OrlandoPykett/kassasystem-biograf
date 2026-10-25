@@ -2,12 +2,14 @@ package com.mycompany.app.items;
 
 import com.mycompany.app.Money;
 
+import java.util.Objects;
+
 public class Ticket extends Item {
 
     private final MovieScreening screening;
-    private final int seat;
+    private final Seat seat;
 
-    public Ticket(String id, Money price, int seat, MovieScreening screening) {
+    public Ticket(String id, Money price, Seat seat, MovieScreening screening) {
 
         super(id, price);
 
@@ -23,7 +25,7 @@ public class Ticket extends Item {
         return screening.getMovie();
     }
 
-    public int getSeat() {
+    public Seat getSeat() {
         return seat;
     }
 
@@ -33,7 +35,7 @@ public class Ticket extends Item {
 
     @Override
     public String toString() {
-        return "Movie: %s, Seat: %d, Price: %s"
-                .formatted(screening, seat, getPrice());
+        return "Movie: %s, Seat: %s, Price: %s"
+                .formatted(screening, seat.toString(), getPrice());
     }
 }

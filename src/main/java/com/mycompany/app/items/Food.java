@@ -2,6 +2,8 @@ package com.mycompany.app.items;
 
 import com.mycompany.app.Money;
 
+import java.util.Objects;
+
 public class Food extends Item {
     private final String name;
 
