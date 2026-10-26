@@ -6,9 +6,9 @@ public class MovieScreening {
 
     private final Movie movie;
     private final LocalDateTime startTime;
-    private final String theater;
+    private final Theater theater;
 
-    public MovieScreening(Movie movie, LocalDateTime startTime, String theater) {
+    public MovieScreening(Movie movie, LocalDateTime startTime, Theater theater) {
         this.movie = movie;
         this.startTime = startTime;
         this.theater = theater;
@@ -26,7 +26,7 @@ public class MovieScreening {
         return startTime.plusMinutes(movie.getDurationMin());
     }
 
-    public String getTheater() {
+    public Theater getTheater() {
         return theater;
     }
 

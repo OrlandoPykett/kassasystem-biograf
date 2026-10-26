@@ -2,6 +2,7 @@ package com.mycompany.app;
 
 import com.mycompany.app.items.Movie;
 import com.mycompany.app.items.MovieScreening;
+import com.mycompany.app.items.Theater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ScreeningManager {
         return movieScreenings;
     }
 
-    public List<MovieScreening> getScreeningsInTheater(String theater) {
+    public List<MovieScreening> getScreeningsInTheater(Theater theater) {
         List<MovieScreening> theaterScreenings = new ArrayList<>();
 
         for (MovieScreening screening : screenings) { // Doesn't work if multiple instances of the same movie are created
