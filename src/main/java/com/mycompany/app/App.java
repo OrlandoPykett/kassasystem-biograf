@@ -5,6 +5,12 @@ package com.mycompany.app;
  */
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        int age = 18;
+        boolean member = false; 
+
+        TicketPriceCalculator calculator = new TicketPriceCalculator();
+        Money price = calculator.calculatePrice(age, member);
+
+        System.out.println("Biljettpris: " + price.getCrown() + " kr");
     }
 }
