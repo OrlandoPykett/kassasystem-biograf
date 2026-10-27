@@ -63,7 +63,7 @@ public class ItemTest {
 
         assertEquals("m1", ticket.getId());
         assertEquals(Money.ofPenny(500), ticket.getPrice());
-        assertEquals(12, ticket.getSeat());
+        assertEquals(seat, ticket.getSeat());
         assertEquals(screening, ticket.getScreening());
     }
 }
