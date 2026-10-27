@@ -1,4 +1,4 @@
-package com.mycompany.app;
+/*package com.mycompany.app;
 
 public class Customer {
     private final String id;
@@ -15,3 +15,4 @@ public class Customer {
         this.contact = contact;
     }
 }
+*/
