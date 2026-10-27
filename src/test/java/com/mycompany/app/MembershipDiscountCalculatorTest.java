@@ -150,4 +150,52 @@ void adultTicketGetsMembershipDiscountOnceFromBasePrice() {
     assertEquals(10000L, finalPrice.getPenny());
 }
 
+@ParameterizedTest
+@CsvSource({
+    "0,  false, 8000",
+    "17, false, 8000",
+    "18, false, 12000",
+    "64, false, 12000",
+    "65, false, 10000",
+    "66, false, 10000",
+    "0,  true,  6000",
+    "17, true,  6000",
+    "18, true,  10000",
+    "64, true,  10000",
+    "65, true,  8000",
+    "66, true,  8000"
+})
+void ticketPriceMatchesAgeAndMembershipStatus(
+        int age, boolean active, long expectedPenny) {
+
+    Membership membership = new Membership("member1");
+    membership.setActiveStatus(active);
+
+    TicketPriceCalculator ticketCalculator =
+            new TicketPriceCalculator();
+
+    Money basePrice = ticketCalculator.calculateBasePrice(age);
+
+    MovieScreening screening = new MovieScreening(
+            new Movie("Test Movie", 120, AgeRequirement.AGE_0),
+            LocalDateTime.of(2026, 12, 18, 18, 0),
+            new Theater("Harald", 8, 38)
+    );
+
+    Ticket ticket = new Ticket(
+            "t1",
+            basePrice,
+            new Seat('A', 1),
+            screening
+    );
+
+    MembershipDiscountCalculator discountCalculator =
+            new MembershipDiscountCalculator();
+
+    Money finalPrice =
+            discountCalculator.calculatePrice(ticket, membership);
+
+    assertEquals(expectedPenny, finalPrice.getPenny());
+}
+
 }
