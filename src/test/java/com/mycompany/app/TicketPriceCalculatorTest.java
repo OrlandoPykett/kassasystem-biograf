@@ -78,5 +78,24 @@ public class TicketPriceCalculatorTest {
         assertEquals(expectedPenny, price.getPenny());
     }
 
+    @Test 
+    void activeMembershipGives20KronorDiscount(){
+        Membership membership = new Membership("member1");
+        TicketPriceCalculator calculator = new TicketPriceCalculator();
+        Money price = calculator.calculatePrice(18, membership.isActive());
+
+        assertEquals(10000L, price.getPenny());
+    }
+
+       @Test 
+    void inactiveMembershipGivesNoDiscount(){
+        Membership membership = new Membership("member1");
+        membership.setActiveStatus(false);
+        TicketPriceCalculator calculator = new TicketPriceCalculator();
+        Money price = calculator.calculatePrice(18, membership.isActive());
+
+        assertEquals(12000L, price.getPenny());
+    }
+
     
 }
