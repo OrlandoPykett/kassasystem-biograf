@@ -5,8 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import com.mycompany.app.items.AgeRequirement;
 import com.mycompany.app.items.Beverage;
 import com.mycompany.app.items.BeverageSize;
+import com.mycompany.app.items.Movie;
+import com.mycompany.app.items.MovieScreening;
+import com.mycompany.app.items.Seat;
+import com.mycompany.app.items.Theater;
+import com.mycompany.app.items.Ticket;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -105,6 +113,41 @@ void discountedFoodPriceNeverFallsBelowZero(
     Money price = calculator.calculatePrice(food, membership);
 
     assertEquals(expectedPenny, price.getPenny());
+}
+
+@Test
+void adultTicketGetsMembershipDiscountOnceFromBasePrice() {
+    Membership membership = new Membership("member1");
+
+    TicketPriceCalculator ticketCalculator =
+            new TicketPriceCalculator();
+
+    Money basePrice = ticketCalculator.calculateBasePrice(18);
+
+    Movie movie = new Movie("Test Movie", 120, AgeRequirement.AGE_0);
+    Theater theater = new Theater("Harald", 8, 38);
+
+    MovieScreening screening = new MovieScreening(
+            movie,
+            LocalDateTime.of(2026, 12, 18, 18, 0),
+            theater
+    );
+
+    Ticket ticket = new Ticket(
+            "t1",
+            basePrice,
+            new Seat('A', 1),
+            screening
+    );
+
+    MembershipDiscountCalculator discountCalculator =
+            new MembershipDiscountCalculator();
+
+    Money finalPrice =
+            discountCalculator.calculatePrice(ticket, membership);
+
+    assertEquals(12000L, ticket.getPrice().getPenny());
+    assertEquals(10000L, finalPrice.getPenny());
 }
 
 }
