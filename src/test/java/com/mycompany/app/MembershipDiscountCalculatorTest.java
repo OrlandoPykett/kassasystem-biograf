@@ -62,4 +62,21 @@ void activeMemberGetsNoDiscountOnAlcohol() {
     assertEquals(6000L, price.getPenny());
 }
 
+@Test
+void discountCannotMakePriceNegative() {
+    Membership membership = new Membership("member1");
+    Food food = new Food(
+            "f1",
+            Money.ofPenny(1500),
+            "snack"
+    );
+
+    MembershipDiscountCalculator calculator =
+            new MembershipDiscountCalculator();
+
+    Money price = calculator.calculatePrice(food, membership);
+
+    assertEquals(0L, price.getPenny());
+}
+
 }
