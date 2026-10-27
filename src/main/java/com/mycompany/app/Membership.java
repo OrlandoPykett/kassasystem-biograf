@@ -6,14 +6,15 @@ public class Membership {
     private final String id;
     private LocalDateTime memberSince;
     private MembershipTier membershipTier;
-    private Point point = Point.getZeroPoint();
+    private boolean active;
+    private Point point;
 
     public Membership(String id) {
-        this(id, LocalDateTime.now(), MembershipTier.REGULAR);
+        this(id, LocalDateTime.now(), MembershipTier.STANDARD);
     }
 
     public Membership(String id, LocalDateTime memberSince) {
-        this(id, memberSince, MembershipTier.REGULAR);
+        this(id, memberSince, MembershipTier.STANDARD);
     }
 
     public Membership(String id, MembershipTier membershipTier) {
@@ -24,6 +25,8 @@ public class Membership {
         this.id = id;
         this.memberSince = memberSince;
         this.membershipTier = membershipTier;
+        active = true;
+        point = Point.zeroPoint();
     }
 
     public String getId() {
@@ -40,6 +43,14 @@ public class Membership {
 
     public Point getPoint() {
         return point;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActiveStatus(boolean status) {
+        active = status;
     }
 
     public void updateMembershipTier(MembershipTier membershipTier) {

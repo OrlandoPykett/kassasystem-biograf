@@ -2,7 +2,11 @@ package com.mycompany.app;
 
 public record Point(int points) {
     private static final int MAX_POINTS = 100;
-
+    
+    public static Point zeroPoint() {
+        return new Point(0);
+    }
+    
     public Point addPoints(int points) {
         if (points < 0) {
             throw new IllegalArgumentException("Points to be added cannot be negative");
@@ -12,10 +16,6 @@ public record Point(int points) {
         }
 
         return new Point(Math.addExact(this.points, points));
-    }
-
-    public static Point getZeroPoint() {
-        return new Point(0);
     }
 
     public Point addPoints(Point point) {
