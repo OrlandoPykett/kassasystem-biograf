@@ -21,4 +21,23 @@ class MembershipDiscountCalculatorTest {
 
         assertEquals(4000L, price.getPenny());
     }
+
+    @Test
+    void inactiveMemberGetsNoDiscountOnFood() {
+    Membership membership = new Membership("member1");
+    membership.setActiveStatus(false);
+
+    Food food = new Food(
+            "f1",
+            Money.ofPenny(6000),
+            "popcorn"
+    );
+
+    MembershipDiscountCalculator calculator =
+            new MembershipDiscountCalculator();
+
+    Money price = calculator.calculatePrice(food, membership);
+
+    assertEquals(6000L, price.getPenny());
+}
 }
