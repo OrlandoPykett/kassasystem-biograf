@@ -2,6 +2,9 @@ package com.mycompany.app;
 
 import com.mycompany.app.items.Food;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 import com.mycompany.app.items.Beverage;
 import com.mycompany.app.items.BeverageSize;
 
@@ -77,6 +80,31 @@ void discountCannotMakePriceNegative() {
     Money price = calculator.calculatePrice(food, membership);
 
     assertEquals(0L, price.getPenny());
+}
+
+@ParameterizedTest
+@CsvSource({
+    "0,    0",
+    "1999, 0",
+    "2000, 0",
+    "2001, 1"
+})
+void discountedFoodPriceNeverFallsBelowZero(
+        long originalPenny, long expectedPenny) {
+
+    Membership membership = new Membership("member1");
+    Food food = new Food(
+            "f1",
+            Money.ofPenny(originalPenny),
+            "snack"
+    );
+
+    MembershipDiscountCalculator calculator =
+            new MembershipDiscountCalculator();
+
+    Money price = calculator.calculatePrice(food, membership);
+
+    assertEquals(expectedPenny, price.getPenny());
 }
 
 }
