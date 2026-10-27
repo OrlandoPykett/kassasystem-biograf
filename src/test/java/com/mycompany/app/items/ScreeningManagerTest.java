@@ -83,10 +83,12 @@ public class ScreeningManagerTest {
 
         Movie avengers = new Movie("Avengers", 120, AgeRequirement.AGE_0);
         Movie endgame = new Movie("Endgame", 180, AgeRequirement.AGE_0);
-        Theater theater = new Theater("Harald", 25, 60);
+        Theater theater1 = new Theater("Harald", 25, 60);
+        Theater theater2 = new Theater("Astrit", 25, 60);
 
-        MovieScreening screening1 = new MovieScreening(avengers, LocalDateTime.of(2026, 10, 20, 14, 0), theater);
-        MovieScreening screening2 = new MovieScreening(endgame, LocalDateTime.of(2026, 10, 20, 14, 0), theater);
+
+        MovieScreening screening1 = new MovieScreening(avengers, LocalDateTime.of(2026, 10, 20, 14, 0), theater1);
+        MovieScreening screening2 = new MovieScreening(endgame, LocalDateTime.of(2026, 10, 20, 14, 0), theater2);
 
         manager.addScreening(screening1);
         boolean result = manager.addScreening(screening2);
