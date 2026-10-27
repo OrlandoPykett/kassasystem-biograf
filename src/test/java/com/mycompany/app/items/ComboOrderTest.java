@@ -137,4 +137,12 @@ public class ComboOrderTest {
 
         return new Item[]{f1, b1, b2, t1, t2};
     }
+
+    @Test
+    void foodItemAtExactly50KronorIsAccepted() {
+    Item[] order = createSampleOrder();
+    order[0] = new Food("f1", Money.ofPenny(5000), "popcorn");
+
+    assertDoesNotThrow(() -> new ComboOrder(order));
+}
 }
