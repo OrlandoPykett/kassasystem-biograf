@@ -49,7 +49,7 @@ public class ComboOrderTest {
         Item[] order = createSampleOrder();
 
         // replace food item with a food item below 50 kr
-        order[1] = new Food("f2", Money.ofPenny(1000), "crisps");
+        order[0] = new Food("f2", Money.ofPenny(1000), "crisps");
 
         assertThrows(IllegalArgumentException.class, () -> {
             new ComboOrder(order);
