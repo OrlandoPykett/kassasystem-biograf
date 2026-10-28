@@ -205,4 +205,30 @@ void inactiveVipMemberGetsNoDiscount() {
     assertEquals(6000L, finalPrice.getPenny());
 }
 
+@ParameterizedTest
+@CsvSource({
+    "STANDARD, 9,  9",
+    "STANDARD, 10, 10",
+    "STANDARD, 11, 10",
+    "PREMIUM,  4,  4",
+    "PREMIUM,  5,  5",
+    "PREMIUM,  6,  5",
+    "VIP,      9,  8",
+    "VIP,      10, 9",
+    "VIP,      11, 9"
+})
+void finalPriceRoundsToNearestPenny(MembershipTier tier,long originalPenny,long expectedPenny) {
+
+    Membership membership = new Membership("member1");
+    membership.updateMembershipTier(tier);
+
+    Food food = new Food("f1",Money.ofPenny(originalPenny),"snack");
+
+    MembershipDiscountCalculator calculator =new MembershipDiscountCalculator();
+
+    Money finalPrice = calculator.calculatePrice(food, membership);
+
+    assertEquals(expectedPenny, finalPrice.getPenny());
+}
+
 }
