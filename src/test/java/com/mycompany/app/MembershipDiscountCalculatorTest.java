@@ -24,11 +24,7 @@ class MembershipDiscountCalculatorTest {
     @Test
     void activeMemberGetsFivePercentDiscountOnFood(){
         Membership membership = new Membership("member1");
-        Food food = new Food(
-                "f1",
-                Money.ofPenny(6000),
-                "popcorn"
-        );
+        Food food = new Food("f1",Money.ofPenny(6000),"popcorn");
 
         MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
         Money price = calculator.calculatePrice(food, membership);
@@ -41,11 +37,7 @@ class MembershipDiscountCalculatorTest {
         Membership membership = new Membership("member1");
         membership.setActiveStatus(false);
 
-        Food food = new Food(
-                "f1",
-                Money.ofPenny(6000),
-                "popcorn"
-    );
+        Food food = new Food("f1",Money.ofPenny(6000),"popcorn");
 
     MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
     Money price = calculator.calculatePrice(food, membership);
@@ -59,8 +51,7 @@ void activeMemberGetsNoDiscountOnAlcohol() {
 
         BeverageDispenser dispenser = new BeverageDispenser("beer", 10000);
 
-        Beverage beer = new Beverage("b1",Money.ofPenny(6000),"beer",BeverageSize.MEDIUM,true,dispenser
-);
+        Beverage beer = new Beverage("b1",Money.ofPenny(6000),"beer",BeverageSize.MEDIUM,true,dispenser);
 
     MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
 
@@ -72,8 +63,7 @@ void activeMemberGetsNoDiscountOnAlcohol() {
 @Test
 void cheapFoodKeepsPositivePriceAfterStandardDiscount() {
     Membership membership = new Membership("member1");
-    Food food = new Food("f1",Money.ofPenny(1500),"snack"
-    );
+    Food food = new Food("f1",Money.ofPenny(1500),"snack");
 
     MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
 
@@ -112,11 +102,9 @@ void adultTicketGetsMembershipDiscountOnceFromBasePrice() {
     Movie movie = new Movie("Test Movie", 120, AgeRequirement.AGE_0);
     Theater theater = new Theater("Harald", 8, 38);
 
-    MovieScreening screening = new MovieScreening( movie, LocalDateTime.of(2026, 12, 18, 18, 0),theater
-    );
+    MovieScreening screening = new MovieScreening( movie, LocalDateTime.of(2026, 12, 18, 18, 0),theater);
 
-    Ticket ticket = new Ticket("t1",basePrice,new Seat('A', 1),screening
-    );
+    Ticket ticket = new Ticket("t1",basePrice,new Seat('A', 1),screening);
 
     MembershipDiscountCalculator discountCalculator =new MembershipDiscountCalculator();
 
@@ -151,11 +139,9 @@ void ticketPriceMatchesAgeAndMembershipStatus(int age, boolean active, long expe
     Money basePrice = ticketCalculator.calculateBasePrice(age);
 
     MovieScreening screening = new MovieScreening(new Movie("Test Movie", 120, AgeRequirement.AGE_0),
-            LocalDateTime.of(2026, 12, 18, 18, 0), new Theater("Harald", 8, 38)
-    );
+            LocalDateTime.of(2026, 12, 18, 18, 0), new Theater("Harald", 8, 38));
 
-    Ticket ticket = new Ticket("t1",basePrice,new Seat('A', 1), screening
-    );
+    Ticket ticket = new Ticket("t1",basePrice,new Seat('A', 1), screening);
 
     MembershipDiscountCalculator discountCalculator = new MembershipDiscountCalculator();
 
@@ -181,8 +167,7 @@ void activePremiumMemberGetsTenPercentDiscountOnFood() {
     Membership membership = new Membership("member1");
     membership.updateMembershipTier(MembershipTier.PREMIUM);
 
-    Food food = new Food("f1",Money.ofPenny(6000),"popcorn"
-    );
+    Food food = new Food("f1",Money.ofPenny(6000),"popcorn");
 
     MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
 
@@ -196,14 +181,28 @@ void activeVipMemberGetsFifteenPercentDiscountOnFood() {
     Membership membership = new Membership("member1");
     membership.updateMembershipTier(MembershipTier.VIP);
 
-    Food food = new Food("f1",Money.ofPenny(6000),"popcorn"
-    );
+    Food food = new Food("f1",Money.ofPenny(6000),"popcorn");
 
     MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
 
     Money finalPrice = calculator.calculatePrice(food, membership);
 
     assertEquals(5100L, finalPrice.getPenny());
+}
+
+@Test
+void inactiveVipMemberGetsNoDiscount() {
+    Membership membership = new Membership("member1");
+    membership.updateMembershipTier(MembershipTier.VIP);
+    membership.setActiveStatus(false);
+
+    Food food = new Food("f1",Money.ofPenny(6000),"popcorn");
+
+    MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
+
+    Money finalPrice = calculator.calculatePrice(food, membership);
+
+    assertEquals(6000L, finalPrice.getPenny());
 }
 
 }
