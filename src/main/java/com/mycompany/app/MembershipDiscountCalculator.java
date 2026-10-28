@@ -18,10 +18,14 @@ public class MembershipDiscountCalculator {
             return item.getPrice();
         }
 
+        // STANDARD får 5 procent rabatt och betalar därför 95 procent.
+        // Aktiva PREMIUM- och VIP-medlemmar får högre rabatt.
         int payablePercent = 95;
 
         if (membership.getMembershipTier() == MembershipTier.PREMIUM) {
             payablePercent = 90;
+        } else if (membership.getMembershipTier() == MembershipTier.VIP) {
+            payablePercent = 85;
         }
 
         long product = Math.multiplyExact(
