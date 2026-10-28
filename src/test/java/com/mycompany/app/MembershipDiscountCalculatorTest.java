@@ -231,4 +231,15 @@ void finalPriceRoundsToNearestPenny(MembershipTier tier,long originalPenny,long 
     assertEquals(expectedPenny, finalPrice.getPenny());
 }
 
+@Test
+void customerWithoutMembershipPaysOriginalPrice() {
+    Food food = new Food("f1",Money.ofPenny(6000),"popcorn");
+
+    MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
+
+    Money finalPrice = calculator.calculatePrice(food, null);
+
+    assertEquals(6000L, finalPrice.getPenny());
+}
+
 }
