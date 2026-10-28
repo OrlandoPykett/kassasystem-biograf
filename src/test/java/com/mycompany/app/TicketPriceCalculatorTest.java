@@ -111,4 +111,15 @@ void adultTicketUsesSelectedMoviesBasePrice() {
 
     assertEquals(15000L, price.getPenny());
 }
+
+@Test
+void movieLongerThan150MinutesAdds20Kronor() {
+    Movie movie = new Movie("Long Movie",151,AgeRequirement.AGE_0,Money.ofPenny(15000));
+
+    TicketPriceCalculator calculator = new TicketPriceCalculator();
+
+    Money price = calculator.calculateBasePrice(18, movie);
+
+    assertEquals(17000L, price.getPenny());
+}
 }
