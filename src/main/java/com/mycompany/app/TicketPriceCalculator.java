@@ -30,6 +30,10 @@ public Money calculateBasePrice(int age, Movie movie) {
     if (movie.getDurationMin() > 150) {
         price = price.add(Money.ofPenny(2000));
     }
+    // Barn under 18 år får 40 kr avdrag efter eventuellt längdtillägg.
+    if (age < 18) {
+        price = price.subtract(Money.ofPenny(4000));
+    }
 
     return price;
 }
