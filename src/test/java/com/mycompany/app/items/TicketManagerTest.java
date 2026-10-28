@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +17,7 @@ public class TicketManagerTest {
 
     @BeforeEach
     void setUp() {
-        ticketManager = new TicketManager(new AgeControl());
+        ticketManager = new TicketManager();
 
         Movie movie = new Movie(
                 "Batman Begins",
@@ -44,14 +43,14 @@ public class TicketManagerTest {
 
         boolean result = ticketManager.purchaseTicket(ticket, 14);
 
-        assertAll(
-                () -> assertFalse(result, "Purchase should be rejected."),
-                () -> assertEquals(
-                        0,
-                        ticketManager.getTickets().size(),
-                        "A rejected purchase should not register a ticket."
-                )
-        );
+        assertAll( () -> {
+            assertFalse(result, "Purchase should be rejected.");
+            assertEquals(
+                    0,
+                    ticketManager.getTickets().size(),
+                    "A rejected purchase should not register a ticket."
+            );
+        });
     }
 
     @Test
@@ -65,15 +64,15 @@ public class TicketManagerTest {
 
         boolean result = ticketManager.purchaseTicket(ticket, 15);
 
-        assertAll(
-                () -> assertTrue(result, "Purchase should be accepted"),
-                () -> assertEquals(1, ticketManager.getTickets().size()),
-                () -> assertSame(
-                        ticket,
-                        ticketManager.getTickets().getFirst(),
-                        "Purchased ticket should be registered"
-                )
-        );
+        assertAll( () -> {
+            assertTrue(result, "Purchase should be accepted");
+            assertEquals(1, ticketManager.getTickets().size());
+            assertSame(
+                    ticket,
+                    ticketManager.getTickets().getFirst(),
+                    "Purchased ticket should be registered"
+            );
+        });
     }
 
     @Test
@@ -95,12 +94,12 @@ public class TicketManagerTest {
         boolean firstResult = ticketManager.purchaseTicket(ticket1, 18);
         boolean secondResult = ticketManager.purchaseTicket(ticket2, 18);
 
-        assertAll(
-                () -> assertTrue(firstResult),
-                () -> assertFalse(secondResult),
-                () -> assertEquals(1, ticketManager.getTickets().size()),
-                () -> assertSame(ticket1, ticketManager.getTickets().getFirst())
-        );
+        assertAll( () -> {
+            assertTrue(firstResult);
+            assertFalse(secondResult);
+            assertEquals(1, ticketManager.getTickets().size());
+            assertSame(ticket1, ticketManager.getTickets().getFirst());
+        });
     }
 
     @Test
@@ -138,13 +137,12 @@ public class TicketManagerTest {
                 new int[]{25, 16}
         );
 
-        assertAll(
-                () -> assertTrue(result),
-                () -> assertEquals(2, ticketManager.getTickets().size()),
-                () -> assertTrue(ticketManager.getTickets().containsAll(
-                        Arrays.asList(tickets)
-                ))
-        );
+        assertAll( () -> {
+            assertTrue(result);
+            assertEquals(2, ticketManager.getTickets().size());
+            assertTrue(ticketManager.getTickets().containsAll(
+                    Arrays.asList(tickets)));
+        });
     }
 
     @Test
@@ -161,10 +159,10 @@ public class TicketManagerTest {
                 new int[]{25, 17}
         );
 
-        assertAll(
-                () -> assertFalse(result),
-                () -> assertTrue(ticketManager.getTickets().isEmpty())
-        );
+        assertAll( () -> {
+            assertFalse(result);
+            assertTrue(ticketManager.getTickets().isEmpty());
+        });
     }
 
     @Test
@@ -181,10 +179,10 @@ public class TicketManagerTest {
                 new int[]{14, 12}
         );
 
-        assertAll(
-                () -> assertFalse(result),
-                () -> assertTrue(ticketManager.getTickets().isEmpty())
-        );
+        assertAll( () -> {
+            assertFalse(result);
+            assertTrue(ticketManager.getTickets().isEmpty());
+        });
     }
 
     @Test
@@ -202,61 +200,113 @@ public class TicketManagerTest {
                 new int[]{35, 14, 12}
         );
 
-        assertAll(
-                () -> assertTrue(result),
-                () -> assertEquals(3, ticketManager.getTickets().size())
+        assertAll( () -> {
+            assertTrue(result);
+            assertEquals(3, ticketManager.getTickets().size());
+        });
+    }
+
+//    @Test
+//    void rejectsEntireBookingWhenOneSeatIsOccupied() {
+//        Ticket[] firstOrder = createTickets(
+//                new Seat('B', 1),
+//                new Seat('B', 2)
+//        );
+//
+//        assertTrue(ticketManager.purchaseTickets(
+//                firstOrder,
+//                new int[]{23, 23}
+//        ));
+//
+//        Ticket[] secondOrder = createTickets(
+//                new Seat('B', 3),
+//                new Seat('B', 2)
+//        );
+//
+//        boolean result = ticketManager.purchaseTickets(
+//                secondOrder,
+//                new int[]{23, 23}
+//        );
+//
+//        assertAll( () -> {
+//            assertFalse(result);
+//            assertEquals(2, ticketManager.getTickets().size());
+//            assertTrue(
+//                    ticketManager.getTickets().stream()
+//                            .noneMatch(ticket -> ticket == secondOrder[0]));
+//        });
+//    }
+
+    @Test
+    void rejectsGroupBookingForTheSameSeat() {
+        Ticket[] firstOrder = createTickets(
+                new Seat('B', 1),
+                new Seat('B', 2),
+                new Seat('B', 3),
+                new Seat('B', 4),
+                new Seat('B', 5),
+                new Seat('B', 2)
         );
+
+        boolean result =ticketManager.purchaseTickets(
+                firstOrder,
+                new int[]{23, 23, 23, 23, 23, 23}
+        );
+
+        assertAll( () -> {
+            assertFalse(result);
+            assertTrue(ticketManager.getTickets().isEmpty());
+        });
     }
 
     @Test
-void rejectsEntireBookingWhenOneSeatIsOccupied() {
-    // Första beställningen bokar A1 och A2.
-    Ticket[] firstOrder = createTickets(
-            new Seat('A', 1),
-            new Seat('A', 2)
-    );
+    void rejectsEntireBookingWhenOneSeatIsOccupied() {
+        // Första beställningen bokar A1 och A2.
+        Ticket[] firstOrder = createTickets(
+                new Seat('A', 1),
+                new Seat('A', 2)
+        );
 
-    assertTrue(ticketManager.purchaseTickets(
-            firstOrder,
-            new int[]{25, 25}
-    ));
+        assertTrue(ticketManager.purchaseTickets(
+                firstOrder,
+                new int[]{25, 25}
+        ));
 
-    // Nya biljetter med egna ID:n.
-    // A3 är ledig, men A2 är redan upptagen.
-    Ticket[] secondOrder = {
-        new Ticket(
-                "t3",
-                Money.ofPenny(1400),
-                new Seat('A', 3),
-                screening
-        ),
-        new Ticket(
-                "t4",
-                Money.ofPenny(1400),
-                new Seat('A', 2),
-                screening
-        )
-    };
-
-    boolean result = ticketManager.purchaseTickets(
-            secondOrder,
-            new int[]{25, 25}
-    );
-
-    assertAll(
-            // Hela andra beställningen ska nekas.
-            () -> assertFalse(result),
-
-            // Bara de två ursprungliga biljetterna ska finnas.
-            () -> assertEquals(2, ticketManager.getTickets().size()),
-
-            // Inte heller biljetten till lediga A3 ska läggas till.
-            () -> assertFalse(
-                    ticketManager.getTickets().contains(secondOrder[0])
+        // Nya biljetter med egna ID:n.
+        // A3 är ledig, men A2 är redan upptagen.
+        Ticket[] secondOrder = {
+            new Ticket(
+                    "t3",
+                    Money.ofPenny(1400),
+                    new Seat('A', 3),
+                    screening
+            ),
+            new Ticket(
+                    "t4",
+                    Money.ofPenny(1400),
+                    new Seat('A', 2),
+                    screening
             )
-    );
-}
+        };
 
+        boolean result = ticketManager.purchaseTickets(
+                secondOrder,
+                new int[]{25, 25}
+        );
+
+        assertAll(
+                // Hela andra beställningen ska nekas.
+                () -> assertFalse(result),
+
+                // Bara de två ursprungliga biljetterna ska finnas.
+                () -> assertEquals(2, ticketManager.getTickets().size()),
+
+                // Inte heller biljetten till lediga A3 ska läggas till.
+                () -> assertFalse(
+                        ticketManager.getTickets().contains(secondOrder[0])
+                )
+        );
+    }
 
     @Test
     void rejectsBookingContainingTicketsForDifferentMovies() {
@@ -287,16 +337,41 @@ void rejectsEntireBookingWhenOneSeatIsOccupied() {
                 new int[]{25, 25}
         );
 
-        assertAll(
-                () -> assertFalse(result),
-                () -> assertTrue(ticketManager.getTickets().isEmpty())
+        assertAll( () -> {
+            assertFalse(result);
+            assertTrue(ticketManager.getTickets().isEmpty());
+        });
+    }
+
+    @Test
+    void rejectsBookingWithUnequalNumberOfTicketsAndAges() {
+        Ticket[] tickets = createTickets(
+                new Seat('B', 4),
+                new Seat('B', 5)
+        );
+
+        int[] ages = new int[]{18};
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> ticketManager.purchaseTickets(tickets, ages)
+        );
+    }
+
+    @Test
+    void rejectEmptyBooking() {
+        Ticket[] tickets = new Ticket[0];
+        int[] ages = new int[0];
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> ticketManager.purchaseTickets(tickets, ages)
         );
     }
 
 
-
     private MovieScreening createScreening(AgeRequirement requirement) {
-        Movie movie = new Movie("Test Movie", 120, requirement);
+        Movie movie = new Movie("Movie", 120, requirement);
 
         return new MovieScreening(
                 movie,

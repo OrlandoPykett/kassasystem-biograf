@@ -8,6 +8,8 @@ import java.time.format.FormatStyle;
 import java.util.Arrays;
 import java.util.Locale;
 
+import com.mycompany.app.membership.Membership;
+import com.mycompany.app.membership.MembershipTier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -19,7 +21,7 @@ public class MembershipTest {
     }
 
     @Test
-    public void id_is_set() {
+    public void id_is_set_correctly() {
         Membership m = getDefaultMembership();
         assertTrue(!(m.getId().isBlank()));
     }
@@ -34,23 +36,23 @@ public class MembershipTest {
 
         Membership m1 = new Membership("ID") {
             @Override
-            public LocalDateTime getMemberSince() {
+            public LocalDateTime getMembershipTierSince() {
                 return creationTime;
             }
         };
 
         Membership m2 = new Membership("ID", creationTime);
         
-        assertEquals("2000-01-31 12:50", formatter.format(m1.getMemberSince()));
-        assertEquals("2000-01-31 12:50", formatter.format(m2.getMemberSince()));
+        assertEquals("2000-01-31 12:50", formatter.format(m1.getMembershipTierSince()));
+        assertEquals("2000-01-31 12:50", formatter.format(m2.getMembershipTierSince()));
     }
     
     @Test
-    public void membershipTier_is_set() {
+    public void membershipTier_is_set_correctly() {
         Membership m1 = getDefaultMembership();
         assertTrue(Arrays.asList(MembershipTier.values()).contains(m1.getMembershipTier()));
         
-        Membership m2 = new Membership("ID", MembershipTier.STANDARD);
+        Membership m2 = new Membership("ID", LocalDateTime.now() ,MembershipTier.STANDARD);
         assertTrue(Arrays.asList(MembershipTier.values()).contains(m2.getMembershipTier()));
     }
 
@@ -77,7 +79,7 @@ public class MembershipTest {
     }
 
     @Test
-    public void point_is_initially_set_to_zero() {
+    public void point_is_initially_zero() {
         Membership m = getDefaultMembership();
         assertEquals(0, m.getPoint().points());
     }

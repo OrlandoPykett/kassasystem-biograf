@@ -1,6 +1,8 @@
 package com.mycompany.app.items;
 
 import com.mycompany.app.Money;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -9,29 +11,40 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ItemTest {
 
+    private Food food;
+    private Beverage drink;
+
+    @BeforeEach
+    void setUp() {
+        food = new Food("f1", Money.ofPenny(5000), "food");
+        drink = new Beverage(
+                "b1", Money.ofPenny(2300),
+                "drink", BeverageSize.MEDIUM,
+                false, new BeverageDispenser("Drink", 1000));
+    }
+
     @Test
     void itemsStoreCorrectPrice() {
-        Item food = new Food("f1", Money.ofPenny(5000), "food");
-        Item drink = new Beverage("b1", Money.ofPenny(2300), "drink", BeverageSize.MEDIUM, false);
-
         assertEquals(Money.ofPenny(5000), food.getPrice());
         assertEquals(Money.ofPenny(2300), drink.getPrice());
     }
 
     @Test
     void pricesConvertCorrectlyToCrown() {
-        Item food1 = new Food("f1", Money.ofPenny(5015), "food");
-        Item drink = new Beverage("b1", Money.ofPenny(2399), "drink", BeverageSize.MEDIUM, false);
-        Item food2 = new Food("f1", Money.ofPenny(2550), "food");
+        Item item1 = new Food("f1", Money.ofPenny(5015), "food");
+        Item item2 = new Food("f1", Money.ofPenny(2550), "food");
+        Item item3 = new Food("f3", Money.ofPenny(2399), "food");
 
-        assertEquals(5015, food1.getPrice().getPenny());
-        assertEquals(50, food1.getPrice().getCrown());
+        assertAll( () -> {
+            assertEquals(5015, food.getPrice().getPenny());
+            assertEquals(50, item1.getPrice().getCrown());
 
-        assertEquals(2399, drink.getPrice().getPenny());
-        assertEquals(23, drink.getPrice().getCrown());
+            assertEquals(2550, item2.getPrice().getPenny());
+            assertEquals(26, item2.getPrice().getCrown());
 
-        assertEquals(2550, food2.getPrice().getPenny());
-        assertEquals(25, food2.getPrice().getCrown());
+            assertEquals(2399, item3.getPrice().getPenny());
+            assertEquals(24, item3.getPrice().getCrown());
+        });
     }
 
     @Test
@@ -42,9 +55,6 @@ public class ItemTest {
 
     @Test
     void itemsHaveCorrectProperties() {
-        Food food = new Food("f1", Money.ofPenny(500), "food");
-        Beverage drink = new Beverage("b1", Money.ofPenny(500), "drink", BeverageSize.MEDIUM, false);
-
         Movie movie = new Movie("move", 120, AgeRequirement.AGE_0);
         Theater theater = new Theater("Harald", 25, 60);
         Seat seat = new Seat('D', 10);

@@ -9,10 +9,8 @@ import java.util.List;
 public class TicketManager {
 
     private final List<Ticket> tickets = new ArrayList<>();
-    private final AgeControl ageControl;
 
-    public TicketManager(AgeControl ageControl) {
-        this.ageControl = ageControl;
+    public TicketManager() {
     }
 
     public List<Ticket> getTickets() {
@@ -50,6 +48,20 @@ public class TicketManager {
         All tickets must be for the same screening
          */
 
+        // Reject empty orders
+        if (ticketOrder.length == 0) {
+            throw new IllegalArgumentException(
+                    "Ticket purchase must include tickets"
+            );
+        }
+
+        // Number of tickets must equal to number of ages
+        if (ticketOrder.length != ages.length ) {
+            throw new IllegalArgumentException(
+                    "Number of tickets must match number of ages"
+            );
+        }
+
         Movie movie = ticketOrder[0].getMovie();
         MovieScreening screening = ticketOrder[0].getScreening();
         // Reject order if all ticket screenings are not the same
@@ -79,12 +91,24 @@ public class TicketManager {
             else if (!someoneIsAdult) return false;
         }
 
-        for(Ticket ticket : ticketOrder) {
+        // Ensure seats are empty
+        for(int i = 0; i < ticketOrder.length; i++) {
+            // Seat is not occupied by other order
             if (!seatIsEmpty(
-                    ticket.getScreening(),
-                    ticket.getSeat()
+                    ticketOrder[i].getScreening(),
+                    ticketOrder[i].getSeat()
             )) {
                 return false;
+            }
+            // Seat is not a duplicate in current order
+            for (int n = i + 1; n < ticketOrder.length; n++) {
+                if (
+                        ticketOrder[i].getSeat().equals(
+                                ticketOrder[n].getSeat()
+                        )
+                ) {
+                    return false;
+                }
             }
         }
 
