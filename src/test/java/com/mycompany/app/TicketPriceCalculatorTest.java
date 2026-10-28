@@ -173,4 +173,22 @@ void childTicketPriceCannotFallBelow40Kronor() {
     assertEquals(4000L, price.getPenny());
 }
 
+@ParameterizedTest
+@CsvSource({
+    "7999, 4000",
+    "8000, 4000",
+    "8001, 4001"
+})
+void childMinimumPriceBoundary(
+        long moviePricePenny, long expectedPenny) {
+
+    Movie movie = new Movie("Test Movie",120,AgeRequirement.AGE_0,Money.ofPenny(moviePricePenny));
+
+    TicketPriceCalculator calculator = new TicketPriceCalculator();
+
+    Money price = calculator.calculateBasePrice(17, movie);
+
+    assertEquals(expectedPenny, price.getPenny());
+}
+
 }
