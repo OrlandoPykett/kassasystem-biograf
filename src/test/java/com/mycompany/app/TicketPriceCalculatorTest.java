@@ -122,4 +122,22 @@ void movieLongerThan150MinutesAdds20Kronor() {
 
     assertEquals(17000L, price.getPenny());
 }
+
+@ParameterizedTest
+@CsvSource({
+    "149, 15000",
+    "150, 15000",
+    "151, 17000"
+})
+void durationSurchargeStartsAbove150Minutes(
+    int durationMin, long expectedPenny) {
+
+    Movie movie = new Movie("Test Movie",durationMin,AgeRequirement.AGE_0,Money.ofPenny(15000));
+
+    TicketPriceCalculator calculator = new TicketPriceCalculator();
+
+    Money price = calculator.calculateBasePrice(18, movie);
+
+    assertEquals(expectedPenny, price.getPenny());
+}
 }
