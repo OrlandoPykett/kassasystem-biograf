@@ -10,6 +10,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import com.mycompany.app.items.Beverage;
 import com.mycompany.app.items.BeverageDispenser;
 import com.mycompany.app.items.BeverageSize;
+import com.mycompany.app.items.Movie;
+import com.mycompany.app.items.AgeRequirement;
 
 public class TicketPriceCalculatorTest {
 
@@ -97,5 +99,16 @@ public class TicketPriceCalculatorTest {
 
     assertEquals(expectedPenny, price.getPenny());
     assertEquals(originalPenny, beverage.getPrice().getPenny());
+}
+
+@Test
+void adultTicketUsesSelectedMoviesBasePrice() {
+    Movie movie = new Movie("Test Movie",120,AgeRequirement.AGE_0,Money.ofPenny(15000));
+
+    TicketPriceCalculator calculator = new TicketPriceCalculator();
+
+    Money price = calculator.calculateBasePrice(18, movie);
+
+    assertEquals(15000L, price.getPenny());
 }
 }

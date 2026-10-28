@@ -1,4 +1,5 @@
 package com.mycompany.app;
+import com.mycompany.app.items.Movie;
 
 public class TicketPriceCalculator {
 
@@ -16,6 +17,11 @@ public class TicketPriceCalculator {
         }
     }
 
+// Tillfällig implementation för att kunna köra det nya testet.
+// Filmens pris används i nästa steg.
+    public Money calculateBasePrice(int age, Movie movie) {
+        return calculateBasePrice(age);
+    }
     
 }
 
