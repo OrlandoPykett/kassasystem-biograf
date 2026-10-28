@@ -10,18 +10,14 @@ public class Membership {
     private Point point;
 
     public Membership(String id) {
-        this(id, LocalDateTime.now(), MembershipTier.STANDARD);
+        this(id, LocalDateTime.now(), MembershipTier.getDefault());
     }
 
     public Membership(String id, LocalDateTime memberSince) {
-        this(id, memberSince, MembershipTier.STANDARD);
+        this(id, memberSince, MembershipTier.getDefault());
     }
 
-    public Membership(String id, MembershipTier membershipTier) {
-        this(id, LocalDateTime.now(),membershipTier);
-    }
-
-    private Membership(String id, LocalDateTime membershipTierSince, MembershipTier membershipTier) {
+    public Membership(String id, LocalDateTime membershipTierSince, MembershipTier membershipTier) {
         this.id = id;
         this.membershipTierSince = membershipTierSince;
         this.membershipTier = membershipTier;

@@ -50,7 +50,7 @@ public class MembershipTest {
         Membership m1 = getDefaultMembership();
         assertTrue(Arrays.asList(MembershipTier.values()).contains(m1.getMembershipTier()));
         
-        Membership m2 = new Membership("ID", MembershipTier.STANDARD);
+        Membership m2 = new Membership("ID", LocalDateTime.now() ,MembershipTier.STANDARD);
         assertTrue(Arrays.asList(MembershipTier.values()).contains(m2.getMembershipTier()));
     }
 
