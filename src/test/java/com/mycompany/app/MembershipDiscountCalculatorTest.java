@@ -191,4 +191,19 @@ void activePremiumMemberGetsTenPercentDiscountOnFood() {
     assertEquals(5400L, finalPrice.getPenny());
 }
 
+@Test
+void activeVipMemberGetsFifteenPercentDiscountOnFood() {
+    Membership membership = new Membership("member1");
+    membership.updateMembershipTier(MembershipTier.VIP);
+
+    Food food = new Food("f1",Money.ofPenny(6000),"popcorn"
+    );
+
+    MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
+
+    Money finalPrice = calculator.calculatePrice(food, membership);
+
+    assertEquals(5100L, finalPrice.getPenny());
+}
+
 }
