@@ -8,7 +8,7 @@ public class Customer implements Comparable<Customer> {
     private final LocalDateTime customerSince;
     private Membership membership;
 
-    public Customer(String id, String name, Membership membership) {
+    public Customer(String id, String name, Membership membership, LocalDateTime customerSince) {
         
         if (id.isBlank() || id.contains(" ") || name.isBlank()) {
             throw new IllegalArgumentException();
@@ -16,7 +16,7 @@ public class Customer implements Comparable<Customer> {
 
         this.id = id;
         this.name = name;
-        customerSince = LocalDateTime.now();
+        this.customerSince = customerSince;
         this.membership = membership;
     }
 
