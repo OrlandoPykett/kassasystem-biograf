@@ -18,6 +18,8 @@ public abstract class Item {
         this.price = price;
     }
 
+    public abstract String getName();
+
     public String getId() {
         return id;
     }

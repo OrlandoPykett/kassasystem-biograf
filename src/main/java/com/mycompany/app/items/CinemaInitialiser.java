@@ -4,6 +4,7 @@ import com.mycompany.app.Money;
 import com.mycompany.app.StockManager;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CinemaInitialiser {
 
@@ -38,46 +39,35 @@ public class CinemaInitialiser {
     Movie m4 = new Movie("Parasite", 132, AgeRequirement.AGE_15);
     Movie m5 = new Movie("The Lion King", 88, AgeRequirement.AGE_0);
 
+    public List<Item> getItems() { return List.of(popcorn, baconchips, nachos, b1s, b1m,b1l,b2s,b2m,b2l,b3,b4,b5); }
 
-    public void populateInventory() {
-
-        StockManager manager = new StockManager();
-
-        manager.addStock(popcorn, 100);
-        manager.addStock(baconchips, 100);
-        manager.addStock(nachos, 100);
-
-        manager.addStock(b1s, 100);
-        manager.addStock(b1m, 100);
-        manager.addStock(b1l, 100);
-        manager.addStock(b2s, 100);
-        manager.addStock(b2m, 100);
-        manager.addStock(b2l, 100);
-        manager.addStock(b3, 100);
-        manager.addStock(b4, 100);
-        manager.addStock(b5, 100);
+    public void populateInventory(StockManager manager) {
+        for (Item item : getItems()) {
+            manager.addStock(item, 100);
+        }
     }
 
-    public void populateMovies() {
+    public List<MovieScreening> populateMovies() {
         Theater t1 = new Theater("Ragner", 10, 30);
         Theater t2 = new Theater("Torsten", 5, 6);
         Theater t3 = new Theater("Linda", 30, 50);
         Theater t4 = new Theater("Harald", 25, 60);
 
-        MovieScreening s1m1 = new MovieScreening(m1, LocalDateTime.of(2026, 12, 1, 18, 0), t1);
-        MovieScreening s2m1 = new MovieScreening(m1, LocalDateTime.of(2026, 12, 3, 20, 0), t1);
-        MovieScreening s3m1 = new MovieScreening(m1, LocalDateTime.of(2026, 12, 5, 18, 0), t2);
-        MovieScreening s4m1 = new MovieScreening(m1, LocalDateTime.of(2026, 12, 7, 18, 30), t1);
+        return List.of(
+                new MovieScreening(m1, LocalDateTime.of(2026, 12, 1, 18, 0), t1),
+                new MovieScreening(m1, LocalDateTime.of(2026, 12, 3, 20, 0), t1),
+                new MovieScreening(m1, LocalDateTime.of(2026, 12, 5, 18, 0), t2),
+                new MovieScreening(m1, LocalDateTime.of(2026, 12, 7, 18, 30), t1),
 
-        MovieScreening s1m2 = new MovieScreening(m2, LocalDateTime.of(2026, 12, 1, 19, 45), t2);
-        MovieScreening s2m2 = new MovieScreening(m2, LocalDateTime.of(2026, 12, 2, 20, 0), t2);
-        MovieScreening s3m2 = new MovieScreening(m2, LocalDateTime.of(2026, 12, 3, 19, 30), t2);
-        MovieScreening s4m2 = new MovieScreening(m2, LocalDateTime.of(2026, 12, 6, 15, 0), t1);
+                new MovieScreening(m2, LocalDateTime.of(2026, 12, 1, 19, 45), t2),
+                new MovieScreening(m2, LocalDateTime.of(2026, 12, 2, 20, 0), t2),
+                new MovieScreening(m2, LocalDateTime.of(2026, 12, 3, 19, 30), t2),
+                new MovieScreening(m2, LocalDateTime.of(2026, 12, 6, 15, 0), t1),
 
-        MovieScreening s1m3 = new MovieScreening(m3, LocalDateTime.of(2026, 12, 4, 17, 45), t3);
+                new MovieScreening(m3, LocalDateTime.of(2026, 12, 4, 17, 45), t3),
 
-        MovieScreening s1m4 = new MovieScreening(m4, LocalDateTime.of(2026, 12, 2, 15, 45), t3);
+                new MovieScreening(m4, LocalDateTime.of(2026, 12, 2, 15, 45), t3),
 
-        MovieScreening s1m5 = new MovieScreening(m5, LocalDateTime.of(2026, 12, 4, 19, 15), t4);
+                new MovieScreening(m5, LocalDateTime.of(2026, 12, 4, 19, 15), t4));
     }
 }

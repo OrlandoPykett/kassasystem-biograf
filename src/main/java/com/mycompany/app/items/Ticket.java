@@ -38,4 +38,9 @@ public class Ticket extends Item {
         return "Movie: %s, Seat: %s, Price: %s"
                 .formatted(screening, seat.toString(), getPrice());
     }
+
+    @Override
+    public String getName() {
+        return screening.getMovie().getTitle();
+    }
 }
