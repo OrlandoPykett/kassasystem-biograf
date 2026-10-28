@@ -12,6 +12,12 @@ import com.mycompany.app.items.BeverageDispenser;
 import com.mycompany.app.items.BeverageSize;
 import com.mycompany.app.items.Movie;
 import com.mycompany.app.items.AgeRequirement;
+import net.jqwik.api.ForAll;
+import net.jqwik.api.Property;
+import net.jqwik.api.constraints.IntRange;
+import net.jqwik.api.constraints.LongRange;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TicketPriceCalculatorTest {
 
@@ -189,6 +195,23 @@ void childMinimumPriceBoundary(
     Money price = calculator.calculateBasePrice(17, movie);
 
     assertEquals(expectedPenny, price.getPenny());
+}
+
+@Property(tries = 1000)
+void ticketPriceRespectsMinimumAndPreservesMoviePrice(
+        @ForAll @IntRange(min = 0, max = 120) int age,
+        @ForAll @IntRange(min = 1, max = 300) int durationMin,
+        @ForAll @LongRange(min = 0, max = 100000) long originalPenny) {
+
+    Movie movie = new Movie("Generated Movie",durationMin, AgeRequirement.AGE_0, Money.ofPenny(originalPenny));
+
+    TicketPriceCalculator calculator = new TicketPriceCalculator();
+
+    Money price = calculator.calculateBasePrice(age, movie);
+
+    assertTrue(price.getPenny() >= 4000,"Ticket price before membership discount must be at least 40 kr");
+
+    assertEquals(originalPenny, movie.getBasePrice().getPenny());
 }
 
 }
