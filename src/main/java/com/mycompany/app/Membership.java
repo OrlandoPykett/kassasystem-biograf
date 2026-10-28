@@ -4,26 +4,22 @@ import java.time.*;
 
 public class Membership {
     private final String id;
-    private LocalDateTime memberSince;
+    private LocalDateTime membershipTierSince;
     private MembershipTier membershipTier;
     private boolean active;
     private Point point;
 
     public Membership(String id) {
-        this(id, LocalDateTime.now(), MembershipTier.STANDARD);
+        this(id, LocalDateTime.now(), MembershipTier.getDefault());
     }
 
     public Membership(String id, LocalDateTime memberSince) {
-        this(id, memberSince, MembershipTier.STANDARD);
+        this(id, memberSince, MembershipTier.getDefault());
     }
 
-    public Membership(String id, MembershipTier membershipTier) {
-        this(id, LocalDateTime.now(),membershipTier);
-    }
-
-    private Membership(String id, LocalDateTime memberSince, MembershipTier membershipTier) {
+    public Membership(String id, LocalDateTime membershipTierSince, MembershipTier membershipTier) {
         this.id = id;
-        this.memberSince = memberSince;
+        this.membershipTierSince = membershipTierSince;
         this.membershipTier = membershipTier;
         active = true;
         point = Point.zeroPoint();
@@ -33,8 +29,8 @@ public class Membership {
         return id;
     }
 
-    public LocalDateTime getMemberSince() {
-        return memberSince;
+    public LocalDateTime getMembershipTierSince() {
+        return membershipTierSince;
     }
 
     public MembershipTier getMembershipTier() {

@@ -3,5 +3,9 @@ package com.mycompany.app;
 public enum MembershipTier {
     VIP,
     PREMIUM,
-    STANDARD
+    STANDARD;
+
+    public static MembershipTier getDefault() {
+        return STANDARD;
+    }
 }
