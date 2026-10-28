@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CheckoutManagerTest {
 
     private StockManager stockManager;
+    private TicketManager ticketManager;
     private CheckoutManager checkoutManager;
     private Food popcorn;
     private Beverage coke;
@@ -21,7 +22,8 @@ public class CheckoutManagerTest {
     @BeforeEach
     void setUp() {
         stockManager = new StockManager();
-        checkoutManager = new CheckoutManager(stockManager);
+        ticketManager = new TicketManager();
+        checkoutManager = new CheckoutManager(stockManager, ticketManager);
 
         popcorn = new Food(
                 "F1",
@@ -43,9 +45,13 @@ public class CheckoutManagerTest {
 
     @Test
     void rejectOrderWhenAllItemsAreNotAvailable() {
-        List<Item> order = List.of(popcorn, coke, coke, coke);
+        Receipt receipt = new Receipt();
+        receipt.addItem(popcorn, popcorn.getName());
+        receipt.addItem(coke, coke.getName());
+        receipt.addItem(coke, coke.getName());
+        receipt.addItem(coke, coke.getName());
 
-        boolean result = checkoutManager.checkout(order);
+        boolean result = checkoutManager.checkout(receipt, 18);
 
         assertAll( () -> {
             assertFalse(result);

@@ -9,10 +9,8 @@ import java.util.List;
 public class TicketManager {
 
     private final List<Ticket> tickets = new ArrayList<>();
-    private final AgeControl ageControl;
 
-    public TicketManager(AgeControl ageControl) {
-        this.ageControl = ageControl;
+    public TicketManager() {
     }
 
     public List<Ticket> getTickets() {

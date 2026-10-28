@@ -1,6 +1,7 @@
 package com.mycompany.app.items;
 
 import com.mycompany.app.Money;
+import com.mycompany.app.ScreeningManager;
 import com.mycompany.app.StockManager;
 
 import java.time.LocalDateTime;
@@ -19,17 +20,17 @@ public class CinemaInitialiser {
     Food nachos = new Food("F3", Money.ofPenny(12500), "nachos");
 
     // Drinks
-    Beverage b1s = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false);
-    Beverage b1m = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false);
-    Beverage b1l = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false);
+    Beverage cokeS = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false);
+    Beverage cokeM = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false);
+    Beverage cokeL = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false);
 
-    Beverage b2s = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false);
-    Beverage b2m = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false);
-    Beverage b2l = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false);
+    Beverage fantaS = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false);
+    Beverage fantaM = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false);
+    Beverage fantaL = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false);
 
-    Beverage b3 = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true);
-    Beverage b4 = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true);
-    Beverage b5 = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true);
+    Beverage beer = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true);
+    Beverage cider = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true);
+    Beverage cocktail = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true);
 
     // Movies
     // Should be moved to a
@@ -39,13 +40,7 @@ public class CinemaInitialiser {
     Movie m4 = new Movie("Parasite", 132, AgeRequirement.AGE_15);
     Movie m5 = new Movie("The Lion King", 88, AgeRequirement.AGE_0);
 
-    public List<Item> getItems() { return List.of(popcorn, baconchips, nachos, b1s, b1m,b1l,b2s,b2m,b2l,b3,b4,b5); }
-
     public void populateInventory(StockManager manager) {
-        for (Item item : getItems()) {
-            manager.addStock(item, 100);
-        }
-        /*
         manager.addStock(popcorn, 100);
         manager.addStock(baconchips, 100);
         manager.addStock(nachos, 100);
@@ -59,29 +54,39 @@ public class CinemaInitialiser {
         manager.addStock(beer, 100);
         manager.addStock(cider, 100);
         manager.addStock(cocktail, 100);
-        */
     }
 
-    public void populateMovies() {
+    public void populateMovies(ScreeningManager manager) {
         Theater t1 = new Theater("Ragner", 10, 30);
         Theater t2 = new Theater("Torsten", 5, 6);
         Theater t3 = new Theater("Linda", 30, 50);
         Theater t4 = new Theater("Harald", 25, 60);
 
         MovieScreening s1m1 = new MovieScreening(m1, LocalDateTime.of(2026, 12, 1, 18, 0), t1);
+        manager.addScreening(s1m1);
         MovieScreening s2m1 = new MovieScreening(m1, LocalDateTime.of(2026, 12, 3, 20, 0), t1);
+        manager.addScreening(s2m1);
         MovieScreening s3m1 = new MovieScreening(m1, LocalDateTime.of(2026, 12, 5, 18, 0), t2);
+        manager.addScreening(s3m1);
         MovieScreening s4m1 = new MovieScreening(m1, LocalDateTime.of(2026, 12, 7, 18, 30), t1);
+        manager.addScreening(s4m1);
 
         MovieScreening s1m2 = new MovieScreening(m2, LocalDateTime.of(2026, 12, 1, 19, 45), t2);
+        manager.addScreening(s1m2);
         MovieScreening s2m2 = new MovieScreening(m2, LocalDateTime.of(2026, 12, 2, 20, 0), t2);
+        manager.addScreening(s2m2);
         MovieScreening s3m2 = new MovieScreening(m2, LocalDateTime.of(2026, 12, 3, 19, 30), t2);
+        manager.addScreening(s3m2);
         MovieScreening s4m2 = new MovieScreening(m2, LocalDateTime.of(2026, 12, 6, 15, 0), t1);
+        manager.addScreening(s4m2);
 
         MovieScreening s1m3 = new MovieScreening(m3, LocalDateTime.of(2026, 12, 4, 17, 45), t3);
+        manager.addScreening(s1m3);
 
         MovieScreening s1m4 = new MovieScreening(m4, LocalDateTime.of(2026, 12, 2, 15, 45), t3);
+        manager.addScreening(s1m4);
 
         MovieScreening s1m5 = new MovieScreening(m5, LocalDateTime.of(2026, 12, 4, 19, 15), t4);
+        manager.addScreening(s1m5);
     }
 }
