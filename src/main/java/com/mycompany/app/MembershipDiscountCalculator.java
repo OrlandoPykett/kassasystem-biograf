@@ -7,8 +7,8 @@ import com.mycompany.app.items.Item;
 public class MembershipDiscountCalculator {
 
     public Money calculatePrice(Item item, Membership membership) {
-        // Inaktivt medlemskap ger ingen rabatt.
-        if (!membership.isActive()) {
+        // Kunden betalar originalpriset om medlemskap saknas eller är inaktivt.
+        if (membership == null || !membership.isActive()) {
             return item.getPrice();
         }
 
@@ -28,9 +28,7 @@ public class MembershipDiscountCalculator {
             payablePercent = 85;
         }
 
-        long product = Math.multiplyExact(
-                item.getPrice().getPenny(), payablePercent
-        );
+        long product = Math.multiplyExact(item.getPrice().getPenny(), payablePercent);
 
         long finalPenny = product / 100;
 
@@ -41,4 +39,7 @@ public class MembershipDiscountCalculator {
 
         return Money.ofPenny(finalPenny);
     }
+    
+
+
 }
