@@ -17,7 +17,7 @@ public class TicketManagerTest {
 
     @BeforeEach
     void setUp() {
-        ticketManager = new TicketManager(new AgeControl());
+        ticketManager = new TicketManager();
 
         Movie movie = new Movie(
                 "Batman Begins",
@@ -206,36 +206,36 @@ public class TicketManagerTest {
         });
     }
 
-    @Test
-    void rejectsEntireBookingWhenOneSeatIsOccupied() {
-        Ticket[] firstOrder = createTickets(
-                new Seat('B', 1),
-                new Seat('B', 2)
-        );
-
-        assertTrue(ticketManager.purchaseTickets(
-                firstOrder,
-                new int[]{23, 23}
-        ));
-
-        Ticket[] secondOrder = createTickets(
-                new Seat('B', 3),
-                new Seat('B', 2)
-        );
-
-        boolean result = ticketManager.purchaseTickets(
-                secondOrder,
-                new int[]{23, 23}
-        );
-
-        assertAll( () -> {
-            assertFalse(result);
-            assertEquals(2, ticketManager.getTickets().size());
-            assertTrue(
-                    ticketManager.getTickets().stream()
-                            .noneMatch(ticket -> ticket == secondOrder[0]));
-        });
-    }
+//    @Test
+//    void rejectsEntireBookingWhenOneSeatIsOccupied() {
+//        Ticket[] firstOrder = createTickets(
+//                new Seat('B', 1),
+//                new Seat('B', 2)
+//        );
+//
+//        assertTrue(ticketManager.purchaseTickets(
+//                firstOrder,
+//                new int[]{23, 23}
+//        ));
+//
+//        Ticket[] secondOrder = createTickets(
+//                new Seat('B', 3),
+//                new Seat('B', 2)
+//        );
+//
+//        boolean result = ticketManager.purchaseTickets(
+//                secondOrder,
+//                new int[]{23, 23}
+//        );
+//
+//        assertAll( () -> {
+//            assertFalse(result);
+//            assertEquals(2, ticketManager.getTickets().size());
+//            assertTrue(
+//                    ticketManager.getTickets().stream()
+//                            .noneMatch(ticket -> ticket == secondOrder[0]));
+//        });
+//    }
 
     @Test
     void rejectsGroupBookingForTheSameSeat() {
@@ -259,6 +259,54 @@ public class TicketManagerTest {
         });
     }
 
+    @Test
+    void rejectsEntireBookingWhenOneSeatIsOccupied() {
+        // Första beställningen bokar A1 och A2.
+        Ticket[] firstOrder = createTickets(
+                new Seat('A', 1),
+                new Seat('A', 2)
+        );
+
+        assertTrue(ticketManager.purchaseTickets(
+                firstOrder,
+                new int[]{25, 25}
+        ));
+
+        // Nya biljetter med egna ID:n.
+        // A3 är ledig, men A2 är redan upptagen.
+        Ticket[] secondOrder = {
+            new Ticket(
+                    "t3",
+                    Money.ofPenny(1400),
+                    new Seat('A', 3),
+                    screening
+            ),
+            new Ticket(
+                    "t4",
+                    Money.ofPenny(1400),
+                    new Seat('A', 2),
+                    screening
+            )
+        };
+
+        boolean result = ticketManager.purchaseTickets(
+                secondOrder,
+                new int[]{25, 25}
+        );
+
+        assertAll(
+                // Hela andra beställningen ska nekas.
+                () -> assertFalse(result),
+
+                // Bara de två ursprungliga biljetterna ska finnas.
+                () -> assertEquals(2, ticketManager.getTickets().size()),
+
+                // Inte heller biljetten till lediga A3 ska läggas till.
+                () -> assertFalse(
+                        ticketManager.getTickets().contains(secondOrder[0])
+                )
+        );
+    }
 
     @Test
     void rejectsBookingContainingTicketsForDifferentMovies() {
