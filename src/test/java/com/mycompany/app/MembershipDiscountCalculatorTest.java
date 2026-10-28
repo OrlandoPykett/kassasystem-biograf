@@ -15,6 +15,7 @@ import com.mycompany.app.items.MovieScreening;
 import com.mycompany.app.items.Seat;
 import com.mycompany.app.items.Theater;
 import com.mycompany.app.items.Ticket;
+import com.mycompany.app.items.BeverageDispenser;
 
 import java.time.LocalDateTime;
 
@@ -59,13 +60,17 @@ class MembershipDiscountCalculatorTest {
 void activeMemberGetsNoDiscountOnAlcohol() {
     Membership membership = new Membership("member1");
 
-    Beverage beer = new Beverage(
-            "b1",
-            Money.ofPenny(6000),
-            "beer",
-            BeverageSize.MEDIUM,
-            true
-    );
+  BeverageDispenser dispenser =
+        new BeverageDispenser("beer", 10000);
+
+Beverage beer = new Beverage(
+        "b1",
+        Money.ofPenny(6000),
+        "beer",
+        BeverageSize.MEDIUM,
+        true,
+        dispenser
+);
 
     MembershipDiscountCalculator calculator =
             new MembershipDiscountCalculator();
