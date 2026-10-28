@@ -21,7 +21,7 @@ public class CheckoutManagerTest {
     @BeforeEach
     void setUp() {
         stockManager = new StockManager();
-        checkoutManager = new ChckoutManager();
+        checkoutManager = new CheckoutManager(stockManager);
 
         popcorn = new Food(
                 "F1",

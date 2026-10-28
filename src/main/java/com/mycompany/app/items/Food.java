@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Food extends Item {
     private final String name;
 
-    public Food(String id,Money price, String name) {
+    public Food(String id, Money price, String name) {
         super(id, price);
         this.name = name;
     }
