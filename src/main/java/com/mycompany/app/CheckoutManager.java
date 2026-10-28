@@ -36,9 +36,9 @@ public class CheckoutManager {
 
             stockQuantities.put(item, quantity);
 
-            if (!stockManager.hasStock(item, itemQuantities.get(item))) {
-                return false;
-            }
+            if (!stockManager.hasStock(item, quantity)) {
+            return false;
+        }
         }
 
         // Purchase tickets
