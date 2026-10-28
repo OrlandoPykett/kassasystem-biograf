@@ -18,7 +18,7 @@ public class BeverageDispenser {
         return name;
     }
 
-    public int getVolumeMl() {
+    public int getVolume() {
         return volumeMl;
     }
 

@@ -3,10 +3,8 @@ package com.mycompany.app;
 
 import com.mycompany.app.items.Beverage;
 import com.mycompany.app.items.Item;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.Map;
+
+import java.util.*;
 
 public class StockManager {
     private final Map<Item, Integer> stock = new HashMap<>();
@@ -16,7 +14,7 @@ public class StockManager {
         if (item == null) return 0;
 
         if (item instanceof Beverage beverage) {
-            return beverage.getDispenser().getVolumeMl();
+            return beverage.getDispenser().getVolume();
         }
 
         return stock.getOrDefault(item, 0);
@@ -26,15 +24,19 @@ public class StockManager {
         return new ArrayList<>(items.values());
     }
 
+    public Set<String> getItemIds() {
+        return items.keySet();
+    }
+
     public Item getItem(String id) {
         if (id == null) return null;
-        return items.get(id.toLowerCase());
+        return items.get(id);
     }
 
     public void registerItem(Item item) {
         if (item == null) return;
 
-        items.put(item.getId().toLowerCase(), item);
+        items.put(item.getId(), item);
     }
 
     public void addStock(Item item, int quantity) {
