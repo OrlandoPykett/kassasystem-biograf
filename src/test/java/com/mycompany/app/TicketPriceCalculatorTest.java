@@ -162,4 +162,15 @@ void seniorGets20KronorReductionFromMoviePrice() {
     assertEquals(13000L, price.getPenny());
 }
 
+@Test
+void childTicketPriceCannotFallBelow40Kronor() {
+    Movie movie = new Movie("Cheap Movie",120,AgeRequirement.AGE_0,Money.ofPenny(3000));
+
+    TicketPriceCalculator calculator = new TicketPriceCalculator();
+
+    Money price = calculator.calculateBasePrice(17, movie);
+
+    assertEquals(4000L, price.getPenny());
+}
+
 }
