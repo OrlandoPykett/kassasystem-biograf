@@ -140,4 +140,26 @@ void durationSurchargeStartsAbove150Minutes(
 
     assertEquals(expectedPenny, price.getPenny());
 }
+
+@Test
+void childGets40KronorReductionFromMoviePrice() {
+    Movie movie = new Movie("Test Movie",120,AgeRequirement.AGE_0,Money.ofPenny(15000));
+
+    TicketPriceCalculator calculator = new TicketPriceCalculator();
+
+    Money price = calculator.calculateBasePrice(17, movie);
+
+    assertEquals(11000L, price.getPenny());
+}
+@Test
+void seniorGets20KronorReductionFromMoviePrice() {
+    Movie movie = new Movie("Test Movie",120,AgeRequirement.AGE_0,Money.ofPenny(15000));
+
+    TicketPriceCalculator calculator = new TicketPriceCalculator();
+
+    Money price = calculator.calculateBasePrice(65, movie);
+
+    assertEquals(13000L, price.getPenny());
+}
+
 }
