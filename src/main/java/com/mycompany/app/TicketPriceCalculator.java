@@ -17,11 +17,15 @@ public class TicketPriceCalculator {
         }
     }
 
-// Tillfällig implementation för att kunna köra det nya testet.
-// Filmens pris används i nästa steg.
-    public Money calculateBasePrice(int age, Movie movie) {
-        return calculateBasePrice(age);
+// Använder den valda filmens grundpris.
+// Åldersavdrag och längdtillägg införs i kommande steg.
+public Money calculateBasePrice(int age, Movie movie) {
+    if (age < 0) {
+        throw new IllegalArgumentException("Age cannot be negative");
     }
+
+    return movie.getBasePrice();
+}
     
 }
 
