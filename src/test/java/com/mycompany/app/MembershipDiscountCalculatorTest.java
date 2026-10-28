@@ -20,6 +20,7 @@ import com.mycompany.app.membership.MembershipTier;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.LongRange;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -298,6 +299,21 @@ void higherMembershipTierNeverPaysMore(@ForAll @LongRange(min = 0, max = 100000)
     assertTrue(vipPrice >= 0);
 
     assertEquals(originalPenny, food.getPrice().getPenny());
+}
+
+@ParameterizedTest
+@EnumSource(MembershipTier.class)
+void alcoholGetsNoDiscountForAnyMembershipTier(MembershipTier tier) {
+    Membership membership = new Membership("member1");
+    membership.updateMembershipTier(tier);
+
+    Beverage beer = new Beverage( "b1", Money.ofPenny(6000), "beer",BeverageSize.MEDIUM, true, new BeverageDispenser("beer", 10000));
+
+    MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
+
+    Money price = calculator.calculatePrice(beer, membership);
+
+    assertEquals(6000L, price.getPenny());
 }
 
 }
