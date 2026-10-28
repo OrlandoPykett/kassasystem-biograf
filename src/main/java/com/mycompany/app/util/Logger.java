@@ -9,10 +9,11 @@ package com.mycompany.app.util;
 
 public interface Logger {
     void log(LogLevel level, String message);
+
+    static enum LogLevel {
+        INFO,
+        WARNING,
+        CRITICAL
+    }
 }
 
-enum LogLevel {
-    INFO,
-    WARNING,
-    CRITICAL
-}

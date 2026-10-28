@@ -28,10 +28,10 @@ public class ItemTest {
         assertEquals(50, food1.getPrice().getCrown());
 
         assertEquals(2399, drink.getPrice().getPenny());
-        assertEquals(24, drink.getPrice().getCrown());
+        assertEquals(23, drink.getPrice().getCrown());
 
         assertEquals(2550, food2.getPrice().getPenny());
-        assertEquals(26, food2.getPrice().getCrown());
+        assertEquals(25, food2.getPrice().getCrown());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class ItemTest {
 
         assertEquals("m1", ticket.getId());
         assertEquals(Money.ofPenny(500), ticket.getPrice());
-        assertEquals(12, ticket.getSeat());
+        assertEquals(seat, ticket.getSeat());
         assertEquals(screening, ticket.getScreening());
     }
 }

@@ -49,7 +49,7 @@ public class ComboOrderTest {
         Item[] order = createSampleOrder();
 
         // replace food item with a food item below 50 kr
-        order[1] = new Food("f2", Money.ofPenny(1000), "crisps");
+        order[0] = new Food("f2", Money.ofPenny(1000), "crisps");
 
         assertThrows(IllegalArgumentException.class, () -> {
             new ComboOrder(order);
@@ -137,4 +137,12 @@ public class ComboOrderTest {
 
         return new Item[]{f1, b1, b2, t1, t2};
     }
+
+    @Test
+    void foodItemAtExactly50KronorIsAccepted() {
+    Item[] order = createSampleOrder();
+    order[0] = new Food("f1", Money.ofPenny(5000), "popcorn");
+
+    assertDoesNotThrow(() -> new ComboOrder(order));
+}
 }

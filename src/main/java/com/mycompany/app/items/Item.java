@@ -9,9 +9,16 @@ public abstract class Item {
     private final Money price;
 
     public Item(String id, Money price) {
+        if(price.getPenny() < 0){
+            throw new IllegalArgumentException(
+                "Price cannot be negative"
+            );
+        }
         this.id = id;
         this.price = price;
     }
+
+    public abstract String getName();
 
     public String getId() {
         return id;

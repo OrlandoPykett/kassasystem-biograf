@@ -1,6 +1,7 @@
 package com.mycompany.app.io;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Real classes and test doubles of these real ones 
@@ -10,6 +11,6 @@ import java.io.File;
  */
 
 public interface FileIO {
-    String readFile(File file);
-    void writeToFile(File file);
+    String readFile(File file) throws IOException;
+    void writeToFile(File file) throws IOException;
 }

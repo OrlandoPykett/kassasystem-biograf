@@ -207,6 +207,7 @@ public class TicketManagerTest {
     }
 
     @Test
+<<<<<<< HEAD
     void rejectsEntireBookingWhenOneSeatIsOccupied() {
         Ticket[] firstOrder = createTickets(
                 new Seat('B', 1),
@@ -258,6 +259,55 @@ public class TicketManagerTest {
             assertTrue(ticketManager.getTickets().isEmpty());
         });
     }
+=======
+void rejectsEntireBookingWhenOneSeatIsOccupied() {
+    // Första beställningen bokar A1 och A2.
+    Ticket[] firstOrder = createTickets(
+            new Seat('A', 1),
+            new Seat('A', 2)
+    );
+
+    assertTrue(ticketManager.purchaseTickets(
+            firstOrder,
+            new int[]{25, 25}
+    ));
+
+    // Nya biljetter med egna ID:n.
+    // A3 är ledig, men A2 är redan upptagen.
+    Ticket[] secondOrder = {
+        new Ticket(
+                "t3",
+                Money.ofPenny(1400),
+                new Seat('A', 3),
+                screening
+        ),
+        new Ticket(
+                "t4",
+                Money.ofPenny(1400),
+                new Seat('A', 2),
+                screening
+        )
+    };
+
+    boolean result = ticketManager.purchaseTickets(
+            secondOrder,
+            new int[]{25, 25}
+    );
+
+    assertAll(
+            // Hela andra beställningen ska nekas.
+            () -> assertFalse(result),
+
+            // Bara de två ursprungliga biljetterna ska finnas.
+            () -> assertEquals(2, ticketManager.getTickets().size()),
+
+            // Inte heller biljetten till lediga A3 ska läggas till.
+            () -> assertFalse(
+                    ticketManager.getTickets().contains(secondOrder[0])
+            )
+    );
+}
+>>>>>>> 24c291eb0a49adab5a59702f792afe94e923a812
 
 
     @Test

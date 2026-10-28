@@ -4,6 +4,7 @@ import com.mycompany.app.Money;
 import com.mycompany.app.StockManager;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CinemaInitialiser {
 
@@ -18,17 +19,17 @@ public class CinemaInitialiser {
     Food nachos = new Food("F3", Money.ofPenny(12500), "nachos");
 
     // Drinks
-    Beverage cokeS = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false);
-    Beverage cokeM = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false);
-    Beverage cokeL = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false);
+    Beverage b1s = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false);
+    Beverage b1m = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false);
+    Beverage b1l = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false);
 
-    Beverage fantaS = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false);
-    Beverage fantaM = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false);
-    Beverage fantaL = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false);
+    Beverage b2s = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false);
+    Beverage b2m = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false);
+    Beverage b2l = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false);
 
-    Beverage beer = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true);
-    Beverage cider = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true);
-    Beverage cocktail = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true);
+    Beverage b3 = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true);
+    Beverage b4 = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true);
+    Beverage b5 = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true);
 
     // Movies
     // Should be moved to a
@@ -38,11 +39,13 @@ public class CinemaInitialiser {
     Movie m4 = new Movie("Parasite", 132, AgeRequirement.AGE_15);
     Movie m5 = new Movie("The Lion King", 88, AgeRequirement.AGE_0);
 
+    public List<Item> getItems() { return List.of(popcorn, baconchips, nachos, b1s, b1m,b1l,b2s,b2m,b2l,b3,b4,b5); }
 
-    public void populateInventory() {
-
-        StockManager manager = new StockManager();
-
+    public void populateInventory(StockManager manager) {
+        for (Item item : getItems()) {
+            manager.addStock(item, 100);
+        }
+        /*
         manager.addStock(popcorn, 100);
         manager.addStock(baconchips, 100);
         manager.addStock(nachos, 100);
@@ -56,6 +59,7 @@ public class CinemaInitialiser {
         manager.addStock(beer, 100);
         manager.addStock(cider, 100);
         manager.addStock(cocktail, 100);
+        */
     }
 
     public void populateMovies() {
