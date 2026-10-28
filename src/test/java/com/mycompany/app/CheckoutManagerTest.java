@@ -1,9 +1,6 @@
 package com.mycompany.app;
 
-import com.mycompany.app.items.Beverage;
-import com.mycompany.app.items.BeverageSize;
-import com.mycompany.app.items.Food;
-import com.mycompany.app.items.Item;
+import com.mycompany.app.items.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,12 +28,14 @@ public class CheckoutManagerTest {
                 "popcorn"
         );
 
+        BeverageDispenser cokeDispenser = new BeverageDispenser("Coke", 2000);
         coke = new Beverage(
                 "B1",
                 Money.ofPenny(5000),
                 "Coca-Cola",
                 BeverageSize.MEDIUM,
-                false
+                false,
+                cokeDispenser
         );
 
         stockManager.addStock(popcorn, 10);
