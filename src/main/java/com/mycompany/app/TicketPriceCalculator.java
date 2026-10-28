@@ -17,14 +17,21 @@ public class TicketPriceCalculator {
         }
     }
 
-// Använder den valda filmens grundpris.
-// Åldersavdrag och längdtillägg införs i kommande steg.
+// Beräknar filmpriset med längdtillägg.
+// Åldersavdrag införs i nästa steg.
 public Money calculateBasePrice(int age, Movie movie) {
     if (age < 0) {
         throw new IllegalArgumentException("Age cannot be negative");
     }
 
-    return movie.getBasePrice();
+    Money price = movie.getBasePrice();
+
+    // Filmer över 150 minuter kostar 20 kr extra.
+    if (movie.getDurationMin() > 150) {
+        price = price.add(Money.ofPenny(2000));
+    }
+
+    return price;
 }
     
 }
