@@ -1,11 +1,21 @@
 package com.mycompany.app;
 
-import com.mycompany.app.items.*;
+import com.mycompany.app.items.Food;
 import com.mycompany.app.membership.Membership;
 import com.mycompany.app.membership.MembershipDiscountCalculator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import com.mycompany.app.items.AgeRequirement;
+import com.mycompany.app.items.Beverage;
+import com.mycompany.app.items.BeverageSize;
+import com.mycompany.app.items.Movie;
+import com.mycompany.app.items.MovieScreening;
+import com.mycompany.app.items.Seat;
+import com.mycompany.app.items.Theater;
+import com.mycompany.app.items.Ticket;
+import com.mycompany.app.items.BeverageDispenser;
 
 import java.time.LocalDateTime;
 
@@ -49,16 +59,18 @@ class MembershipDiscountCalculatorTest {
 @Test
 void activeMemberGetsNoDiscountOnAlcohol() {
     Membership membership = new Membership("member1");
-    BeverageDispenser beerDispenser = new BeverageDispenser("Beer", 1500);
 
-    Beverage beer = new Beverage(
-            "b1",
-            Money.ofPenny(6000),
-            "beer",
-            BeverageSize.MEDIUM,
-            true,
-            beerDispenser
-    );
+  BeverageDispenser dispenser =
+        new BeverageDispenser("beer", 10000);
+
+Beverage beer = new Beverage(
+        "b1",
+        Money.ofPenny(6000),
+        "beer",
+        BeverageSize.MEDIUM,
+        true,
+        dispenser
+);
 
     MembershipDiscountCalculator calculator =
             new MembershipDiscountCalculator();
