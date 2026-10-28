@@ -1,9 +1,7 @@
 package com.mycompany.app;
 
-import com.mycompany.app.items.Beverage;
-import com.mycompany.app.items.BeverageSize;
+
 import com.mycompany.app.items.Food;
-import com.mycompany.app.items.Item;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +11,6 @@ public class StockManagerTest {
 
     private StockManager manager;
     private Food popcorn;
-    private Beverage coke;
 
     @BeforeEach
     void setUp() {
@@ -23,13 +20,7 @@ public class StockManagerTest {
                 Money.ofPenny(7500),
                 "popcorn"
         );
-        coke = new Beverage(
-                "D1",
-                Money.ofPenny(5000),
-                "Coke",
-                BeverageSize.MEDIUM,
-                false
-        );
+      
     }
 
     @Test

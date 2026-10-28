@@ -66,8 +66,7 @@ public class ComboOrderTest {
                 "b3",
                 Money.ofPenny(1000),
                 "Coke",
-                BeverageSize.MEDIUM,
-                false
+                BeverageSize.MEDIUM, false, new BeverageDispenser("Coke", 10000)
         );
 
         // add more expensive items to order
@@ -76,8 +75,7 @@ public class ComboOrderTest {
                 "b3",
                 Money.ofPenny(5000),
                 "Coke",
-                BeverageSize.MEDIUM,
-                false
+                BeverageSize.MEDIUM, false, new BeverageDispenser("Coke", 10000)
         );
 
         ComboOrder combo =  new ComboOrder(order);
@@ -104,8 +102,7 @@ public class ComboOrderTest {
                 "b3",
                 Money.ofPenny(1000),
                 "Coke",
-                BeverageSize.MEDIUM,
-                false
+                BeverageSize.MEDIUM, false, new BeverageDispenser("Coke", 10000)
         );
 
         order[5] = food;
@@ -124,8 +121,9 @@ public class ComboOrderTest {
 
     private Item[] createSampleOrder() {
         Food f1 = new Food("f1", Money.ofPenny(6000), "popcorn");
-        Beverage b1 = new Beverage("b1", Money.ofPenny(2000), "Coke", BeverageSize.MEDIUM, false);
-        Beverage b2 = new Beverage("b2", Money.ofPenny(3000), "Pepsi", BeverageSize.MEDIUM, false);
+        Beverage b1 = new Beverage("b1",Money.ofPenny(2000),"Coke",BeverageSize.MEDIUM,false,new BeverageDispenser("Coke", 10000));
+
+Beverage b2 = new Beverage("b2",Money.ofPenny(3000),"Pepsi",BeverageSize.MEDIUM,false,new BeverageDispenser("Pepsi", 10000));
 
         MovieScreening screening = new MovieScreening(
                 new Movie("Movie", 120, AgeRequirement.AGE_0),

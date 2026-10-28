@@ -12,7 +12,7 @@ public class ItemTest {
     @Test
     void itemsStoreCorrectPrice() {
         Item food = new Food("f1", Money.ofPenny(5000), "food");
-        Item drink = new Beverage("b1", Money.ofPenny(2300), "drink", BeverageSize.MEDIUM, false);
+        Item drink = new Beverage("b1", Money.ofPenny(2300), "drink",BeverageSize.MEDIUM, false,new BeverageDispenser("drink", 10000));
 
         assertEquals(Money.ofPenny(5000), food.getPrice());
         assertEquals(Money.ofPenny(2300), drink.getPrice());
@@ -21,8 +21,7 @@ public class ItemTest {
     @Test
     void pricesConvertCorrectlyToCrown() {
         Item food1 = new Food("f1", Money.ofPenny(5015), "food");
-        Item drink = new Beverage("b1", Money.ofPenny(2399), "drink", BeverageSize.MEDIUM, false);
-        Item food2 = new Food("f1", Money.ofPenny(2550), "food");
+        Item drink = new Beverage("b1", Money.ofPenny(2399), "drink",BeverageSize.MEDIUM, false,new BeverageDispenser("drink", 10000));        Item food2 = new Food("f1", Money.ofPenny(2550), "food");
 
         assertEquals(5015, food1.getPrice().getPenny());
         assertEquals(50, food1.getPrice().getCrown());
@@ -43,8 +42,7 @@ public class ItemTest {
     @Test
     void itemsHaveCorrectProperties() {
         Food food = new Food("f1", Money.ofPenny(500), "food");
-        Beverage drink = new Beverage("b1", Money.ofPenny(500), "drink", BeverageSize.MEDIUM, false);
-
+        Beverage drink = new Beverage("b1", Money.ofPenny(500), "drink" ,BeverageSize.MEDIUM, false,new BeverageDispenser("drink", 10000));
         Movie movie = new Movie("move", 120, AgeRequirement.AGE_0);
         Theater theater = new Theater("Harald", 25, 60);
         Seat seat = new Seat('D', 10);
