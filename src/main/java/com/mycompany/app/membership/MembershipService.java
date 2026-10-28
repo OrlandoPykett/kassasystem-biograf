@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package com.mycompany.app.membership;
 
 import java.net.SocketException;
 import java.time.LocalDateTime;

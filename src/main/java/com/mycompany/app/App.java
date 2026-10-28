@@ -6,6 +6,8 @@ import com.mycompany.app.items.MovieScreening;
 import com.mycompany.app.items.Seat;
 import com.mycompany.app.items.Theater;
 import com.mycompany.app.items.Ticket;
+import com.mycompany.app.membership.Membership;
+import com.mycompany.app.membership.MembershipDiscountCalculator;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -42,7 +44,7 @@ public class App {
         boolean member = scanner.nextBoolean();
 
         Membership membership = new Membership("demo-member");
-        
+
         membership.setActiveStatus(member);
 
         // Filmen kostar 150 kr och är tillräckligt lång för längdtillägget.

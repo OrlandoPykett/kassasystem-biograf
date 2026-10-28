@@ -1,5 +1,7 @@
 package com.mycompany.app;
 
+import com.mycompany.app.membership.Membership;
+
 import java.time.LocalDateTime;
 
 public class Customer implements Comparable<Customer> {

@@ -1,4 +1,6 @@
-package com.mycompany.app;
+package com.mycompany.app.membership;
+
+import com.mycompany.app.Point;
 
 import java.time.*;
 

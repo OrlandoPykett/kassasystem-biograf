@@ -16,6 +16,8 @@ import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
 import net.jqwik.api.constraints.LongRange;
+import com.mycompany.app.membership.Membership;
+import com.mycompany.app.membership.MembershipDiscountCalculator;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

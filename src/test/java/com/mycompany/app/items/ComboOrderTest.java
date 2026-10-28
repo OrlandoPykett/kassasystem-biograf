@@ -1,6 +1,7 @@
 package com.mycompany.app.items;
 
 import com.mycompany.app.Money;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
@@ -14,6 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ComboOrderTest {
+
+    private BeverageDispenser dispenser;
+
+    @BeforeEach
+    void setUp() {
+        dispenser = new BeverageDispenser("Drink", 1000);
+    }
 
     @Test
     void comboOrderHasFixedPrice() {
@@ -66,7 +74,9 @@ public class ComboOrderTest {
                 "b3",
                 Money.ofPenny(1000),
                 "Coke",
-                BeverageSize.MEDIUM, false, new BeverageDispenser("Coke", 10000)
+                BeverageSize.MEDIUM,
+                false,
+                dispenser
         );
 
         // add more expensive items to order
@@ -75,7 +85,9 @@ public class ComboOrderTest {
                 "b3",
                 Money.ofPenny(5000),
                 "Coke",
-                BeverageSize.MEDIUM, false, new BeverageDispenser("Coke", 10000)
+                BeverageSize.MEDIUM,
+                false,
+                dispenser
         );
 
         ComboOrder combo =  new ComboOrder(order);
@@ -102,7 +114,9 @@ public class ComboOrderTest {
                 "b3",
                 Money.ofPenny(1000),
                 "Coke",
-                BeverageSize.MEDIUM, false, new BeverageDispenser("Coke", 10000)
+                BeverageSize.MEDIUM,
+                false,
+                dispenser
         );
 
         order[5] = food;
@@ -121,9 +135,8 @@ public class ComboOrderTest {
 
     private Item[] createSampleOrder() {
         Food f1 = new Food("f1", Money.ofPenny(6000), "popcorn");
-        Beverage b1 = new Beverage("b1",Money.ofPenny(2000),"Coke",BeverageSize.MEDIUM,false,new BeverageDispenser("Coke", 10000));
-
-Beverage b2 = new Beverage("b2",Money.ofPenny(3000),"Pepsi",BeverageSize.MEDIUM,false,new BeverageDispenser("Pepsi", 10000));
+        Beverage b1 = new Beverage("b1", Money.ofPenny(2000), "Coke", BeverageSize.MEDIUM, false, dispenser);
+        Beverage b2 = new Beverage("b2", Money.ofPenny(3000), "Pepsi", BeverageSize.MEDIUM, false, dispenser);
 
         MovieScreening screening = new MovieScreening(
                 new Movie("Movie", 120, AgeRequirement.AGE_0),

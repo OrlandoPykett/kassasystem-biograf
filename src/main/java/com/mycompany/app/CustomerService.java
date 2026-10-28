@@ -3,6 +3,7 @@ package com.mycompany.app;
 import java.net.SocketException;
 import java.time.LocalDateTime;
 
+import com.mycompany.app.membership.Membership;
 import com.mycompany.app.util.IdDatabase;
 import com.mycompany.app.util.Logger;
 import com.mycompany.app.util.RandomStringGenerator;
