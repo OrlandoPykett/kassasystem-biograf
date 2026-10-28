@@ -18,9 +18,14 @@ public class MembershipDiscountCalculator {
             return item.getPrice();
         }
 
-        // Fem procent rabatt: kunden betalar 95 procent.
+        int payablePercent = 95;
+
+        if (membership.getMembershipTier() == MembershipTier.PREMIUM) {
+            payablePercent = 90;
+        }
+
         long product = Math.multiplyExact(
-                item.getPrice().getPenny(), 95
+                item.getPrice().getPenny(), payablePercent
         );
 
         long finalPenny = product / 100;
