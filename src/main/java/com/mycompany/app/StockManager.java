@@ -10,11 +10,8 @@ public class StockManager {
     private final Map<String, Integer> stock = new HashMap<>();
 
     public int getStock(Item item) {
-        if (stock.containsKey(item.getId())) {
-            return stock.get(item.getId());
-        }
-
-        return 0;
+        if (item == null) return 0;
+        return stock.getOrDefault(item.getId(), 0);
     }
 
     public void addStock(Item item, int quantity) {
@@ -28,14 +25,17 @@ public class StockManager {
     public void removeStock(Item item, int quantity) {
         if (item == null) return;
         if (quantity <= 0) return;
-        if (stock.get(item.getId()) < quantity) return;
 
         int currentQuant = stock.getOrDefault(item.getId(), 0);
+
+        if (currentQuant < quantity) return;
+
         stock.put(item.getId(), currentQuant - quantity);
     }
 
     public boolean hasStock(Item item, int quantity) {
-        return stock.get(item.getId()) >= quantity;
+        if (item == null || quantity < 0) return false;
+        return getStock(item) >= quantity;
     }
 
 }

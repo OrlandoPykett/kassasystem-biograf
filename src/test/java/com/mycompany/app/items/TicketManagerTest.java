@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,14 +43,14 @@ public class TicketManagerTest {
 
         boolean result = ticketManager.purchaseTicket(ticket, 14);
 
-        assertAll(
-                () -> assertFalse(result, "Purchase should be rejected."),
-                () -> assertEquals(
-                        0,
-                        ticketManager.getTickets().size(),
-                        "A rejected purchase should not register a ticket."
-                )
-        );
+        assertAll( () -> {
+            assertFalse(result, "Purchase should be rejected.");
+            assertEquals(
+                    0,
+                    ticketManager.getTickets().size(),
+                    "A rejected purchase should not register a ticket."
+            );
+        });
     }
 
     @Test
@@ -65,15 +64,15 @@ public class TicketManagerTest {
 
         boolean result = ticketManager.purchaseTicket(ticket, 15);
 
-        assertAll(
-                () -> assertTrue(result, "Purchase should be accepted"),
-                () -> assertEquals(1, ticketManager.getTickets().size()),
-                () -> assertSame(
-                        ticket,
-                        ticketManager.getTickets().getFirst(),
-                        "Purchased ticket should be registered"
-                )
-        );
+        assertAll( () -> {
+            assertTrue(result, "Purchase should be accepted");
+            assertEquals(1, ticketManager.getTickets().size());
+            assertSame(
+                    ticket,
+                    ticketManager.getTickets().getFirst(),
+                    "Purchased ticket should be registered"
+            );
+        });
     }
 
     @Test
@@ -95,12 +94,12 @@ public class TicketManagerTest {
         boolean firstResult = ticketManager.purchaseTicket(ticket1, 18);
         boolean secondResult = ticketManager.purchaseTicket(ticket2, 18);
 
-        assertAll(
-                () -> assertTrue(firstResult),
-                () -> assertFalse(secondResult),
-                () -> assertEquals(1, ticketManager.getTickets().size()),
-                () -> assertSame(ticket1, ticketManager.getTickets().getFirst())
-        );
+        assertAll( () -> {
+            assertTrue(firstResult);
+            assertFalse(secondResult);
+            assertEquals(1, ticketManager.getTickets().size());
+            assertSame(ticket1, ticketManager.getTickets().getFirst());
+        });
     }
 
     @Test
@@ -138,13 +137,12 @@ public class TicketManagerTest {
                 new int[]{25, 16}
         );
 
-        assertAll(
-                () -> assertTrue(result),
-                () -> assertEquals(2, ticketManager.getTickets().size()),
-                () -> assertTrue(ticketManager.getTickets().containsAll(
-                        Arrays.asList(tickets)
-                ))
-        );
+        assertAll( () -> {
+            assertTrue(result);
+            assertEquals(2, ticketManager.getTickets().size());
+            assertTrue(ticketManager.getTickets().containsAll(
+                    Arrays.asList(tickets)));
+        });
     }
 
     @Test
@@ -161,10 +159,10 @@ public class TicketManagerTest {
                 new int[]{25, 17}
         );
 
-        assertAll(
-                () -> assertFalse(result),
-                () -> assertTrue(ticketManager.getTickets().isEmpty())
-        );
+        assertAll( () -> {
+            assertFalse(result);
+            assertTrue(ticketManager.getTickets().isEmpty());
+        });
     }
 
     @Test
@@ -181,10 +179,10 @@ public class TicketManagerTest {
                 new int[]{14, 12}
         );
 
-        assertAll(
-                () -> assertFalse(result),
-                () -> assertTrue(ticketManager.getTickets().isEmpty())
-        );
+        assertAll( () -> {
+            assertFalse(result);
+            assertTrue(ticketManager.getTickets().isEmpty());
+        });
     }
 
     @Test
@@ -202,10 +200,10 @@ public class TicketManagerTest {
                 new int[]{35, 14, 12}
         );
 
-        assertAll(
-                () -> assertTrue(result),
-                () -> assertEquals(3, ticketManager.getTickets().size())
-        );
+        assertAll( () -> {
+            assertTrue(result);
+            assertEquals(3, ticketManager.getTickets().size());
+        });
     }
 
     @Test
@@ -230,14 +228,13 @@ public class TicketManagerTest {
                 new int[]{23, 23}
         );
 
-        assertAll(
-                () -> assertFalse(result),
-                () -> assertEquals(2, ticketManager.getTickets().size()),
-                () -> assertTrue(
-                        ticketManager.getTickets().stream()
-                                .noneMatch(ticket -> ticket == secondOrder[0])
-                )
-        );
+        assertAll( () -> {
+            assertFalse(result);
+            assertEquals(2, ticketManager.getTickets().size());
+            assertTrue(
+                    ticketManager.getTickets().stream()
+                            .noneMatch(ticket -> ticket == secondOrder[0]));
+        });
     }
 
     @Test
@@ -256,10 +253,10 @@ public class TicketManagerTest {
                 new int[]{23, 23, 23, 23, 23, 23}
         );
 
-        assertAll(
-                () -> assertFalse(result),
-                () -> assertTrue(ticketManager.getTickets().isEmpty())
-        );
+        assertAll( () -> {
+            assertFalse(result);
+            assertTrue(ticketManager.getTickets().isEmpty());
+        });
     }
 
 
@@ -292,10 +289,10 @@ public class TicketManagerTest {
                 new int[]{25, 25}
         );
 
-        assertAll(
-                () -> assertFalse(result),
-                () -> assertTrue(ticketManager.getTickets().isEmpty())
-        );
+        assertAll( () -> {
+            assertFalse(result);
+            assertTrue(ticketManager.getTickets().isEmpty());
+        });
     }
 
     @Test

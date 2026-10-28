@@ -18,17 +18,17 @@ public class CinemaInitialiser {
     Food nachos = new Food("F3", Money.ofPenny(12500), "nachos");
 
     // Drinks
-    Beverage b1s = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false);
-    Beverage b1m = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false);
-    Beverage b1l = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false);
+    Beverage cokeS = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false);
+    Beverage cokeM = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false);
+    Beverage cokeL = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false);
 
-    Beverage b2s = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false);
-    Beverage b2m = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false);
-    Beverage b2l = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false);
+    Beverage fantaS = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false);
+    Beverage fantaM = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false);
+    Beverage fantaL = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false);
 
-    Beverage b3 = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true);
-    Beverage b4 = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true);
-    Beverage b5 = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true);
+    Beverage beer = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true);
+    Beverage cider = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true);
+    Beverage cocktail = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true);
 
     // Movies
     // Should be moved to a
@@ -47,15 +47,15 @@ public class CinemaInitialiser {
         manager.addStock(baconchips, 100);
         manager.addStock(nachos, 100);
 
-        manager.addStock(b1s, 100);
-        manager.addStock(b1m, 100);
-        manager.addStock(b1l, 100);
-        manager.addStock(b2s, 100);
-        manager.addStock(b2m, 100);
-        manager.addStock(b2l, 100);
-        manager.addStock(b3, 100);
-        manager.addStock(b4, 100);
-        manager.addStock(b5, 100);
+        manager.addStock(cokeS, 100);
+        manager.addStock(cokeM, 100);
+        manager.addStock(cokeL, 100);
+        manager.addStock(fantaS, 100);
+        manager.addStock(fantaM, 100);
+        manager.addStock(fantaL, 100);
+        manager.addStock(beer, 100);
+        manager.addStock(cider, 100);
+        manager.addStock(cocktail, 100);
     }
 
     public void populateMovies() {
