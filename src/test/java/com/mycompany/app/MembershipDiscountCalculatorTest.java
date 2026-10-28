@@ -245,4 +245,27 @@ void customerWithoutMembershipPaysOriginalPrice() {
     assertEquals(6000L, finalPrice.getPenny());
 }
 
+@Test
+void childVipPriceCombinesMovieSurchargeAndDiscount() {
+    Movie movie = new Movie("Long Movie",160,AgeRequirement.AGE_0,Money.ofPenny(15000));
+
+    TicketPriceCalculator ticketCalculator =new TicketPriceCalculator();
+
+    Money ticketPrice = ticketCalculator.calculateBasePrice(17, movie);
+
+    MovieScreening screening = new MovieScreening(movie,LocalDateTime.of(2026, 12, 18, 18, 0),new Theater("Test Theater", 8, 38));
+    Ticket ticket = new Ticket("t1",ticketPrice,new Seat('A', 1),screening);
+
+    Membership membership = new Membership("member1");
+    membership.updateMembershipTier(MembershipTier.VIP);
+
+    MembershipDiscountCalculator discountCalculator = new MembershipDiscountCalculator();
+
+    Money finalPrice = discountCalculator.calculatePrice(ticket, membership);
+
+    assertEquals(15000L, movie.getBasePrice().getPenny());
+    assertEquals(13000L, ticket.getPrice().getPenny());
+    assertEquals(11050L, finalPrice.getPenny());
+}
+
 }
