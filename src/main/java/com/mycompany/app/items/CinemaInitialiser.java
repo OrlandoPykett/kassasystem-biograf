@@ -20,17 +20,22 @@ public class CinemaInitialiser {
     Food nachos = new Food("F3", Money.ofPenny(12500), "nachos");
 
     // Drinks
-    Beverage cokeS = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false);
-    Beverage cokeM = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false);
-    Beverage cokeL = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false);
+    BeverageDispenser cokeDispenser = new BeverageDispenser("Coca-Cola", 50000);
+    Beverage cokeS = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false, cokeDispenser);
+    Beverage cokeM = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false, cokeDispenser);
+    Beverage cokeL = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false, cokeDispenser);
 
-    Beverage fantaS = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false);
-    Beverage fantaM = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false);
-    Beverage fantaL = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false);
+    BeverageDispenser fantaDispenser = new BeverageDispenser("Fanta", 15000);
+    Beverage fantaS = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false, fantaDispenser);
+    Beverage fantaM = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false, fantaDispenser);
+    Beverage fantaL = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false, fantaDispenser);
 
-    Beverage beer = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true);
-    Beverage cider = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true);
-    Beverage cocktail = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true);
+    BeverageDispenser beerDispenser = new BeverageDispenser("Pripps Blå",10000);
+    Beverage beer = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true, beerDispenser);
+    BeverageDispenser ciderDispenser = new BeverageDispenser("Kopparberg Pear", 10000);
+    Beverage cider = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true, ciderDispenser);
+    BeverageDispenser cocktailDispenser = new BeverageDispenser("Generic Cocktail", 5000);
+    Beverage cocktail = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true, cocktailDispenser);
 
     // Movies
     // Should be moved to a
@@ -45,15 +50,18 @@ public class CinemaInitialiser {
         manager.addStock(baconchips, 100);
         manager.addStock(nachos, 100);
 
-        manager.addStock(cokeS, 100);
-        manager.addStock(cokeM, 100);
-        manager.addStock(cokeL, 100);
-        manager.addStock(fantaS, 100);
-        manager.addStock(fantaM, 100);
-        manager.addStock(fantaL, 100);
-        manager.addStock(beer, 100);
-        manager.addStock(cider, 100);
-        manager.addStock(cocktail, 100);
+        // Register beverages without adding volume again
+        manager.registerItem(cokeS);
+        manager.registerItem(cokeM);
+        manager.registerItem(cokeL);
+
+        manager.registerItem(fantaS);
+        manager.registerItem(fantaM);
+        manager.registerItem(fantaL);
+
+        manager.registerItem(beer);
+        manager.registerItem(cider);
+        manager.registerItem(cocktail);
     }
 
     public void populateMovies(ScreeningManager manager) {

@@ -1,6 +1,7 @@
 
 package com.mycompany.app;
 
+import com.mycompany.app.items.Beverage;
 import com.mycompany.app.items.Item;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,15 +10,37 @@ import java.util.Map;
 
 public class StockManager {
     private final Map<Item, Integer> stock = new HashMap<>();
+    private final Map<String, Item> items = new HashMap<>();
 
     public int getStock(Item item) {
         if (item == null) return 0;
+
+        if (item instanceof Beverage beverage) {
+            return beverage.getDispenser().getVolumeMl();
+        }
+
         return stock.getOrDefault(item, 0);
     }
 
-    public void addStock(Item item, int quantity) {
+    public Collection<Item> getItems() {
+        return new ArrayList<>(items.values());
+    }
+
+    public Item getItem(String id) {
+        if (id == null) return null;
+        return items.get(id.toLowerCase());
+    }
+
+    public void registerItem(Item item) {
         if (item == null) return;
-        if (quantity <= 0) return;
+
+        items.put(item.getId().toLowerCase(), item);
+    }
+
+    public void addStock(Item item, int quantity) {
+        if (item == null || quantity <= 0) return;
+
+        registerItem(item);
 
         int currentQuant = stock.getOrDefault(item, 0);
         stock.put(item, currentQuant + quantity);
@@ -27,6 +50,11 @@ public class StockManager {
         if (item == null) return;
         if (quantity <= 0) return;
 
+        if (item instanceof Beverage beverage) {
+            beverage.getDispenser().dispense(quantity);
+            return;
+        }
+
         int currentQuant = stock.getOrDefault(item, 0);
         if (currentQuant < quantity) return;
 
@@ -35,21 +63,11 @@ public class StockManager {
 
     public boolean hasStock(Item item, int quantity) {
         if (item == null || quantity < 0) return false;
-        return getStock(item) >= quantity;
-    }
 
-    public Collection<Item> getItems() {
-        return new ArrayList<>(stock.keySet());
-    }
-
-    public Item getItem(String id) {
-        if (id == null) return null;
-
-        for (Item item : stock.keySet()) {
-            if (item.getId().equalsIgnoreCase(id)) {
-                return item;
-            }
+        if (item instanceof Beverage beverage) {
+            return beverage.getDispenser().canDispense(quantity);
         }
-        return null;
+
+        return getStock(item) >= quantity;
     }
 }
