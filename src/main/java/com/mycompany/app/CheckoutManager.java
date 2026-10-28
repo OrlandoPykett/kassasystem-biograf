@@ -1,5 +1,6 @@
 package com.mycompany.app;
 
+import com.mycompany.app.items.Beverage;
 import com.mycompany.app.items.Item;
 import com.mycompany.app.items.Ticket;
 
@@ -24,7 +25,17 @@ public class CheckoutManager {
         Map<Item, Integer> itemQuantities = receipt.getItemQuantities();
 
         // Check that items are stocked
+        Map<Item, Integer> stockQuantities = new HashMap<>();
+
         for (Item item : itemQuantities.keySet()) {
+            int quantity = itemQuantities.get(item);
+
+            if (item instanceof Beverage beverage) {
+                quantity *= beverage.getVolumeMl();
+            }
+
+            stockQuantities.put(item, quantity);
+
             if (!stockManager.hasStock(item, itemQuantities.get(item))) {
                 return false;
             }
@@ -36,8 +47,8 @@ public class CheckoutManager {
         }
 
         // Remove purchased items from stock
-        for (Item item : itemQuantities.keySet()) {
-            stockManager.removeStock(item, itemQuantities.get(item));
+        for (Item item : stockQuantities.keySet()) {
+            stockManager.removeStock(item, stockQuantities.get(item));
         }
 
         return true;

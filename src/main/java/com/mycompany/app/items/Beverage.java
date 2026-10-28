@@ -11,11 +11,20 @@ public class Beverage extends Item {
     private final String name;
     private final BeverageSize size;
     private final AgeRequirement ageReq;
+    private final BeverageDispenser dispenser;
 
-    public Beverage(String id, Money price, String name, BeverageSize size, boolean isAlcoholic) {
+    public Beverage(
+            String id,
+            Money price,
+            String name,
+            BeverageSize size,
+            boolean isAlcoholic,
+            BeverageDispenser dispenser
+    ) {
         super(id, price);
         this.size = size;
         this.name = name;
+        this.dispenser = dispenser;
 
         if (isAlcoholic) {
             this.ageReq = AGE_18;
@@ -37,7 +46,11 @@ public class Beverage extends Item {
         return ageReq;
     }
 
-    public boolean customerIsOfAge(int age) {
-        return ageReq.isOfAge(age);
+    public BeverageDispenser getDispenser() {
+        return dispenser;
+    }
+
+    public int getVolumeMl() {
+        return size.getVolumeMl();
     }
 }
