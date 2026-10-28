@@ -52,6 +52,7 @@ public class Receipt {
         TicketEntry(Ticket ticket) {
             super("Ticket " + ticket.getName() + " " + ticket.getSeat(), ticket.getPrice().getPenny());
             this.ticket = ticket;
+
             MovieScreening screening = ticket.getScreening();
             this.detail = screening.getTheater().getName() + ", " + screening.getStartTime().format(TIME_FORMAT);
         }
@@ -194,7 +195,7 @@ public class Receipt {
         return String.format("%d,%02d kr", penny / 100, Math.abs(penny % 100));
     }
 
-    private static String shorten(String text) {
+    private String shorten(String text) {
         return text.length() <= DESCRIPTION_WIDTH ? text : text.substring(0, DESCRIPTION_WIDTH - 1) + "…";
     }
 

@@ -9,7 +9,7 @@ public class InputReader {
     public String readString(String msg) {
         System.out.print(msg + "?>");
         String userString = input.nextLine().trim();
-        while (userString == null || userString.isEmpty()) {
+        while (userString.isEmpty()) {
             System.out.println("Error, must not be empty or blank");
             System.out.print(msg + "?>");
             userString = input.nextLine().trim();

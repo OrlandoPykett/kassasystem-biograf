@@ -121,7 +121,7 @@ public class TicketManager {
         return tickets.remove(ticket);
     }
 
-    private boolean addTicket(Ticket ticket) {
+    public boolean addTicket(Ticket ticket) {
         if (seatIsEmpty(ticket.getScreening(), ticket.getSeat())) {
             return tickets.add(ticket);
         }
