@@ -260,31 +260,65 @@ public class Register {
         System.out.println("Purchase cancelled.");
     }
 
-    private boolean completePurchase() {
-        for (Map.Entry<Item, Integer> entry : receipt.getItemQuantities().entrySet()) {
-            if (stock.getStock(entry.getKey()) < entry.getValue()) {
-                printErrorMessage(describe(entry.getKey()) + " is no longer in stock. Remove it and try again.");
-                return false;
-            }
+   private boolean completePurchase() {
+    // Kontrollera att alla varor finns i lager.
+    for (Map.Entry<Item, Integer> entry
+            : receipt.getItemQuantities().entrySet()) {
+
+        if (stock.getStock(entry.getKey()) < entry.getValue()) {
+            printErrorMessage(
+                    describe(entry.getKey())
+                    + " is no longer in stock. Remove it and try again."
+            );
+            return false;
         }
-        for (Ticket ticket : receipt.getTickets()) {
-            if (!ticketManager.seatIsEmpty(ticket.getScreening(), ticket.getSeat())) {
-                printErrorMessage("Seat " + ticket.getSeat() + " is no longer free. Remove ticket "
-                        + ticket.getId() + " and try again.");
-                return false;
+    }
+
+    // Kontrollera att alla platser fortfarande är lediga.
+    for (Ticket ticket : receipt.getTickets()) {
+        if (!ticketManager.seatIsEmpty(
+                ticket.getScreening(), ticket.getSeat())) {
+
+            printErrorMessage(
+                    "Seat " + ticket.getSeat() + " is no longer free."
+            );
+            return false;
+        }
+    }
+
+    // Även en film utan åldersgräns kan ha lämnat customerAge tom.
+    if (!receipt.getTickets().isEmpty() && customerAge == null) {
+        customerAge = askAge();
+    }
+
+    // Kom ihåg vilka biljetter just detta försök registrerar.
+    List<Ticket> registeredTickets = new java.util.ArrayList<>();
+
+    for (Ticket ticket : receipt.getTickets()) {
+        if (!ticketManager.purchaseTicket(ticket, customerAge)) {
+            // Ångra tidigare registreringar från samma försök.
+            for (Ticket registered : registeredTickets) {
+                ticketManager.removeTicket(registered);
             }
+
+            printErrorMessage("Ticket booking rejected.");
+            return false;
         }
 
-        for (Map.Entry<Item, Integer> entry : receipt.getItemQuantities().entrySet()) {
-            stock.removeStock(entry.getKey(), entry.getValue());
-        }
-        for (Ticket ticket : receipt.getTickets()) {
-            ticketManager.addTicket(ticket);
-        }
-        receipt.lock();
-        state = State.PAID;
-        return true;
+        registeredTickets.add(ticket);
     }
+
+    // Minska lagret först när alla biljetter har accepterats.
+    for (Map.Entry<Item, Integer> entry
+            : receipt.getItemQuantities().entrySet()) {
+
+        stock.removeStock(entry.getKey(), entry.getValue());
+    }
+
+    receipt.lock();
+    state = State.PAID;
+    return true;
+}
 
     //helpers
     private boolean currentlyShopping() {
@@ -367,8 +401,8 @@ public class Register {
         StockManager stock = new StockManager();
         initialiser.populateInventory(stock);
 
-        Register register = new Register(new InputReader(), stock, new TicketManager(),
-                initialiser.getItems(), initialiser.populateMovies());
+        Register register = new Register( new InputReader(),stock, new TicketManager(new AgeControl()),
+        initialiser.getItems(), initialiser.populateMovies());
         register.start();
     }
 

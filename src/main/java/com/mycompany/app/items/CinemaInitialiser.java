@@ -62,7 +62,7 @@ public class CinemaInitialiser {
         */
     }
 
-    public void populateMovies() {
+    public List<MovieScreening> populateMovies() {
         Theater t1 = new Theater("Ragner", 10, 30);
         Theater t2 = new Theater("Torsten", 5, 6);
         Theater t3 = new Theater("Linda", 30, 50);
@@ -83,5 +83,11 @@ public class CinemaInitialiser {
         MovieScreening s1m4 = new MovieScreening(m4, LocalDateTime.of(2026, 12, 2, 15, 45), t3);
 
         MovieScreening s1m5 = new MovieScreening(m5, LocalDateTime.of(2026, 12, 4, 19, 15), t4);
+
+        return List.of(
+        s1m1, s2m1, s3m1, s4m1,
+        s1m2, s2m2, s3m2, s4m2,
+        s1m3, s1m4, s1m5
+);
     }
 }
