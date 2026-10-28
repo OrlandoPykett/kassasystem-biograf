@@ -1,11 +1,11 @@
-package com.mycompany.app.items;
+package com.mycompany.app.initialisation;
 
 import com.mycompany.app.Money;
 import com.mycompany.app.ScreeningManager;
 import com.mycompany.app.StockManager;
+import com.mycompany.app.items.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class CinemaInitialiser {
 

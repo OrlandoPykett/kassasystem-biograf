@@ -1,5 +1,6 @@
-package com.mycompany.app;
+package com.mycompany.app.membership;
 
+import com.mycompany.app.Money;
 import com.mycompany.app.items.Item;
 import com.mycompany.app.items.Beverage;
 import com.mycompany.app.items.AgeRequirement;

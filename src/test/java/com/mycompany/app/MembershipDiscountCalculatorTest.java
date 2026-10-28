@@ -1,6 +1,8 @@
 package com.mycompany.app;
 
 import com.mycompany.app.items.Food;
+import com.mycompany.app.membership.Membership;
+import com.mycompany.app.membership.MembershipDiscountCalculator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

@@ -1,14 +1,12 @@
 package com.mycompany.app;
 
+import com.mycompany.app.initialisation.CinemaInitialiser;
 import com.mycompany.app.items.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Register {
 

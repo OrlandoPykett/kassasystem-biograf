@@ -8,6 +8,9 @@ import com.mycompany.app.items.Seat;
 import com.mycompany.app.items.Theater;
 
 import com.mycompany.app.items.Ticket;
+import com.mycompany.app.membership.Membership;
+import com.mycompany.app.membership.MembershipDiscountCalculator;
+
 import java.time.LocalDateTime;
 
 public class App {

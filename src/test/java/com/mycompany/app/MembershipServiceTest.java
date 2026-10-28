@@ -2,6 +2,8 @@ package com.mycompany.app;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.mycompany.app.membership.Membership;
+import com.mycompany.app.membership.MembershipService;
 import org.junit.jupiter.api.Test;
 
 import com.mycompany.app.util.DummyIdDatabase;
