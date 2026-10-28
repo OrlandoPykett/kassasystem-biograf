@@ -17,6 +17,12 @@ import com.mycompany.app.items.Theater;
 import com.mycompany.app.items.Ticket;
 import com.mycompany.app.items.BeverageDispenser;
 import com.mycompany.app.membership.MembershipTier;
+import net.jqwik.api.ForAll;
+import net.jqwik.api.Property;
+import net.jqwik.api.constraints.LongRange;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 
@@ -243,6 +249,71 @@ void customerWithoutMembershipPaysOriginalPrice() {
     Money finalPrice = calculator.calculatePrice(food, null);
 
     assertEquals(6000L, finalPrice.getPenny());
+}
+
+@Test
+void childVipPriceCombinesMovieSurchargeAndDiscount() {
+    Movie movie = new Movie("Long Movie",160,AgeRequirement.AGE_0,Money.ofPenny(15000));
+
+    TicketPriceCalculator ticketCalculator =new TicketPriceCalculator();
+
+    Money ticketPrice = ticketCalculator.calculateBasePrice(17, movie);
+
+    MovieScreening screening = new MovieScreening(movie,LocalDateTime.of(2026, 12, 18, 18, 0),new Theater("Test Theater", 8, 38));
+    Ticket ticket = new Ticket("t1",ticketPrice,new Seat('A', 1),screening);
+
+    Membership membership = new Membership("member1");
+    membership.updateMembershipTier(MembershipTier.VIP);
+
+    MembershipDiscountCalculator discountCalculator = new MembershipDiscountCalculator();
+
+    Money finalPrice = discountCalculator.calculatePrice(ticket, membership);
+
+    assertEquals(15000L, movie.getBasePrice().getPenny());
+    assertEquals(13000L, ticket.getPrice().getPenny());
+    assertEquals(11050L, finalPrice.getPenny());
+}
+
+@Property(tries = 1000)
+void higherMembershipTierNeverPaysMore(@ForAll @LongRange(min = 0, max = 100000) long originalPenny) {
+
+    Food food = new Food("f1",Money.ofPenny(originalPenny),"snack");
+
+    Membership standard = new Membership("standard");
+
+    Membership premium = new Membership("premium");
+    premium.updateMembershipTier(MembershipTier.PREMIUM);
+
+    Membership vip = new Membership("vip");
+    vip.updateMembershipTier(MembershipTier.VIP);
+
+    MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
+
+    long standardPrice = calculator.calculatePrice(food, standard).getPenny();
+    long premiumPrice = calculator.calculatePrice(food, premium).getPenny();
+    long vipPrice = calculator.calculatePrice(food, vip).getPenny();
+
+    assertTrue(vipPrice <= premiumPrice);
+    assertTrue(premiumPrice <= standardPrice);
+    assertTrue(standardPrice <= originalPenny);
+    assertTrue(vipPrice >= 0);
+
+    assertEquals(originalPenny, food.getPrice().getPenny());
+}
+
+@ParameterizedTest
+@EnumSource(MembershipTier.class)
+void alcoholGetsNoDiscountForAnyMembershipTier(MembershipTier tier) {
+    Membership membership = new Membership("member1");
+    membership.updateMembershipTier(tier);
+
+    Beverage beer = new Beverage( "b1", Money.ofPenny(6000), "beer",BeverageSize.MEDIUM, true, new BeverageDispenser("beer", 10000));
+
+    MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
+
+    Money price = calculator.calculatePrice(beer, membership);
+
+    assertEquals(6000L, price.getPenny());
 }
 
 }
