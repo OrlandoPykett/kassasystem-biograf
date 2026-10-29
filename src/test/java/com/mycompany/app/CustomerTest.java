@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 import com.mycompany.app.membership.Membership;
 import org.junit.jupiter.api.Test;
@@ -76,6 +77,10 @@ public class CustomerTest {
     public void customer_with_no_membership_is_valid() {
         Customer cust = new Customer("ID", "NAME", null, LocalDateTime.now());
         assertFalse(cust.isMember());
+
+        assertThrows(NoSuchElementException.class, () -> {
+            cust.getMembership().get();
+        });
     }
 
     @Test
