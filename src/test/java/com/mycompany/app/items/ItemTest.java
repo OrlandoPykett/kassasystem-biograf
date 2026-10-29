@@ -115,4 +115,26 @@ public class ItemTest {
         MovieScreening screening = new MovieScreening(movie, LocalDateTime.of(2026, 12, 12, 18, 18, 0), theater);
         return new Ticket(id, Money.ofPenny(500), seat, screening);
     }
+
+    @Test
+    void itemIsNotEqualToNull() {
+        assertNotEquals(null, food);
+    }
+
+    @Test
+    void itemsOfDifferentClassesAreNotEqual() {
+        Food foodItem = new Food("same", Money.ofPenny(5000), "food");
+
+        Beverage beverageItem = new Beverage(
+                "same",
+                Money.ofPenny(5000),
+                "food",
+                BeverageSize.MEDIUM,
+                false,
+                new BeverageDispenser("Drink", 1000)
+        );
+
+        assertNotEquals(foodItem, beverageItem);
+    }
+
 }

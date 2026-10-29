@@ -2,8 +2,7 @@ package com.mycompany.app.items;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AgeControlTest {
 
@@ -33,5 +32,11 @@ public class AgeControlTest {
         AgeControl ageControl = new AgeControl();
 
         assertTrue(ageControl.isAccepted(18, AgeRequirement.AGE_18));
+    }
+
+    @Test
+    void getMinimumAgeReturnsCorrectAge() {
+        AgeRequirement minimumAge = AgeRequirement.AGE_15;
+        assertEquals(15, minimumAge.getMinimumAge());
     }
 }

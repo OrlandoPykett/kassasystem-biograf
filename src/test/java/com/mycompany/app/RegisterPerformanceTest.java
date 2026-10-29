@@ -23,11 +23,11 @@ public class RegisterPerformanceTest {
 
     public static void main(String[] args) {
         List<Scenario> scenarios = List.of(
-                normalSales(10),
-                repeatedCancellations(100),
-                invalidItemAttempts(100),
-                emptyCheckoutAttempts(100),
-                invalidCommands(1000),
+                normalSales(500000),
+                repeatedCancellations(100000),
+                invalidItemAttempts(100000),
+                emptyCheckoutAttempts(100000),
+                invalidCommands(100000),
                 ageValidationAttempt()
         );
 

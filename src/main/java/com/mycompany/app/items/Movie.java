@@ -11,7 +11,6 @@ public class Movie {
     public Movie(String title, int durationMin, AgeRequirement ageReq) {
         this.title = title;
         this.durationMin = durationMin;
-        this.ageReq = ageReq;
 
         if (this.title == null || title.isBlank()) {
             throw new IllegalArgumentException(
@@ -26,9 +25,7 @@ public class Movie {
         }
 
         // If a movie is created without an age requirement, ageReq is set to 0
-        if (ageReq == null) {
-            ageReq = AgeRequirement.AGE_0;
-        }
+        this.ageReq = ageReq == null ? AgeRequirement.AGE_0 : ageReq;
     }
 
     public String getTitle() {

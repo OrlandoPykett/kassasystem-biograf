@@ -142,7 +142,7 @@ public class Register {
             printErrorMessage("A purchase is already in progress. Pay or cancel first.");
             return;
         }
-        customerAge = null;
+        customerAge = 18; // default to 18 TODO add input
         receipt = new Receipt();
         state = State.PURCHASING;
         System.out.println("New customer. Receipt created.");

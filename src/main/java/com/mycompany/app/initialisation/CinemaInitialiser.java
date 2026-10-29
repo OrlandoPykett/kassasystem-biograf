@@ -97,4 +97,6 @@ public class CinemaInitialiser {
         MovieScreening s1m5 = new MovieScreening(m5, LocalDateTime.of(2026, 12, 4, 19, 15), t4);
         manager.addScreening(s1m5);
     }
+
+
 }
