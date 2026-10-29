@@ -1,14 +1,8 @@
 package com.mycompany.app;
 
-import com.mycompany.app.items.Beverage;
-import com.mycompany.app.items.BeverageSize;
-import com.mycompany.app.items.Food;
-import com.mycompany.app.items.Item;
+import com.mycompany.app.items.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.mycompany.app.items.BeverageDispenser;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

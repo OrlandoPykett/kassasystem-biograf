@@ -3,13 +3,14 @@ package com.mycompany.app.items;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Theater {
 
     private final String name;
     private final int numberOfRows;
     private final int seatsPerRow;
-    private final Set<Seat> seats =  new HashSet<>();
+    private final TreeSet<Seat> seats = new TreeSet<>();
 
     public Theater(String name, int numberOfRows, int seatsPerRow) {
         this.name = name;
@@ -17,7 +18,7 @@ public class Theater {
         this.seatsPerRow = seatsPerRow;
 
         for (int row = 0; row < numberOfRows; row++) {
-            for (int i = 0; i < seatsPerRow; i++) {
+            for (int i = 1; i < seatsPerRow + 1; i++) {
                 seats.add(new Seat((char) ('A' + row), i));
             }
         }
@@ -27,8 +28,8 @@ public class Theater {
         return name;
     }
 
-    public Set<Seat> getSeats() {
-        return Collections.unmodifiableSet(seats);
+    public TreeSet<Seat> getSeats() {
+        return new TreeSet<>(seats);
     }
 
     public boolean hasSeat(Seat seat) {

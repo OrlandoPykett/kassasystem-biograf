@@ -42,6 +42,11 @@ public class StockManager {
     public void addStock(Item item, int quantity) {
         if (item == null || quantity <= 0) return;
 
+        if (item instanceof Beverage) {
+            registerItem(item);
+            return;
+        }
+
         registerItem(item);
 
         int currentQuant = stock.getOrDefault(item, 0);
@@ -49,11 +54,11 @@ public class StockManager {
     }
 
     public void removeStock(Item item, int quantity) {
-        if (item == null) return;
-        if (quantity <= 0) return;
+        if (item == null || quantity <= 0) return;
 
         if (item instanceof Beverage beverage) {
-            beverage.getDispenser().dispense(quantity);
+            int volumeMl = quantity * beverage.getVolumeMl();
+            beverage.getDispenser().dispense(volumeMl);
             return;
         }
 
@@ -67,7 +72,8 @@ public class StockManager {
         if (item == null || quantity < 0) return false;
 
         if (item instanceof Beverage beverage) {
-            return beverage.getDispenser().canDispense(quantity);
+            int volumeMl = quantity * beverage.getVolumeMl();
+            return quantity == 0 || beverage.getDispenser().canDispense(volumeMl);
         }
 
         return getStock(item) >= quantity;

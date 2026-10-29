@@ -1,7 +1,6 @@
 package com.mycompany.app.items;
 
 import com.mycompany.app.Money;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -75,5 +74,45 @@ public class ItemTest {
         assertEquals(Money.ofPenny(500), ticket.getPrice());
         assertEquals(seat, ticket.getSeat());
         assertEquals(screening, ticket.getScreening());
+    }
+
+    @Test
+    void itemsWithSameIdAreEqual() {
+        Food food2 = new Food("f1", Money.ofPenny(5000), "Other food");
+        Beverage drink2 = new Beverage("b1", Money.ofPenny(3000),
+                "Other drink", BeverageSize.SMALL,
+                true, new BeverageDispenser("Dispenser", 1000));
+        Ticket ticket1 = createTicket("t1", 'E', 9);
+        Ticket ticket2 = createTicket("t1", 'C', 16);
+
+        assertAll( () -> {
+            assertEquals(food, food2);
+            assertEquals(drink, drink2);
+            assertEquals(ticket1, ticket2);
+        });
+    }
+
+    @Test
+    void itemsWithoutSameIdAreNotEqual() {
+        Food food2 = new Food("f2", Money.ofPenny(5000), "food");
+        Beverage drink2 = new Beverage("b2", Money.ofPenny(2300),
+                "drink", BeverageSize.MEDIUM,
+                false, new BeverageDispenser("Dispenser", 1000));
+        Ticket ticket1 = createTicket("t1", 'E', 9);
+        Ticket ticket2 = createTicket("t2", 'E', 9);
+
+        assertAll( () -> {
+            assertNotEquals(food, food2);
+            assertNotEquals(drink, drink2);
+            assertNotEquals(ticket1, ticket2);
+        });
+    }
+
+    private Ticket createTicket(String id, char row, int num) {
+        Movie movie = new Movie("move", 120, AgeRequirement.AGE_0);
+        Theater theater = new Theater("Harald", 25, 60);
+        Seat seat = new Seat(row, num);
+        MovieScreening screening = new MovieScreening(movie, LocalDateTime.of(2026, 12, 12, 18, 18, 0), theater);
+        return new Ticket(id, Money.ofPenny(500), seat, screening);
     }
 }

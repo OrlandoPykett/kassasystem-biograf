@@ -1,8 +1,9 @@
 package com.mycompany.app.items;
 
 import java.util.Objects;
+import java.util.Set;
 
-public class Seat {
+public class Seat implements Comparable<Seat>{
 
     private final char row;
     private final int number;
@@ -35,5 +36,13 @@ public class Seat {
     @Override
     public int hashCode() {
         return Objects.hash(row, number);
+    }
+
+    @Override
+    public int compareTo(Seat other) {
+        if (this.row != other.row) {
+            return Character.compare(this.row, other.row);
+        }
+        return Integer.compare(this.number, other.number);
     }
 }
