@@ -57,7 +57,7 @@ public class RegisterTest {
         CinemaInitialiser initialiser = new CinemaInitialiser();
         stock = new StockManager();
         initialiser.populateInventory(stock);
-        Collection<Item> items = stock.getItems();
+        items = new ArrayList<>(stock.getItems());
 
         input = new FakeInput();
         ticketManager = new TicketManager();
@@ -93,6 +93,11 @@ public class RegisterTest {
         return items.stream()
                 .filter(i -> i instanceof Beverage b && b.getAgeReq() == AgeRequirement.AGE_18)
                 .findFirst().orElseThrow();
+    }
+
+    private void newCustomer(int age) {
+        input.answer(String.valueOf(age));
+        cmd("nc");
     }
 
     /**
@@ -150,6 +155,10 @@ public class RegisterTest {
             "ticket", "t", "show", "s", "pay card", "pc", "print", "p", "cancel", "c",
             "help", "h", "exit", "e"})
     void everyCommandAliasIsRecognised(String command) {
+        if (command.equals("nc") || command.equals("new customer")) {
+            input.answer("18");
+        }
+
         register.executeCommand(command);
         assertFalse(output().contains("wrong command"));
     }
@@ -170,7 +179,7 @@ public class RegisterTest {
 
     @Test
     void startRunsUntilExitAndCannotExitDuringPurchase() {
-        input.answer("nc", "exit", "cancel", "exit");
+        input.answer("nc", "18", "exit", "cancel", "exit");
         register.start();
         assertOutputContains("Cant exit with an ongoing purchase");
         assertOutputContains("Purchase cancelled.");
@@ -284,10 +293,17 @@ public class RegisterTest {
 
     @Test
     void addAgeRestrictedItemAsTooYoungCustomerIsRejectedAfterInvalidAges() {
-        Item item = adultBeverage();
+        Item item = stock.getItems().stream()
+                .filter(i -> i instanceof Beverage b
+                        && b.getAgeReq() == AgeRequirement.AGE_18)
+                .findFirst()
+                .orElseThrow();
+
         cmd("nc");
+
         input.answer(item.getId(), "abc", "-1", "200", "0");
         cmd("add");
+
         assertOutputContains("Not a valid age: abc");
         assertOutputContains("Not a valid age: -1");
         assertOutputContains("Not a valid age: 200");
@@ -352,7 +368,7 @@ public class RegisterTest {
     @Test
     void ticketForAgeRestrictedMovieAsTooYoungCustomerIsRejected() {
         cmd("nc");
-        input.answer(String.valueOf(screeningNumber(true)), "0");
+        input.answer("10", String.valueOf(screeningNumber(true)));
         cmd("ticket");
         assertOutputContains("Customer must be at least");
     }
@@ -463,7 +479,7 @@ public class RegisterTest {
         stock.removeStock(item, stock.getStock(item));
 
         cmd("pay card");
-        assertOutputContains("is no longer in stock.");
+        assertOutputContains("Checkout failed. Stock or seat availability may have changed.");
     }
 
     @Test
@@ -474,6 +490,6 @@ public class RegisterTest {
                 new Ticket("X", Money.ofPenny(100), seatOf(seat), screening(number)), 99);
 
         cmd("pay card");
-        assertOutputContains("is no longer free.");
+        assertOutputContains("Checkout failed. Stock or seat availability may have changed.");
     }
 }

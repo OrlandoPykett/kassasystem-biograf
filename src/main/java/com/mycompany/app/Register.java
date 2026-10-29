@@ -142,7 +142,7 @@ public class Register {
             printErrorMessage("A purchase is already in progress. Pay or cancel first.");
             return;
         }
-        customerAge = 18; // default to 18 TODO add input
+        customerAge = null;
         receipt = new Receipt();
         state = State.PURCHASING;
         System.out.println("New customer. Receipt created.");
@@ -164,17 +164,17 @@ public class Register {
             return;
         }
 
-        if (!AgeControl.isAccepted(customerAge, item)) {
-            printErrorMessage("Customer is too young for " + describe(item) + ".");
-            return;
-        }
+//        if (!AgeControl.isAccepted(customerAge, item)) {
+//            printErrorMessage("Customer is too young for " + describe(item) + ".");
+//            return;
+//        }
 
-        /*
+
         if (!isOfAge(ageRequirementOf(item))) {
             printErrorMessage("Customer is too young for " + describe(item) + ".");
             return;
         }
-         */
+
 
         receipt.addItem(item, describe(item));
         System.out.println("Added " + describe(item) + ". Subtotal: " + Receipt.format(receipt.total()));
@@ -223,18 +223,18 @@ public class Register {
 
         AgeRequirement ageReq = screening.getMovie().getAgeReq();
 
-        if (AgeControl.isAccepted(customerAge, ageReq)) {
+//        if (!AgeControl.isAccepted(customerAge, ageReq)) {
+//            printErrorMessage("Customer must be at least " + ageReq.getMinimumAge()
+//                    + " to see " + screening.getMovie().getTitle() + ".");
+//            return;
+//        }
+
+        if (!isOfAge(ageReq)) {
             printErrorMessage("Customer must be at least " + ageReq.getMinimumAge()
                     + " to see " + screening.getMovie().getTitle() + ".");
             return;
         }
-        /*
-        if (!isOfAge(required)) {
-            printErrorMessage("Customer must be at least " + required.getMinimumAge()
-                    + " to see " + screening.getMovie().getTitle() + ".");
-            return;
-        }
-        */
+
 
         String seatText = input.readString("Seat (e.g. A5)");
         Seat seat = parseSeat(seatText);
@@ -277,7 +277,7 @@ public class Register {
             return;
         }
 
-        if (!checkoutManager.checkout(receipt, customerAge)) {
+        if (!checkoutManager.checkout(receipt, customerAge == null ? 18 : customerAge)) {
             printErrorMessage("Checkout failed. Stock or seat availability may have changed.");
             return;
         }
@@ -361,13 +361,11 @@ public class Register {
         return true;
     }
 
-    /*
     private boolean isOfAge(AgeRequirement required) {
         if (required == AgeRequirement.AGE_0) return true;
         if (customerAge == null) customerAge = askAge();
         return required.isOfAge(customerAge);
     }
-    */
 
     private int askAge() {
         while (true) {
@@ -426,6 +424,13 @@ public class Register {
         System.out.println("Cinema register");
         System.out.println("New customer (nc) | Add (a) | Remove (r) | Screenings (sc) | Ticket (t) | Show (s)");
         System.out.println("Pay card (pc)  | Print (p) | Cancel (c) | Help (h) | Exit (e)");
+    }
+
+    private AgeRequirement ageRequirementOf(Item item) {
+        if (item instanceof Beverage beverage) {
+            return beverage.getAgeReq();
+        }
+        return AgeRequirement.AGE_0;
     }
 
     public static void main(String[] args) {

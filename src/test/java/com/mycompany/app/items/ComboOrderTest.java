@@ -28,6 +28,21 @@ public class ComboOrderTest {
         assertEquals(Money.ofPenny(40000), combo.getPrice());
     }
 
+    private Ticket createTicket(String id, long price, int seatNumber) {
+        MovieScreening screening = new MovieScreening(
+                new Movie("Movie", 120, AgeRequirement.AGE_0),
+                LocalDateTime.of(2026, 12, 18, 18, 0),
+                new Theater("Harald", 8, 38)
+        );
+
+        return new Ticket(
+                id,
+                Money.ofPenny(price),
+                new Seat('E', seatNumber),
+                screening
+        );
+    }
+
     @Test
     void comboOrderAcceptsRequiredItems() {
         Item[] order = createSampleOrder();
@@ -149,9 +164,82 @@ public class ComboOrderTest {
 
     @Test
     void foodItemAtExactly50KronorIsAccepted() {
-    Item[] order = createSampleOrder();
-    order[0] = new Food("f1", Money.ofPenny(5000), "popcorn");
+        Item[] order = createSampleOrder();
+        order[0] = new Food("f1", Money.ofPenny(5000), "popcorn");
 
-    assertDoesNotThrow(() -> new ComboOrder(order));
-}
+        assertDoesNotThrow(() -> new ComboOrder(order));
+    }
+
+    @Test
+    void comboOrderSelectsTwoMostExpensiveTickets() {
+        Item[] order = Arrays.copyOf(createSampleOrder(), 7);
+
+        Ticket expensiveTicket1 = createTicket("t3", 3000, 14);
+        Ticket expensiveTicket2 = createTicket("t4", 4000, 15);
+
+        order[5] = expensiveTicket1;
+        order[6] = expensiveTicket2;
+
+        ComboOrder combo = new ComboOrder(order);
+
+        assertThat(
+                Arrays.asList(combo.getItems()[3], combo.getItems()[4]),
+                containsInAnyOrder(expensiveTicket1, expensiveTicket2)
+        );
+    }
+
+    @Test
+    void comboOrderSelectsMostExpensiveFoodAndReturnsCheaperFoodAsExcess() {
+        Item[] order = Arrays.copyOf(createSampleOrder(), 7);
+
+        Food expensiveFood = new Food("f2", Money.ofPenny(9000), "Nachos");
+        Food mediumFood = new Food("f3", Money.ofPenny(7000), "Chips");
+
+        order[5] = expensiveFood;
+        order[6] = mediumFood;
+
+        ComboOrder combo = new ComboOrder(order);
+
+        assertThat(combo.getItems()[0], is(expensiveFood));
+        assertTrue(combo.getExcess().contains(mediumFood));
+    }
+
+    @Test
+    void comboOrderRejectsOrderWithoutFood() {
+        Item[] order = createSampleOrder();
+        order[0] = createTicket("t3", 2000, 14);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new ComboOrder(order));
+    }
+
+    @Test
+    void comboOrderRejectsOrderWithoutEnoughBeverages() {
+        Item[] order = createSampleOrder();
+        order[1] = createTicket("t3", 2000, 14);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new ComboOrder(order));
+    }
+
+    @Test
+    void comboOrderRejectsOrderWithoutEnoughTickets() {
+        Item[] order = createSampleOrder();
+        order[3] = new Food("f2", Money.ofPenny(6000), "Nachos");
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new ComboOrder(order));
+    }
+
+    @Test
+    void comboOrderReturnsExcessTickets() {
+        Item[] order = Arrays.copyOf(createSampleOrder(), 6);
+
+        Ticket excessTicket = createTicket("t3", 1000, 14);
+        order[5] = excessTicket;
+
+        ComboOrder combo = new ComboOrder(order);
+
+        assertTrue(combo.getExcess().contains(excessTicket));
+    }
 }

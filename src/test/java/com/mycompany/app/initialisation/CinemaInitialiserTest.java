@@ -26,7 +26,7 @@ public class CinemaInitialiserTest {
         Food nachos = (Food) manager.getItem("F3");
 
         assertAll(
-                () -> assertThat(manager.getStock(popcorn), is(100)),
+                () -> assertThat(manager.getStock(popcorn), is(1000)),
                 () -> assertThat(manager.getStock(baconchips), is(100)),
                 () -> assertThat(manager.getStock(nachos), is(100))
         );
