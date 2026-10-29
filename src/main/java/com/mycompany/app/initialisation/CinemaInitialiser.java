@@ -16,35 +16,35 @@ public class CinemaInitialiser {
 
 
     // snacks
-    Food popcorn = new Food("F1", Money.ofPenny(7500), "popcorn");
-    Food baconchips = new Food("F2", Money.ofPenny(6500), "baconchips");
-    Food nachos = new Food("F3", Money.ofPenny(12500), "nachos");
+    private final Food popcorn = new Food("F1", Money.ofPenny(7500), "popcorn");
+    private final Food baconchips = new Food("F2", Money.ofPenny(6500), "baconchips");
+    private final Food nachos = new Food("F3", Money.ofPenny(12500), "nachos");
 
     // Drinks
-    BeverageDispenser cokeDispenser = new BeverageDispenser("Coca-Cola", 50000);
-    Beverage cokeS = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false, cokeDispenser);
-    Beverage cokeM = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false, cokeDispenser);
-    Beverage cokeL = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false, cokeDispenser);
+    private final BeverageDispenser cokeDispenser = new BeverageDispenser("Coca-Cola", 50000);
+    private final Beverage cokeS = new Beverage("B1S", Money.ofPenny(4000), "coca-cola", BeverageSize.SMALL, false, cokeDispenser);
+    private final Beverage cokeM = new Beverage("B1M", Money.ofPenny(6000), "coca-cola", BeverageSize.MEDIUM, false, cokeDispenser);
+    private final Beverage cokeL = new Beverage("B1L", Money.ofPenny(8000), "coca-cola", BeverageSize.LARGE, false, cokeDispenser);
 
-    BeverageDispenser fantaDispenser = new BeverageDispenser("Fanta", 15000);
-    Beverage fantaS = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false, fantaDispenser);
-    Beverage fantaM = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false, fantaDispenser);
-    Beverage fantaL = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false, fantaDispenser);
+    private final BeverageDispenser fantaDispenser = new BeverageDispenser("Fanta", 15000);
+    private final Beverage fantaS = new Beverage("B2S", Money.ofPenny(4000), "fanta", BeverageSize.SMALL, false, fantaDispenser);
+    private final Beverage fantaM = new Beverage("B2M", Money.ofPenny(6000), "fanta", BeverageSize.MEDIUM, false, fantaDispenser);
+    private final Beverage fantaL = new Beverage("b2l", Money.ofPenny(8000), "fanta", BeverageSize.LARGE, false, fantaDispenser);
 
-    BeverageDispenser beerDispenser = new BeverageDispenser("Pripps Blå",10000);
-    Beverage beer = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true, beerDispenser);
-    BeverageDispenser ciderDispenser = new BeverageDispenser("Kopparberg Pear", 10000);
-    Beverage cider = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true, ciderDispenser);
-    BeverageDispenser cocktailDispenser = new BeverageDispenser("Generic Cocktail", 5000);
-    Beverage cocktail = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true, cocktailDispenser);
+    private final BeverageDispenser beerDispenser = new BeverageDispenser("Pripps Blå",10000);
+    private final Beverage beer = new Beverage("B3", Money.ofPenny(1200), "beer", BeverageSize.MEDIUM, true, beerDispenser);
+    private final BeverageDispenser ciderDispenser = new BeverageDispenser("Kopparberg Pear", 10000);
+    private final Beverage cider = new Beverage("B4", Money.ofPenny(1000), "cider", BeverageSize.MEDIUM, true, ciderDispenser);
+    private final BeverageDispenser cocktailDispenser = new BeverageDispenser("Generic Cocktail", 5000);
+    private final Beverage cocktail = new Beverage("B5", Money.ofPenny(16000), "cocktail", BeverageSize.SMALL, true, cocktailDispenser);
 
     // Movies
     // Should be moved to a
-    Movie m1 = new Movie("The Godfather", 175, AgeRequirement.AGE_15);
-    Movie m2 = new Movie("The Dark Knight", 152, AgeRequirement.AGE_12);
-    Movie m3 = new Movie("Pulp Fiction", 154, AgeRequirement.AGE_18);
-    Movie m4 = new Movie("Parasite", 132, AgeRequirement.AGE_15);
-    Movie m5 = new Movie("The Lion King", 88, AgeRequirement.AGE_0);
+    private final Movie m1 = new Movie("The Godfather", 175, AgeRequirement.AGE_15);
+    private final Movie m2 = new Movie("The Dark Knight", 152, AgeRequirement.AGE_12);
+    private final Movie m3 = new Movie("Pulp Fiction", 154, AgeRequirement.AGE_18);
+    private final Movie m4 = new Movie("Parasite", 132, AgeRequirement.AGE_15);
+    private final Movie m5 = new Movie("The Lion King", 88, AgeRequirement.AGE_0);
 
     public List<Item> getItems() { return List.of(popcorn, baconchips, nachos, cokeS, cokeM,cokeL,fantaS,fantaM,fantaL,beer,cider,cocktail); }
 
