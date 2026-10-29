@@ -57,12 +57,13 @@ public class CustomerTest {
                                 .ofLocalizedDateTime(FormatStyle.SHORT)
                                 .withLocale(Locale.of("se", "SW"));
 
-        Customer cust = new Customer("ID", "NAME", getDefaultMembership(), LocalDateTime.now()) {
-            @Override
-            public LocalDateTime getCustomerSince() {
-                return registrationDate;
-            }
-        };
+        Customer cust = new Customer("ID", "NAME", getDefaultMembership(), registrationDate);
+        // {
+        //     @Override
+        //     public LocalDateTime getCustomerSince() {
+        //         return registrationDate;
+        //     }
+        // };
 
         assertEquals("2000-01-02 09:30", formatter.format(cust.getCustomerSince()));
     }
@@ -90,7 +91,9 @@ public class CustomerTest {
         Customer cust3 = new Customer("ID2", "NAME1", getDefaultMembership(), LocalDateTime.now());
         
         assertTrue(cust1.equals(cust2));
-        assertNotEquals(cust1.hashCode(), cust3.hashCode());;
+        assertFalse(cust1.equals(cust3));
+        assertFalse(cust1.equals(new Object()));
+        assertEquals(cust1.hashCode(), cust2.hashCode());
     }
     
     @Test
