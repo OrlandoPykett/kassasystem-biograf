@@ -6,6 +6,7 @@ import com.mycompany.app.StockManager;
 import com.mycompany.app.items.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CinemaInitialiser {
 
@@ -44,6 +45,9 @@ public class CinemaInitialiser {
     private final Movie m3 = new Movie("Pulp Fiction", 154, AgeRequirement.AGE_18);
     private final Movie m4 = new Movie("Parasite", 132, AgeRequirement.AGE_15);
     private final Movie m5 = new Movie("The Lion King", 88, AgeRequirement.AGE_0);
+
+    public List<Item> getItems() { return List.of(popcorn, baconchips, nachos, cokeS, cokeM,cokeL,fantaS,fantaM,fantaL,beer,cider,cocktail); }
+
 
     public void populateInventory(StockManager manager) {
         manager.addStock(popcorn, 100);

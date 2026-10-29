@@ -35,35 +35,5 @@ public class TicketPriceCalculator {
         }
     }
 
-    // Beräknar biljettpriset före medlemsrabatt.
-    // Filmens sparade grundpris ändras inte.
-    public Money calculateBasePrice(int age, Movie movie) {
-        if (age < 0) {
-            throw new IllegalArgumentException("Age cannot be negative");
-        }
 
-        Money price = movie.getBasePrice();
-
-        // Filmer längre än 150 minuter får ett tillägg på 20 kr.
-        if (movie.getDurationMin() > LONG_MOVIE_MINUTES) {
-            price = price.add(Money.ofPenny(LONG_MOVIE_EXTRA));
-        }
-
-        // Bestäm åldersavdraget innan det dras från priset.
-        long reduction = 0;
-
-        if (age < ADULT_AGE) {
-            reduction = CHILD_REDUCTION;
-        } else if (age >= SENIOR_AGE) {
-            reduction = SENIOR_REDUCTION;
-        }
-
-        // Priset efter åldersavdrag ska vara minst 40 kr.
-        // Kontrollera först för att undvika en negativ subtraktion.
-        if (price.getPenny() <= MINIMUM_PRICE + reduction) {
-            return Money.ofPenny(MINIMUM_PRICE);
-        }
-
-        return price.subtract(Money.ofPenny(reduction));
-    }
 }

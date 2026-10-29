@@ -6,7 +6,9 @@ import com.mycompany.app.items.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Register {
 
@@ -29,29 +31,27 @@ public class Register {
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     /////
 
-    private final TicketManager ticketManager;
-    private final StockManager stockManager;
-    private final CheckoutManager checkoutManager;
     private final ScreeningManager screeningManager;
+    private final TicketManager ticketManager;
+    private final StockManager stock;
     private final InputReader input;
+
+    private final Map<String, Item> items = new HashMap<>();
 
     private Receipt receipt;
     private Integer customerAge;
     private State state = State.IDLING;
     private boolean running = true;
 
-    public Register(
-            InputReader input,
-            StockManager stockManager,
-            TicketManager ticketManager,
-            CheckoutManager checkoutManager,
-            ScreeningManager screeningManager
-    ) {
+    public Register(InputReader input, StockManager stock, TicketManager ticketManager,
+                    Collection<Item> items, ScreeningManager screeningManager) {
         this.input = input;
-        this.stockManager = stockManager;
+        this.stock = stock;
         this.ticketManager = ticketManager;
-        this.checkoutManager = checkoutManager;
         this.screeningManager = screeningManager;
+        for (Item item : items) {
+            this.items.put(item.getId().toLowerCase(), item);
+        }
     }
 
     protected void start() {
@@ -150,32 +150,21 @@ public class Register {
 
     private void addCommand() {
         if (!currentlyShopping()) return;
-
         String id = input.readString("Item id");
-        Item item = stockManager.getItem(id);
-
+        Item item = items.get(id.toLowerCase());
         if (item == null) {
             printErrorMessage("Unknown item id: " + id);
             return;
         }
         // The stock is only reduced when the customer pays, so count what is already on the receipt
-        if (stockManager.getStock(item) <= receipt.countOf(item)) {
+        if (stock.getStock(item) <= receipt.countOf(item)) {
             printErrorMessage(describe(item) + " is out of stock.");
             return;
         }
-
-        if (!AgeControl.isAccepted(customerAge, item)) {
-            printErrorMessage("Customer is too young for " + describe(item) + ".");
-            return;
-        }
-
-        /*
         if (!isOfAge(ageRequirementOf(item))) {
             printErrorMessage("Customer is too young for " + describe(item) + ".");
             return;
         }
-         */
-
         receipt.addItem(item, describe(item));
         System.out.println("Added " + describe(item) + ". Subtotal: " + Receipt.format(receipt.total()));
     }
@@ -191,19 +180,12 @@ public class Register {
     }
 
     private void screeningsCommand() {
-        int i = 1;
-
-        for (MovieScreening screening : screeningManager.getScreenings()) {
-            int minAge = screening.getMovie().getAgeReq().getMinimumAge();
-
-            System.out.printf(
-                    "%2d. %-16s %s  %-8s %s%n",
-                    i++,
-                    screening.getMovie().getTitle(),
-                    screening.getStartTime().format(TIME_FORMAT),
-                    screening.getTheater().getName(),
-                    minAge == 0 ? "all ages" : minAge + "+"
-            );
+        for (int i = 0; i < screeningManager.getScreenings().size(); i++) {
+            MovieScreening s = screeningManager.getScreenings().get(i);
+            int minAge = s.getMovie().getAgeReq().getMinimumAge();
+            System.out.printf("%2d. %-16s %s  %-8s %s%n",
+                    i + 1, s.getMovie().getTitle(), s.getStartTime().format(TIME_FORMAT),
+                    s.getTheater().getName(), minAge == 0 ? "all ages" : minAge + "+");
         }
     }
 
@@ -211,31 +193,18 @@ public class Register {
         if (!currentlyShopping()) return;
         String number = input.readString("Screening number (see 'screenings')");
         MovieScreening screening;
-
-        List<MovieScreening> screenings = screeningManager.getScreenings();
-
         try {
-            screening = screenings.get(Integer.parseInt(number) - 1);
+            screening = screeningManager.getScreenings().get(Integer.parseInt(number) - 1);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             printErrorMessage("No screening with number " + number);
             return;
         }
-
-        AgeRequirement ageReq = screening.getMovie().getAgeReq();
-
-        if (AgeControl.isAccepted(customerAge, ageReq)) {
-            printErrorMessage("Customer must be at least " + ageReq.getMinimumAge()
-                    + " to see " + screening.getMovie().getTitle() + ".");
-            return;
-        }
-        /*
+        AgeRequirement required = screening.getMovie().getAgeReq();
         if (!isOfAge(required)) {
             printErrorMessage("Customer must be at least " + required.getMinimumAge()
                     + " to see " + screening.getMovie().getTitle() + ".");
             return;
         }
-        */
-
         String seatText = input.readString("Seat (e.g. A5)");
         Seat seat = parseSeat(seatText);
         if (seat == null || !screening.getTheater().hasSeat(seat)) {
@@ -271,44 +240,15 @@ public class Register {
 
     private void payCardCommand(){
         if (!currentlyShopping()) return;
-
         if (receipt.isEmpty()) {
             printErrorMessage("The receipt is empty, nothing to pay.");
             return;
         }
-
-        if (!checkoutManager.checkout(receipt, customerAge)) {
-            printErrorMessage("Checkout failed. Stock or seat availability may have changed.");
-            return;
-        }
-
-        // TODO: Payment interface with a fake card terminal for tests
-        receipt.lock();
-        state = State.PAID;
-
-        System.out.println("Card payment approved: " + Receipt.format(receipt.total()));
-    }
-
-    /*
-    private void payCardCommand(){
-        if (!currentlyShopping()) return;
-
-        if (receipt.isEmpty()) {
-            printErrorMessage("The receipt is empty, nothing to pay.");
-            return;
-        }
-
-        if (!checkoutManager.checkout(receipt, customerAge, ticketManager)) {
-            printErrorMessage("Checkout failed. Stock or seat availability may have changed.");
-            return;
-        }
-
         // TODO: Payment interface with a fake card terminal for tests
         if (!completePurchase()) return;
         System.out.println("Card payment approved: " + Receipt.format(receipt.total()));
 
     }
-    */
 
     private void cancelCommand(){
         if (state != State.PURCHASING) {
@@ -320,10 +260,9 @@ public class Register {
         System.out.println("Purchase cancelled.");
     }
 
-    /*
     private boolean completePurchase() {
         for (Map.Entry<Item, Integer> entry : receipt.getItemQuantities().entrySet()) {
-            if (stockManager.getStock(entry.getKey()) < entry.getValue()) {
+            if (stock.getStock(entry.getKey()) < entry.getValue()) {
                 printErrorMessage(describe(entry.getKey()) + " is no longer in stock. Remove it and try again.");
                 return false;
             }
@@ -337,16 +276,15 @@ public class Register {
         }
 
         for (Map.Entry<Item, Integer> entry : receipt.getItemQuantities().entrySet()) {
-            stockManager.removeStock(entry.getKey(), entry.getValue());
+            stock.removeStock(entry.getKey(), entry.getValue());
         }
         for (Ticket ticket : receipt.getTickets()) {
-            ticketManager.purchaseTicket(ticket, customerAge);
+            ticketManager.addTicket(ticket);
         }
         receipt.lock();
         state = State.PAID;
         return true;
     }
-    */
 
     //helpers
     private boolean currentlyShopping() {
@@ -361,13 +299,11 @@ public class Register {
         return true;
     }
 
-    /*
     private boolean isOfAge(AgeRequirement required) {
         if (required == AgeRequirement.AGE_0) return true;
         if (customerAge == null) customerAge = askAge();
         return required.isOfAge(customerAge);
     }
-    */
 
     private int askAge() {
         while (true) {
@@ -382,12 +318,10 @@ public class Register {
         }
     }
 
-    /*
     private AgeRequirement ageRequirementOf(Item item) {
         if (item instanceof Beverage beverage) return beverage.getAgeReq();
         return AgeRequirement.AGE_0;
     }
-    */
 
     private String describe(Item item) {
         if (item instanceof Beverage beverage) {
@@ -411,13 +345,6 @@ public class Register {
         }
     }
 
-    /** "100" or "99,50" (crowns) -> Money. */
-    private Money parseMoney(String text) {
-        long penny = new BigDecimal(text.trim().replace(',', '.'))
-                .movePointRight(2).setScale(0, RoundingMode.HALF_UP).longValueExact();
-        return Money.ofPenny(penny);
-    }
-
     private void printErrorMessage(String message) {
         System.out.println(message);
     }
@@ -430,25 +357,11 @@ public class Register {
 
     public static void main(String[] args) {
         CinemaInitialiser initialiser = new CinemaInitialiser();
+        StockManager stock = new StockManager();
+        initialiser.populateInventory(stock);
 
-        // Populate stock and screenings
-        StockManager stockManager = new StockManager();
-        initialiser.populateInventory(stockManager);
-        ScreeningManager screeningManager = new ScreeningManager();
-        initialiser.populateMovies(screeningManager);
-
-        TicketManager ticketManager = new TicketManager();
-
-        CheckoutManager checkoutManager = new CheckoutManager(stockManager, ticketManager);
-
-        Register register = new Register(
-                new InputReader(),
-                stockManager,
-                ticketManager,
-                checkoutManager,
-                screeningManager
-        );
-
+        Register register = new Register(new InputReader(), stock, new TicketManager(),
+                initialiser.getItems(), new ScreeningManager());
         register.start();
     }
 
