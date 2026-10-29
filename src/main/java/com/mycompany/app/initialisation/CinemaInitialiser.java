@@ -46,7 +46,7 @@ public class CinemaInitialiser {
     private final Movie m5 = new Movie("The Lion King", 88, AgeRequirement.AGE_0);
 
     public void populateInventory(StockManager manager) {
-        manager.addStock(popcorn, 100);
+        manager.addStock(popcorn, 1000);
         manager.addStock(baconchips, 100);
         manager.addStock(nachos, 100);
 
