@@ -14,6 +14,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ReceiptTest {
@@ -182,9 +183,12 @@ public class ReceiptTest {
     }
 
     @Test
-    void descriptionOfItemIsIncludedOnReceipt(){
-        receipt.addItem(popcorn,"popcorn");
-        receipt.format();
+    void descriptionOfItemAndTicketIsIncludedOnReceipt(){
+        receipt.addTicket(ticket);
+        receipt.addItem(popcorn,"popcorn");// en riktig eller mockad Ticket med screening, theater, seat
+        String output = receipt.format();
+        assertTrue(output.contains(ticket.getScreening().getTheater().getName()));
+        assertTrue(output.contains(popcorn.getName()));
     }
 
     //formating
@@ -209,6 +213,51 @@ public class ReceiptTest {
     }
 
 
+    @ParameterizedTest(name = "{0} penny -> {1}")
+    @CsvSource(delimiter = '|', value = {
+            "0      | 0,00 kr",
+            "1      | 0,01 kr",
+            "5      | 0,05 kr",
+            "100    | 1,00 kr",
+            "101    | 1,01 kr",
+            "8000   | 80,00 kr",
+            "12345  | 123,45 kr"
+    })
+    void formatsMoneyAsKronorAndOre(long penny, String expected) {
+        assertEquals(expected, Receipt.format(Money.ofPenny(penny)));
+    }
+
+
+    @Test
+    void getAllItemsReturnsEveryItem(){
+        receipt.addItem(popcorn,"popcorn");
+        receipt.addTicket(ticket);
+        List<Item> list = receipt.getAllItems();
+        assertTrue(list.contains(popcorn));
+        assertTrue(list.contains(ticket));
+
+    }
+
+    @Test
+    void getTicketsReturnsAllTickets(){
+        receipt.addTicket(ticket);
+        List<Ticket> list = receipt.getTickets();
+        assertTrue(list.contains(ticket));
+    }
+
+    @Test
+    void countOfSkipsTicketsAndNonMatchingItems() {
+        receipt.addTicket(ticket);
+        receipt.addItem(popcorn, "Popcorn");
+        assertEquals(1, receipt.countOf(popcorn));
+    }
+
+    @Test
+    void moneyIsFormatedInPenny(){
+        Money money = Money.ofPenny(1200);
+    }
+
+
     //Property-based
 
     @Provide("receiptWithRandomAmountOfFood")
@@ -219,9 +268,6 @@ public class ReceiptTest {
 
         return catalogItems.list().ofMinSize(1).ofMaxSize(10);
     }
-
-    
-
 
     @Property
     void subtotalShouldAlwaysSumOfItemCosts(@ForAll("receiptWithRandomAmountOfFood")List<Food> items){
@@ -236,13 +282,6 @@ public class ReceiptTest {
         assertEquals(receipt.subtotal().getPenny(),expectedTotal);
     }
 
-
-
-
-
-
-
-    //Receipt with long item names
 
 
 }

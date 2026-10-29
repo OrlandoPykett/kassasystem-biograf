@@ -8,7 +8,6 @@ import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Register {
@@ -344,13 +343,6 @@ public class Register {
         } catch (NumberFormatException e) {
             return null;
         }
-    }
-
-    /** "100" or "99,50" (crowns) -> Money. */
-    private Money parseMoney(String text) {
-        long penny = new BigDecimal(text.trim().replace(',', '.'))
-                .movePointRight(2).setScale(0, RoundingMode.HALF_UP).longValueExact();
-        return Money.ofPenny(penny);
     }
 
     private void printErrorMessage(String message) {

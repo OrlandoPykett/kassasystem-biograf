@@ -1,11 +1,16 @@
 package com.mycompany.app;
 import java.util.Scanner;
 public class InputReader {
+    
     private Scanner input;
-    public InputReader() { this(new Scanner(System.in)); }
+
+    public InputReader() {
+        this(new Scanner(System.in));
+    }
     public InputReader(Scanner input) {
         this.input = input;
     }
+
     public String readString(String msg) {
         System.out.print(msg + "?>");
         String userString = input.nextLine().trim();
