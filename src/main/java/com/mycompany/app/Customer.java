@@ -3,6 +3,7 @@ package com.mycompany.app;
 import com.mycompany.app.membership.Membership;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class Customer implements Comparable<Customer> {
     private final String id;
@@ -38,8 +39,8 @@ public class Customer implements Comparable<Customer> {
         return membership == null ? false : true;
     }
 
-    public Membership getMembership() {
-        return membership;
+    public Optional<Membership> getMembership() {
+        return Optional.ofNullable(membership);
     }
 
     @Override
