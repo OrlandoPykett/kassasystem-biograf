@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 import com.mycompany.app.membership.Membership;
 import org.junit.jupiter.api.Test;
@@ -56,12 +57,13 @@ public class CustomerTest {
                                 .ofLocalizedDateTime(FormatStyle.SHORT)
                                 .withLocale(Locale.of("se", "SW"));
 
-        Customer cust = new Customer("ID", "NAME", getDefaultMembership(), LocalDateTime.now()) {
-            @Override
-            public LocalDateTime getCustomerSince() {
-                return registrationDate;
-            }
-        };
+        Customer cust = new Customer("ID", "NAME", getDefaultMembership(), registrationDate);
+        // {
+        //     @Override
+        //     public LocalDateTime getCustomerSince() {
+        //         return registrationDate;
+        //     }
+        // };
 
         assertEquals("2000-01-02 09:30", formatter.format(cust.getCustomerSince()));
     }
@@ -76,6 +78,10 @@ public class CustomerTest {
     public void customer_with_no_membership_is_valid() {
         Customer cust = new Customer("ID", "NAME", null, LocalDateTime.now());
         assertFalse(cust.isMember());
+
+        assertThrows(NoSuchElementException.class, () -> {
+            cust.getMembership().get();
+        });
     }
 
     @Test
@@ -85,7 +91,9 @@ public class CustomerTest {
         Customer cust3 = new Customer("ID2", "NAME1", getDefaultMembership(), LocalDateTime.now());
         
         assertTrue(cust1.equals(cust2));
-        assertNotEquals(cust1.hashCode(), cust3.hashCode());;
+        assertFalse(cust1.equals(cust3));
+        assertFalse(cust1.equals(new Object()));
+        assertEquals(cust1.hashCode(), cust2.hashCode());
     }
     
     @Test
