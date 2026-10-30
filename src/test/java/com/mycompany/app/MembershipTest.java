@@ -43,17 +43,21 @@ public class MembershipTest {
 
         Membership m2 = new Membership("ID", creationTime);
         
-        assertEquals("2000-01-31 12:50", formatter.format(m1.getMembershipTierSince()));
-        assertEquals("2000-01-31 12:50", formatter.format(m2.getMembershipTierSince()));
+        assertAll(
+            () -> assertEquals("2000-01-31 12:50", formatter.format(m1.getMembershipTierSince())),
+            () -> assertEquals("2000-01-31 12:50", formatter.format(m2.getMembershipTierSince()))
+        );
     }
     
     @Test
     public void membershipTier_is_set_correctly() {
         Membership m1 = getDefaultMembership();
-        assertTrue(Arrays.asList(MembershipTier.values()).contains(m1.getMembershipTier()));
-        
         Membership m2 = new Membership("ID", LocalDateTime.now() ,MembershipTier.STANDARD);
-        assertTrue(Arrays.asList(MembershipTier.values()).contains(m2.getMembershipTier()));
+
+        assertAll(
+            () -> assertTrue(Arrays.asList(MembershipTier.values()).contains(m1.getMembershipTier())),
+            () -> assertTrue(Arrays.asList(MembershipTier.values()).contains(m2.getMembershipTier()))
+        );
     }
 
     @ParameterizedTest
