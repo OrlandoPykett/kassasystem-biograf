@@ -64,15 +64,19 @@ public class CustomerTest {
     @Test
     public void customer_with_membership_is_valid() {
         Customer cust = new Customer("ID", "NAME", getDefaultMembership(), LocalDateTime.now());
-        assertTrue(cust.isMember());
-        assertNotNull(cust.getMembership());
+        assertAll(
+            () -> assertTrue(cust.isMember()),
+            () -> assertNotNull(cust.getMembership())
+        );
     }
 
     @Test
     public void customer_with_no_membership_is_valid() {
         Customer cust = new Customer("ID", "NAME", null, LocalDateTime.now());
-        assertFalse(cust.isMember());
-        assertNull(cust.getMembership());
+        assertAll(
+            () -> assertFalse(cust.isMember()),
+            () -> assertNull(cust.getMembership())
+        );
     }
 
     @Test
@@ -81,9 +85,11 @@ public class CustomerTest {
         Customer cust2 = new Customer("ID1", "NAME2", getDefaultMembership(), LocalDateTime.now());
         Customer cust3 = new Customer("ID2", "NAME1", getDefaultMembership(), LocalDateTime.now());
         
-        assertTrue(cust1.equals(cust2));
-        assertFalse(cust1.equals(new Object()));
-        assertNotEquals(cust1.hashCode(), cust3.hashCode());
+        assertAll(
+            () -> assertTrue(cust1.equals(cust2)),
+            () -> assertFalse(cust1.equals(new Object())),
+            () -> assertNotEquals(cust1.hashCode(), cust3.hashCode())
+        );
     }
     
     @Test
