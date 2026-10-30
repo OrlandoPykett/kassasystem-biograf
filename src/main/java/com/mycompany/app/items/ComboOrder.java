@@ -72,9 +72,6 @@ public class ComboOrder {
                         excess.add(item);
                     }
                 }
-
-            } else {
-                excess.add(item);
             }
         }
 

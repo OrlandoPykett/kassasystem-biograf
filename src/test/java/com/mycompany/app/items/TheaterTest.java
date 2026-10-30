@@ -35,4 +35,30 @@ public class TheaterTest {
         Seat seat = new Seat('E', 15);
         assertEquals("E15", seat.toString());
     }
+
+    @Test
+    void getSeatsReturnsAllTheaterSeats() {
+        Theater theater = new Theater("Theater", 7, 25);
+
+        TreeSet<Seat> seats = theater.getSeats();
+
+        assertNotNull(seats);
+        assertEquals(175, seats.size());
+        assertTrue(seats.contains(new Seat('A', 1)));
+        assertTrue(seats.contains(new Seat('G', 25)));
+    }
+
+    @Test
+    void hasSeatsReturnsTrueWhenTheaterHasSeats() {
+        Theater theater = new Theater("Theater", 7, 25);
+
+        assertTrue(theater.hasSeat(new Seat('G', 25)));
+    }
+
+    @Test
+    void hasSeatsReturnsFalseWhenTheaterHasNoSeats() {
+        Theater theater = new Theater("Theater", 0, 25);
+
+        assertFalse(theater.hasSeat(new Seat('A', 1)));
+    }
 }

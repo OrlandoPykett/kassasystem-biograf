@@ -85,7 +85,7 @@ public final class Money implements Comparable<Money> {
 
     @Override
     public String toString() {
-        return "Money: %L,%L kr".formatted(getCrown(), getPenny());
+        return "Money: %d,%02d kr".formatted(getCrown(), getPenny());
     }
 }
 
