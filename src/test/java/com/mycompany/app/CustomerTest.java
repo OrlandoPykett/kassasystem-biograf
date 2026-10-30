@@ -56,12 +56,7 @@ public class CustomerTest {
                                 .ofLocalizedDateTime(FormatStyle.SHORT)
                                 .withLocale(Locale.of("se", "SW"));
 
-        Customer cust = new Customer("ID", "NAME", getDefaultMembership(), LocalDateTime.now()) {
-            @Override
-            public LocalDateTime getCustomerSince() {
-                return registrationDate;
-            }
-        };
+        Customer cust = new Customer("ID", "NAME", getDefaultMembership(), registrationDate);
 
         assertEquals("2000-01-02 09:30", formatter.format(cust.getCustomerSince()));
     }
@@ -70,12 +65,14 @@ public class CustomerTest {
     public void customer_with_membership_is_valid() {
         Customer cust = new Customer("ID", "NAME", getDefaultMembership(), LocalDateTime.now());
         assertTrue(cust.isMember());
+        assertNotNull(cust.getMembership());
     }
 
     @Test
     public void customer_with_no_membership_is_valid() {
         Customer cust = new Customer("ID", "NAME", null, LocalDateTime.now());
         assertFalse(cust.isMember());
+        assertNull(cust.getMembership());
     }
 
     @Test
@@ -85,7 +82,8 @@ public class CustomerTest {
         Customer cust3 = new Customer("ID2", "NAME1", getDefaultMembership(), LocalDateTime.now());
         
         assertTrue(cust1.equals(cust2));
-        assertNotEquals(cust1.hashCode(), cust3.hashCode());;
+        assertFalse(cust1.equals(new Object()));
+        assertNotEquals(cust1.hashCode(), cust3.hashCode());
     }
     
     @Test
