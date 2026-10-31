@@ -1,8 +1,16 @@
 package com.mycompany.app;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.mycompany.app.util.DummyIdDatabase;
 import com.mycompany.app.util.DummyLogger;
@@ -13,6 +21,7 @@ import com.mycompany.app.util.Logger;
 import com.mycompany.app.util.NumberOfCallsLogger;
 import com.mycompany.app.util.RandomStringGenerator;
 
+@ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
     @Test
     public void customer_creation_is_logged() {
@@ -27,6 +36,24 @@ public class CustomerServiceTest {
         }
 
         assertEquals(names.length, ((NumberOfCallsLogger) callsLogger).getNumberOfCalls());
+    }
+
+    @Mock IdDatabase idDatabase;
+    
+    @Mock Logger logger;
+
+    @InjectMocks CustomerService custService;
+
+    @DisplayName("Check if logging occurs with each customer creation. (With the help us mock injection)")
+    @Test
+    public void customer_creation_is_logged_UsingInjectMocksAnnotation() {
+        String[] names = {"NAME1", "NAME2", "NAME3", "NAME4", "NAME5"};
+
+        for (int i = 0; i < names.length; i++) {
+            custService.createCustomer(names[i]);
+        }
+
+        verify(logger, times(names.length)).log(any(), any());
     }
 
     @Test
