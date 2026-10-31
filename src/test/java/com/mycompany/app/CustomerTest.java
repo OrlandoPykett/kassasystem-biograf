@@ -11,11 +11,64 @@ import java.util.Collections;
 import java.util.Locale;
 
 import com.mycompany.app.membership.Membership;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class CustomerTest {
+    private static class CustomerBuilder {
+        private String id, name;
+        private Membership membership;
+        LocalDateTime customerSince;
+
+        public CustomerBuilder(String id, String name, Membership membership, LocalDateTime customerSince) {
+            this.id = id;
+            this.name = name;
+            this.membership = membership;
+            this.customerSince = customerSince;
+        }
+
+        public static CustomerBuilder setDefault() {
+            final String DEFAULT_CUSTOMER_ID = "CUSTID";
+            final String DEFAULT_NAME = "NAME";
+            final String DEFAULT_MEMBERSHIP_ID = "MEMID";
+            final Membership DEFAULT_MEMBERSHIP = new Membership(DEFAULT_MEMBERSHIP_ID);
+            final LocalDateTime DEFAULT_CUSTOMER_SINCE = LocalDateTime.of(2000, 1, 31, 12, 20);
+    
+            return new CustomerBuilder(DEFAULT_CUSTOMER_ID, DEFAULT_NAME, DEFAULT_MEMBERSHIP, DEFAULT_CUSTOMER_SINCE);
+        }
+
+        public CustomerBuilder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public CustomerBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public CustomerBuilder membership(Membership membership) {
+            this.membership = membership;
+            return this;
+        }
+
+        public CustomerBuilder customerSince(LocalDateTime customerSince) {
+            this.customerSince = customerSince;
+            return this;
+        }
+
+        public Customer build() {
+            if (id == null || name == null || customerSince == null) {
+                throw new IllegalStateException();
+            }
+
+            return new Customer(id, name, membership, customerSince);
+        }
+    }
+
     private Membership getDefaultMembership() {
         return new Membership("ID");
     }
@@ -34,9 +87,13 @@ public class CustomerTest {
         });
     }
 
-    @Test
-    public void name_is_set() {
-        Customer cust = new Customer("ID", "NAME", getDefaultMembership(), LocalDateTime.now());
+    @DisplayName("Test if name is set correctly using builder pattern to generate a customer")
+    @Test public void name_is_set() {
+
+        Customer cust = CustomerBuilder.setDefault()
+                            .name("NAME")
+                            .build();
+        
         assertEquals("NAME", cust.getName());
     }
 
