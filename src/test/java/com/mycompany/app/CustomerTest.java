@@ -23,7 +23,7 @@ public class CustomerTest {
         private Membership membership;
         LocalDateTime customerSince;
 
-        public CustomerBuilder(String id, String name, Membership membership, LocalDateTime customerSince) {
+        private CustomerBuilder(String id, String name, Membership membership, LocalDateTime customerSince) {
             this.id = id;
             this.name = name;
             this.membership = membership;
@@ -87,7 +87,7 @@ public class CustomerTest {
         });
     }
 
-    @DisplayName("Test if name is set correctly using builder pattern to generate a customer")
+    @DisplayName("Test if name is set correctly. (Uses builder pattern to clarify that name is being tested)")
     @Test public void name_is_set() {
 
         Customer cust = CustomerBuilder.setDefault()
