@@ -36,18 +36,19 @@ public class StockManager {
     public void registerItem(Item item) {
         if (item == null) return;
 
-        items.put(item.getId(), item);
+        String itemId = item.getId();
+
+        if (items.get(itemId) != item) {
+            items.put(itemId, item);
+        }
     }
 
     public void addStock(Item item, int quantity) {
         if (item == null || quantity <= 0) return;
 
-        if (item instanceof Beverage) {
-            registerItem(item);
-            return;
-        }
-
         registerItem(item);
+
+        if (item instanceof Beverage) return;
 
         int currentQuant = stock.getOrDefault(item, 0);
         stock.put(item, currentQuant + quantity);

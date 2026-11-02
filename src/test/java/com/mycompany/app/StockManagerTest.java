@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class StockManagerTest {
 
@@ -18,9 +19,14 @@ public class StockManagerTest {
     private Beverage cokeM;
     private BeverageDispenser dispenser;
 
+    // used for mock tests
+    private BeverageDispenser mockDispenser;
+    private Beverage fanta;
+
     @BeforeEach
     void setUp() {
         manager = new StockManager();
+
         popcorn = new Food(
                 "F1",
                 Money.ofPenny(7500),
@@ -28,6 +34,7 @@ public class StockManagerTest {
         );
 
         dispenser = new BeverageDispenser("Coca-Cola", 1000);
+        mockDispenser = mock(BeverageDispenser.class);
 
         cokeS = new Beverage(
                 "B1S",
@@ -45,6 +52,15 @@ public class StockManagerTest {
                 BeverageSize.MEDIUM,
                 false,
                 dispenser
+        );
+
+        fanta = new Beverage(
+                "B2S",
+                Money.ofPenny(4000),
+                "Fanta",
+                BeverageSize.SMALL,
+                false,
+                mockDispenser
         );
     }
 
@@ -105,7 +121,6 @@ public class StockManagerTest {
             manager.removeStock(popcorn,1 );
         });
     }
-
 
     @Test
     void registersBeverageWithoutAddingStock() {
@@ -185,5 +200,4 @@ public class StockManagerTest {
                 () -> assertEquals(cokeM, manager.getItem("B1M"))
         );
     }
-
 }
