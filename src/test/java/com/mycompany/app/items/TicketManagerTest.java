@@ -206,37 +206,6 @@ public class TicketManagerTest {
         });
     }
 
-//    @Test
-//    void rejectsEntireBookingWhenOneSeatIsOccupied() {
-//        Ticket[] firstOrder = createTickets(
-//                new Seat('B', 1),
-//                new Seat('B', 2)
-//        );
-//
-//        assertTrue(ticketManager.purchaseTickets(
-//                firstOrder,
-//                new int[]{23, 23}
-//        ));
-//
-//        Ticket[] secondOrder = createTickets(
-//                new Seat('B', 3),
-//                new Seat('B', 2)
-//        );
-//
-//        boolean result = ticketManager.purchaseTickets(
-//                secondOrder,
-//                new int[]{23, 23}
-//        );
-//
-//        assertAll( () -> {
-//            assertFalse(result);
-//            assertEquals(2, ticketManager.getTickets().size());
-//            assertTrue(
-//                    ticketManager.getTickets().stream()
-//                            .noneMatch(ticket -> ticket == secondOrder[0]));
-//        });
-//    }
-
     @Test
     void rejectsGroupBookingForTheSameSeat() {
         Ticket[] firstOrder = createTickets(

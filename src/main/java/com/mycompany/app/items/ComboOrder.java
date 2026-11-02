@@ -22,9 +22,6 @@ public class ComboOrder {
 
         Populate with the most expensive items of each category
          */
-        int cheapestBeverage = 1;
-        int cheapestTicket = 1;
-
 
         for (Item item : inputItems) {
             if (item instanceof Food) {

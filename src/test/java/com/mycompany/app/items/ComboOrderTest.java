@@ -21,11 +21,20 @@ public class ComboOrderTest {
         dispenser = new BeverageDispenser("Drink", 1000);
     }
 
-    @Test
-    void comboOrderHasFixedPrice() {
-        ComboOrder combo = new ComboOrder(createSampleOrder());
+    private Item[] createSampleOrder() {
+        Food f1 = new Food("f1", Money.ofPenny(6000), "popcorn");
+        Beverage b1 = new Beverage("b1", Money.ofPenny(2000), "Coke", BeverageSize.MEDIUM, false, dispenser);
+        Beverage b2 = new Beverage("b2", Money.ofPenny(3000), "Pepsi", BeverageSize.MEDIUM, false, dispenser);
 
-        assertEquals(Money.ofPenny(40000), combo.getPrice());
+        MovieScreening screening = new MovieScreening(
+                new Movie("Movie", 120, AgeRequirement.AGE_0),
+                LocalDateTime.of(2026, 12, 18, 18, 0),
+                new Theater("Harald", 8, 38));
+
+        Ticket t1 = new Ticket("t1", Money.ofPenny(1400), new Seat('E',12), screening);
+        Ticket t2 = new Ticket("t2", Money.ofPenny(1400), new Seat('E',13), screening);
+
+        return new Item[]{f1, b1, b2, t1, t2};
     }
 
     private Ticket createTicket(String id, long price, int seatNumber) {
@@ -41,6 +50,13 @@ public class ComboOrderTest {
                 new Seat('E', seatNumber),
                 screening
         );
+    }
+
+    @Test
+    void comboOrderHasFixedPrice() {
+        ComboOrder combo = new ComboOrder(createSampleOrder());
+
+        assertEquals(Money.ofPenny(40000), combo.getPrice());
     }
 
     @Test
@@ -66,11 +82,10 @@ public class ComboOrderTest {
     }
 
     @Test
-    void foodItemMustCostAtLeast50KR() {
+    void orderWithFoodItemLessThan50krIsRejected() {
         Item[] order = createSampleOrder();
 
-        // replace food item with a food item below 50 kr
-        order[0] = new Food("f2", Money.ofPenny(1000), "crisps");
+        order[0] = new Food("f2", Money.ofPenny(4900), "crisps");
 
         assertThrows(IllegalArgumentException.class, () -> {
             new ComboOrder(order);
@@ -146,22 +161,6 @@ public class ComboOrderTest {
         assertThat(combo.getExcess(), containsInAnyOrder(food, drink));
     }
 
-    private Item[] createSampleOrder() {
-        Food f1 = new Food("f1", Money.ofPenny(6000), "popcorn");
-        Beverage b1 = new Beverage("b1", Money.ofPenny(2000), "Coke", BeverageSize.MEDIUM, false, dispenser);
-        Beverage b2 = new Beverage("b2", Money.ofPenny(3000), "Pepsi", BeverageSize.MEDIUM, false, dispenser);
-
-        MovieScreening screening = new MovieScreening(
-                new Movie("Movie", 120, AgeRequirement.AGE_0),
-                LocalDateTime.of(2026, 12, 18, 18, 0),
-                new Theater("Harald", 8, 38));
-
-        Ticket t1 = new Ticket("t1", Money.ofPenny(1400), new Seat('E',12), screening);
-        Ticket t2 = new Ticket("t2", Money.ofPenny(1400), new Seat('E',13), screening);
-
-        return new Item[]{f1, b1, b2, t1, t2};
-    }
-
     @Test
     void foodItemAtExactly50KronorIsAccepted() {
         Item[] order = createSampleOrder();
@@ -172,20 +171,25 @@ public class ComboOrderTest {
 
     @Test
     void comboOrderSelectsTwoMostExpensiveTickets() {
-        Item[] order = Arrays.copyOf(createSampleOrder(), 7);
+        Item[] order = Arrays.copyOf(createSampleOrder(), 8);
 
         Ticket expensiveTicket1 = createTicket("t3", 3000, 14);
         Ticket expensiveTicket2 = createTicket("t4", 4000, 15);
+        Ticket cheapTicket = createTicket("t5", 1000, 8);
 
         order[5] = expensiveTicket1;
         order[6] = expensiveTicket2;
+        order[7] = cheapTicket;
+
 
         ComboOrder combo = new ComboOrder(order);
 
-        assertThat(
-                Arrays.asList(combo.getItems()[3], combo.getItems()[4]),
-                containsInAnyOrder(expensiveTicket1, expensiveTicket2)
-        );
+        assertAll( () -> {
+            assertThat(
+                    Arrays.asList(combo.getItems()[3], combo.getItems()[4]),
+                    containsInAnyOrder(expensiveTicket1, expensiveTicket2));
+                    assertTrue(combo.getExcess().contains(cheapTicket));
+        });
     }
 
     @Test
@@ -228,7 +232,8 @@ public class ComboOrderTest {
         order[3] = new Food("f2", Money.ofPenny(6000), "Nachos");
 
         assertThrows(IllegalArgumentException.class,
-                () -> new ComboOrder(order));
+                () -> new ComboOrder(order),
+                "A combo must contain exactly 1 food item over 50 kr, 2 beverages, and 2 tickets");
     }
 
     @Test
