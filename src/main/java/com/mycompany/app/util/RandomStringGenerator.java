@@ -1,22 +1,26 @@
 package com.mycompany.app.util;
 
-import java.security.SecureRandom;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class RandomStringGenerator {
+public final class RandomStringGenerator {
     private final int length;
 
-    public RandomStringGenerator(int lenght) {
-        this.length = lenght;
+    private static final char[] CHARS =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                    .toCharArray();
+
+    public RandomStringGenerator(int length) {
+        this.length = length;
     }
 
     public String generate() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        SecureRandom random = new SecureRandom();
+        char[] result = new char[length];
+        ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        String result = random.ints(length, 0, chars.length())
-                .mapToObj(chars::charAt)
-                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                .toString();
-        return result;
+        for (int i = 0; i < length; i++) {
+            result[i] = CHARS[random.nextInt(CHARS.length)];
+        }
+
+        return new String(result);
     }
 }
