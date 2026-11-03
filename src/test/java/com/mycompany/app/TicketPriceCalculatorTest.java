@@ -98,8 +98,7 @@ public class TicketPriceCalculatorTest {
 
         BeverageDispenser dispenser =  new BeverageDispenser("test drink", 10000);
 
-        Beverage beverage = new Beverage("b1",Money.ofPenny(originalPenny),"test drink",BeverageSize.MEDIUM,alcoholic,dispenser
-    );
+        Beverage beverage = new Beverage("b1",Money.ofPenny(originalPenny),"test drink",BeverageSize.MEDIUM,alcoholic,dispenser);
 
     MembershipDiscountCalculator calculator = new MembershipDiscountCalculator();
 
@@ -214,6 +213,15 @@ void ticketPriceRespectsMinimumAndPreservesMoviePrice(
     assertTrue(price.getPenny() >= 4000,"Ticket price before membership discount must be at least 40 kr");
 
     assertEquals(originalPenny, movie.getBasePrice().getPenny());
+}
+
+@Test
+void negativeAgeIsRejectedWhenMovieIsProvided() {
+    Movie movie = new Movie("Test Movie", 120, AgeRequirement.AGE_0,Money.ofPenny(15000));
+
+    TicketPriceCalculator calculator = new TicketPriceCalculator();
+
+    assertThrows(IllegalArgumentException.class,() -> calculator.calculateBasePrice(-1, movie));
 }
 
 }

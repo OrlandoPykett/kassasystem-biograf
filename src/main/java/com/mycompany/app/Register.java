@@ -164,6 +164,11 @@ public class Register {
             return;
         }
 
+        // Fråga efter kundens ålder innan ålderskontrollen används.
+        if (customerAge == null) {
+            customerAge = askAge();
+        }
+
         if (!AgeControl.isAccepted(customerAge, item)) {
             printErrorMessage("Customer is too young for " + describe(item) + ".");
             return;
