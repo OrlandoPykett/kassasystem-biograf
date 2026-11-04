@@ -33,6 +33,31 @@ public class TicketManagerTest {
         );
     }
 
+    private MovieScreening createScreening(AgeRequirement requirement) {
+        Movie movie = new Movie("Movie", 120, requirement);
+
+        return new MovieScreening(
+                movie,
+                LocalDateTime.of(2026, 12, 18, 18, 0),
+                new Theater("Harald", 8, 38)
+        );
+    }
+
+    private Ticket[] createTickets(Seat... seats) {
+        Ticket[] tickets = new Ticket[seats.length];
+
+        for (int i = 0; i < seats.length; i++) {
+            tickets[i] = new Ticket(
+                    "t" + (i + 1),
+                    Money.ofPenny(1400),
+                    seats[i],
+                    screening
+            );
+        }
+
+        return tickets;
+    }
+
     @Test
     void rejectUnderageCustomerWithoutChangingTicketList() {
         Ticket ticket = new Ticket(
@@ -337,32 +362,6 @@ public class TicketManagerTest {
                 IllegalArgumentException.class,
                 () -> ticketManager.purchaseTickets(tickets, ages)
         );
-    }
-
-
-    private MovieScreening createScreening(AgeRequirement requirement) {
-        Movie movie = new Movie("Movie", 120, requirement);
-
-        return new MovieScreening(
-                movie,
-                LocalDateTime.of(2026, 12, 18, 18, 0),
-                new Theater("Harald", 8, 38)
-        );
-    }
-
-    private Ticket[] createTickets(Seat... seats) {
-        Ticket[] tickets = new Ticket[seats.length];
-
-        for (int i = 0; i < seats.length; i++) {
-            tickets[i] = new Ticket(
-                    "t" + (i + 1),
-                    Money.ofPenny(1400),
-                    seats[i],
-                    screening
-            );
-        }
-
-        return tickets;
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.mycompany.app.items;
 
+import com.mycompany.app.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -102,5 +103,19 @@ class MovieTest {
     @Test
     void toStringReturnsMovieTitle() {
         assertEquals("Test Movie", movie.toString());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenBasePriceIsNull() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new Movie("Movie title", 120, AgeRequirement.AGE_18, null)
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionWhenBasePriceIsNegative() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new Movie("Movie title", 120, AgeRequirement.AGE_18, Money.ofPenny(-1))
+        );
     }
 }
