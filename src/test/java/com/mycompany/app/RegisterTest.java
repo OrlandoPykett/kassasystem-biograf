@@ -1,6 +1,5 @@
 package com.mycompany.app;
 
-import com.mycompany.app.InputReader;
 import com.mycompany.app.initialisation.CinemaInitialiser;
 import com.mycompany.app.items.*;
 import org.junit.jupiter.api.AfterEach;
