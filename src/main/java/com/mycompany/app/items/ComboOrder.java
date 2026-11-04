@@ -53,7 +53,7 @@ public class ComboOrder {
                     }
                 }
 
-            } else if (item instanceof Ticket) {
+            } else { // Ticket
                 if (items[3] == null) {
                     items[3] = item;
                 } else if (items[4] == null) {
