@@ -80,7 +80,7 @@ public final class Money implements Comparable<Money> {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(this);
+        return Objects.hashCode(penny);
     }
 
     @Override
