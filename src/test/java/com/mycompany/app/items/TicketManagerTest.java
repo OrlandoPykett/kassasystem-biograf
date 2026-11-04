@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -364,5 +365,69 @@ public class TicketManagerTest {
         return tickets;
     }
 
+    @Test
+    void removesPurchasedTicket() {
+        Ticket ticket = createTickets(new Seat('A', 1))[0];
+        ticketManager.purchaseTicket(ticket, 18);
 
+        boolean result = ticketManager.removeTicket(ticket);
+
+        assertAll(
+                () -> assertTrue(result),
+                () -> assertTrue(ticketManager.getTickets().isEmpty())
+        );
+    }
+
+    @Test
+    void returnsFalseWhenRemovingNonexistentTicket() {
+        Ticket ticket = createTickets(new Seat('A', 1))[0];
+
+        assertFalse(ticketManager.removeTicket(ticket));
+    }
+
+    @Test
+    void getTicketsReturnsIndependentList() {
+        Ticket ticket = createTickets(new Seat('A', 1))[0];
+        ticketManager.purchaseTicket(ticket, 18);
+
+        List<Ticket> tickets = ticketManager.getTickets();
+        tickets.clear();
+
+        assertEquals(1, ticketManager.getTickets().size());
+    }
+
+    @Test
+    void accepts18PlusBookingWhenEveryoneMeetsAgeRequirement() {
+        screening = createScreening(AgeRequirement.AGE_18);
+
+        Ticket[] tickets = createTickets(
+                new Seat('A', 1),
+                new Seat('A', 2)
+        );
+
+        boolean result = ticketManager.purchaseTickets(
+                tickets,
+                new int[]{18, 25}
+        );
+
+        assertAll(
+                () -> assertTrue(result),
+                () -> assertEquals(2, ticketManager.getTickets().size()),
+                () -> assertTrue(ticketManager.getTickets().containsAll(
+                        Arrays.asList(tickets)))
+        );
+    }
+
+    @Test
+    void seatIsEmptyWhenSameSeatBelongsToDifferentScreening() {
+        Ticket ticket = createTickets(new Seat('A', 1))[0];
+        ticketManager.purchaseTicket(ticket, 18);
+
+        MovieScreening otherScreening = createScreening(AgeRequirement.AGE_15);
+
+        assertTrue(ticketManager.seatIsEmpty(
+                otherScreening,
+                new Seat('A', 1)
+        ));
+    }
 }

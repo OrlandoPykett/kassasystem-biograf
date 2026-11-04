@@ -62,4 +62,82 @@ public class CheckoutManagerTest {
         stockManager.getStock(coke));
         });
     }
+
+    @Test
+    void rejectEmptyReceipt() {
+        Receipt receipt = new Receipt();
+
+        boolean result = checkoutManager.checkout(receipt, 18);
+
+        assertFalse(result);
+        assertEquals(10, stockManager.getStock(popcorn));
+        assertEquals(
+                BeverageSize.MEDIUM.getVolumeMl() * 2,
+                stockManager.getStock(coke));
+    }
+
+    @Test
+    void successfullyCheckoutFood() {
+        Receipt receipt = new Receipt();
+        receipt.addItem(popcorn, popcorn.getName());
+
+        boolean result = checkoutManager.checkout(receipt, 18);
+
+        assertAll(
+                () -> assertTrue(result),
+                () -> assertEquals(9, stockManager.getStock(popcorn))
+        );
+    }
+
+    @Test
+    void successfullyCheckoutBeverage() {
+        Receipt receipt = new Receipt();
+        receipt.addItem(coke, coke.getName());
+
+        assertTrue(stockManager.hasStock(coke, 1));
+
+        boolean result = checkoutManager.checkout(receipt, 18);
+
+        assertAll(
+                () -> assertTrue(result),
+                () -> assertEquals(
+                        BeverageSize.MEDIUM.getVolumeMl(),
+                        stockManager.getStock(coke)
+                )
+        );
+    }
+
+    @Test
+    void rejectOrderWhenFoodStockIsInsufficient() {
+        Receipt receipt = new Receipt();
+
+        for (int i = 0; i < 11; i++) {
+            receipt.addItem(popcorn, popcorn.getName());
+        }
+
+        boolean result = checkoutManager.checkout(receipt, 18);
+
+        assertAll(
+                () -> assertFalse(result),
+                () -> assertEquals(10, stockManager.getStock(popcorn))
+        );
+    }
+
+    @Test
+    void rejectOrderWhenBeverageStockIsInsufficient() {
+        Receipt receipt = new Receipt();
+
+        for (int i = 0; i < 3; i++) {
+            receipt.addItem(coke, coke.getName());
+        }
+
+        boolean result = checkoutManager.checkout(receipt, 18);
+
+        assertAll(
+                () -> assertFalse(result),
+                () -> assertEquals(
+                        BeverageSize.MEDIUM.getVolumeMl() * 2,
+                        stockManager.getStock(coke))
+        );
+    }
 }

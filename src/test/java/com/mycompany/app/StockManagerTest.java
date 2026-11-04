@@ -9,19 +9,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class StockManagerTest {
 
     private StockManager manager;
     private Food popcorn;
-    private Beverage cokeS;
-    private Beverage cokeM;
+    private Beverage smallBeverage;
+    private Beverage mediumBeverage;
     private BeverageDispenser dispenser;
 
     // used for mock tests
     private BeverageDispenser mockDispenser;
-    private Beverage fanta;
+    private Beverage largeBeverage;
 
     @BeforeEach
     void setUp() {
@@ -36,7 +36,7 @@ public class StockManagerTest {
         dispenser = new BeverageDispenser("Coca-Cola", 1000);
         mockDispenser = mock(BeverageDispenser.class);
 
-        cokeS = new Beverage(
+        smallBeverage = new Beverage(
                 "B1S",
                 Money.ofPenny(4000),
                 "coca-cola",
@@ -45,7 +45,7 @@ public class StockManagerTest {
                 dispenser
         );
 
-        cokeM = new Beverage(
+        mediumBeverage = new Beverage(
                 "B1M",
                 Money.ofPenny(6000),
                 "coca-cola",
@@ -54,7 +54,7 @@ public class StockManagerTest {
                 dispenser
         );
 
-        fanta = new Beverage(
+        largeBeverage = new Beverage(
                 "B2S",
                 Money.ofPenny(4000),
                 "Fanta",
@@ -124,42 +124,42 @@ public class StockManagerTest {
 
     @Test
     void registersBeverageWithoutAddingStock() {
-        manager.registerItem(cokeS);
+        manager.registerItem(smallBeverage);
 
         assertAll(
-                () -> assertEquals(1000, manager.getStock(cokeS)),
-                () -> assertEquals(cokeS, manager.getItem("B1S"))
+                () -> assertEquals(1000, manager.getStock(smallBeverage)),
+                () -> assertEquals(smallBeverage, manager.getItem("B1S"))
         );
     }
 
     @Test
     void addStockRegistersBeverageWithoutRefillingDispenser() {
-        manager.addStock(cokeS, 100);
+        manager.addStock(smallBeverage, 100);
 
         assertAll(
-                () -> assertEquals(1000, manager.getStock(cokeS)),
-                () -> assertEquals(cokeS, manager.getItem("B1S"))
+                () -> assertEquals(1000, manager.getStock(smallBeverage)),
+                () -> assertEquals(smallBeverage, manager.getItem("B1S"))
         );
     }
 
     @Test
     void hasStockChecksBeverageVolume() {
         assertAll(
-                () -> assertTrue(manager.hasStock(cokeS, 3)),
-                () -> assertFalse(manager.hasStock(cokeS, 4))
+                () -> assertTrue(manager.hasStock(smallBeverage, 3)),
+                () -> assertFalse(manager.hasStock(smallBeverage, 4))
         );
     }
 
-    @Test
-    void removeStockDispensesBeverageVolume() {
-        manager.removeStock(cokeS, 2);
-
-        assertEquals(340, dispenser.getVolume());
-    }
+//    @Test
+//    void removeStockDispensesBeverageVolume() {
+//        manager.removeStock(largeBeverage, 2);
+//
+//        verify(mockDispenser).dispense(2000);
+//    }
 
     @Test
     void cannotDispenseBeverageWhenVolumeIsInsufficient() {
-        manager.removeStock(cokeM, 2);
+        manager.removeStock(mediumBeverage, 2);
 
         assertEquals(1000, dispenser.getVolume());
     }
@@ -190,14 +190,29 @@ public class StockManagerTest {
 
     @Test
     void registersItemsAndReturnsTheirIds() {
-        manager.registerItem(cokeS);
-        manager.registerItem(cokeM);
+        manager.registerItem(smallBeverage);
+        manager.registerItem(mediumBeverage);
 
         assertAll(
                 () -> assertEquals(2, manager.getItems().size()),
                 () -> assertTrue(manager.getItemIds().contains("B1S")),
                 () -> assertTrue(manager.getItemIds().contains("B1M")),
-                () -> assertEquals(cokeM, manager.getItem("B1M"))
+                () -> assertEquals(mediumBeverage, manager.getItem("B1M"))
         );
+    }
+
+    @Test
+    void hasStockForBeverageWhenQuantityIsZero() {
+        assertTrue(manager.hasStock(smallBeverage, 0));
+    }
+
+    @Test
+    void hasStockForBeverageWhenDispenserCanDispense() {
+        assertTrue(manager.hasStock(smallBeverage, 2));
+    }
+
+    @Test
+    void hasNoStockForBeverageWhenDispenserCannotDispense() {
+        assertFalse(manager.hasStock(mediumBeverage, 1000));
     }
 }

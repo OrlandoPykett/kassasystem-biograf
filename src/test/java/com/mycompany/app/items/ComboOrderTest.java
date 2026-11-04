@@ -247,4 +247,122 @@ public class ComboOrderTest {
 
         assertTrue(combo.getExcess().contains(excessTicket));
     }
+
+    @Test
+    void equalPriceFoodBecomesExcess() {
+        Item[] order = Arrays.copyOf(createSampleOrder(), 6);
+        Food equalFood = new Food("f2", Money.ofPenny(6000), "crisps");
+        order[5] = equalFood;
+
+        ComboOrder combo = new ComboOrder(order);
+
+        assertEquals(6000, combo.getItems()[0].getPrice().getPenny());
+        assertTrue(combo.getExcess().contains(equalFood));
+    }
+
+    @Test
+    void secondBeverageIsCheapestAndGetsReplaced() {
+        Item[] order = createSampleOrder();
+
+        Beverage expensive = new Beverage("b3", Money.ofPenny(4000),
+                "Pepsi", BeverageSize.MEDIUM, false, dispenser);
+        Beverage replacement = new Beverage("b4", Money.ofPenny(5000),
+                "Coke", BeverageSize.MEDIUM, false, dispenser);
+
+        order[1] = new Beverage("b1", Money.ofPenny(6000),
+                "Coke", BeverageSize.MEDIUM, false, dispenser);
+        order[2] = expensive;
+
+        Item[] extendedOrder = Arrays.copyOf(order, 6);
+        extendedOrder[5] = replacement;
+
+        ComboOrder combo = new ComboOrder(extendedOrder);
+
+        assertThat(Arrays.asList(combo.getItems()[1], combo.getItems()[2]),
+                containsInAnyOrder(order[1], replacement));
+        assertTrue(combo.getExcess().contains(expensive));
+    }
+
+    @Test
+    void equalPriceBeverageBecomesExcess() {
+        Item[] order = Arrays.copyOf(createSampleOrder(), 6);
+        Beverage equalDrink = new Beverage("b3", Money.ofPenny(2000),
+                "Coke", BeverageSize.MEDIUM, false, dispenser);
+        order[5] = equalDrink;
+
+        ComboOrder combo = new ComboOrder(order);
+
+        assertFalse(Arrays.asList(combo.getItems()).contains(equalDrink));
+        assertTrue(combo.getExcess().contains(equalDrink));
+    }
+
+    @Test
+    void secondTicketIsCheapestAndGetsReplaced() {
+        Item[] order = createSampleOrder();
+
+        Ticket expensive = createTicket("t3", 3000, 14);
+        Ticket replacement = createTicket("t4", 4000, 15);
+
+        order[3] = createTicket("t1", 5000, 12);
+        order[4] = expensive;
+
+        Item[] extendedOrder = Arrays.copyOf(order, 6);
+        extendedOrder[5] = replacement;
+
+        ComboOrder combo = new ComboOrder(extendedOrder);
+
+        assertThat(Arrays.asList(combo.getItems()[3], combo.getItems()[4]),
+                containsInAnyOrder(order[3], replacement));
+        assertTrue(combo.getExcess().contains(expensive));
+    }
+
+    @Test
+    void equalPriceTicketBecomesExcess() {
+        Item[] order = Arrays.copyOf(createSampleOrder(), 6);
+        Ticket equalTicket = createTicket("t3", 1400, 14);
+        order[5] = equalTicket;
+
+        ComboOrder combo = new ComboOrder(order);
+
+        assertFalse(Arrays.asList(combo.getItems()).contains(equalTicket));
+        assertTrue(combo.getExcess().contains(equalTicket));
+    }
+
+    @Test
+    void getExcessReturnsImmutableList() {
+        Item[] order = Arrays.copyOf(createSampleOrder(), 6);
+        order[5] = new Food("f2", Money.ofPenny(2000), "crisps");
+
+        ComboOrder combo = new ComboOrder(order);
+
+        assertThrows(UnsupportedOperationException.class,
+                () -> combo.getExcess().add(order[5]));
+    }
+
+    @Test
+    void comboOrderIncludesTwoTickets() {
+        Food food = new Food("F1", Money.ofPenny(7500), "Popcorn");
+
+        Beverage beverage1 = new Beverage(
+                "B1", Money.ofPenny(3000), "Coke",
+                BeverageSize.MEDIUM, false, dispenser
+        );
+
+        Beverage beverage2 = new Beverage(
+                "B2", Money.ofPenny(3500), "Pepsi",
+                BeverageSize.MEDIUM, false, dispenser
+        );
+
+        Ticket ticket1 = createTicket("T1", 15000, 14);
+        Ticket ticket2 = createTicket("T2", 18000, 15);
+
+        ComboOrder combo = new ComboOrder(
+                new Item[]{food, beverage1, beverage2, ticket1, ticket2}
+        );
+
+        assertAll(
+                () -> assertEquals(ticket1, combo.getItems()[3]),
+                () -> assertEquals(ticket2, combo.getItems()[4])
+        );
+    }
 }

@@ -4,10 +4,22 @@ import com.mycompany.app.ScreeningManager;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ScreeningManagerTest {
+
+    LocalDateTime exampleTime = LocalDateTime.of(2026, 12, 18, 18, 0);
+    Theater exampleTheater = new Theater("Harald", 8, 38);
+
+    private MovieScreening createScreening(Movie movie) {
+        return new MovieScreening(
+                movie,
+                exampleTime,
+                exampleTheater
+        );
+    }
 
     @Test
     void addScreeningStoresScreening() {
@@ -95,5 +107,52 @@ public class ScreeningManagerTest {
 
         assertTrue(result);
         assertEquals(2, manager.getScreenings().size());
+    }
+
+    @Test
+    void getScreeningsForMovieReturnsMatchingScreenings() {
+        ScreeningManager manager = new ScreeningManager();
+
+        Movie movie1 = new Movie("Movie 1", 120, AgeRequirement.AGE_0);
+        Movie movie2 = new Movie("Movie 2", 100, AgeRequirement.AGE_0);
+
+        MovieScreening screening1 = createScreening(movie1);
+        MovieScreening screening2 = createScreening(movie2);
+
+        manager.addScreening(screening1);
+        manager.addScreening(screening2);
+
+        assertEquals(List.of(screening1), manager.getScreeningsForMovie(movie1));
+    }
+
+    @Test
+    void getScreeningsForMovieReturnsAllMatchingScreenings() {
+        ScreeningManager manager = new ScreeningManager();
+
+        Movie movie = new Movie("Movie", 120, AgeRequirement.AGE_0);
+
+        MovieScreening screening1 = createScreening(movie);
+        MovieScreening screening2 = new MovieScreening(
+                movie,
+                LocalDateTime.of(2026, 12, 18, 20, 0),
+                screening1.getTheater()
+        );
+
+        manager.addScreening(screening1);
+        manager.addScreening(screening2);
+
+        assertEquals(
+                List.of(screening1, screening2),
+                manager.getScreeningsForMovie(movie)
+        );
+    }
+
+    @Test
+    void getScreeningsForMovieReturnsEmptyListWhenNoMatchesExist() {
+        ScreeningManager manager = new ScreeningManager();
+
+        Movie movie = new Movie("Movie", 120, AgeRequirement.AGE_0);
+
+        assertTrue(manager.getScreeningsForMovie(movie).isEmpty());
     }
 }

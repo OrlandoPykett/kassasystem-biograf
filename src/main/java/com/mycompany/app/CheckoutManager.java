@@ -30,15 +30,11 @@ public class CheckoutManager {
         for (Item item : itemQuantities.keySet()) {
             int quantity = itemQuantities.get(item);
 
-            if (item instanceof Beverage beverage) {
-                quantity *= beverage.getVolumeMl();
-            }
-
             stockQuantities.put(item, quantity);
 
             if (!stockManager.hasStock(item, quantity)) {
-            return false;
-        }
+                return false;
+            }
         }
 
         // Purchase tickets

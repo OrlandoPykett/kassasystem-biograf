@@ -4,6 +4,8 @@ import com.mycompany.app.Money;
 import com.mycompany.app.items.*;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AgeControlTest {
@@ -167,5 +169,38 @@ class AgeControlTest {
 
     private Item foodItem() {
         return new Food("TEST-FOOD",  Money.ofPenny(7500), "Test popcorn");
+    }
+
+    @Test
+    void checksBeverageAgeRequirement() {
+        BeverageDispenser dispenser = new BeverageDispenser("Dispenser", 1000);
+        Beverage beverage = new Beverage("b1", Money.ofPenny(2000),
+                "Beer", BeverageSize.MEDIUM, true, dispenser);
+
+        assertFalse(AgeControl.isAccepted(17, beverage));
+        assertTrue(AgeControl.isAccepted(18, beverage));
+    }
+
+    @Test
+    void checksMovieAgeRequirement() {
+        Movie movie = new Movie("Movie", 120, AgeRequirement.AGE_18);
+        MovieScreening screening = new MovieScreening(
+                movie,
+                LocalDateTime.of(2026, 12, 18, 18, 0),
+                new Theater("Harald", 8, 38)
+        );
+
+        Ticket ticket = new Ticket("t1", Money.ofPenny(1400),
+                new Seat('E', 12), screening);
+
+        assertFalse(AgeControl.isAccepted(17, ticket));
+        assertTrue(AgeControl.isAccepted(18, ticket));
+    }
+
+    @Test
+    void itemsWithoutAgeRequirementAreAccepted() {
+        Food food = new Food("f1", Money.ofPenny(6000), "Popcorn");
+
+        assertTrue(AgeControl.isAccepted(0, food));
     }
 }
